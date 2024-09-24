@@ -57,6 +57,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 30),
                   ButtonWidget(
+                    buttonColor: StaticColors.defaultButton,
                     buttonLabel: "Login",
                     onPressed: () {},
                   )

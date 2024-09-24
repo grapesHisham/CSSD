@@ -10,8 +10,18 @@ class GradientColors {
 
 class StaticColors {
   static Color transparentGlassContainer = Color.fromRGBO(71, 225, 252, 0.32);
-  static const buttonPurple = Color(0xFF351A5C);
-  static const buttonPurple1 = Color(0xFF65558F);
+  //app background color
+  static const scaffoldBackgroundcolor = Color(0xFF044B7F);
+
   static const blueLight = Color(0xFFDCDBFE);
-  static const textwhiteLight = Color.fromRGBO(255, 255, 255, 1);
+  static const textwhiteLight = Color(0xFFFFFFFF);
+  static const timelineBackkground = Color(0xFF351A5C);
+
+  //Button colors
+  static const cancelButton = Color(0xFFF75457);
+  static const acceptButton = Color(0xFF00CC99);
+  static const sendAsPackageButton = Color(0xFF168AAD);
+  static const defaultButton = Color(0xFF044B7F);
+  static const notificationAlertsNumber = Color(0xFFB3261E);
+
 }
