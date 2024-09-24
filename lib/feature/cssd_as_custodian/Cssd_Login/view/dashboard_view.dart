@@ -7,6 +7,6 @@ class DashboardView_cssdlogin_cssdcustodian extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return  Scaffold();
   }
 }
