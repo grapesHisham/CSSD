@@ -6,14 +6,15 @@ import 'package:flutter/material.dart';
 class Routes {
   static const String splashScreen = '/';
   static const String loginScreen = '/loginScreen';
-  /*cssd pages  -- cssd custodian*/ 
-  static const String cssdDashboard = '/cssdDashboard'; 
+  /*cssd pages  -- cssd custodian*/
+  static const String cssdDashboard_cssdLogin_cssdCustodian = '/cssdDashboard';
 
   static final Map<String, WidgetBuilder> routes = {
     splashScreen: (context) => const Splash(),
     loginScreen: (context) => const LoginScreen(),
     /*cssd pages -- cssd custodian*/
-    cssdDashboard: (context) => const DashboardView_cssdlogin_cssdcustodian(),
+    cssdDashboard_cssdLogin_cssdCustodian: (context) =>
+        const DashboardView_cssdlogin_cssdcustodian(),
   };
 }
 

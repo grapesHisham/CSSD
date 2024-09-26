@@ -24,4 +24,20 @@ class StaticColors {
   static const defaultButton = Color(0xFF044B7F);
   static const notificationAlertsNumber = Color(0xFFB3261E);
 
+  //pie chart colors
+  static const pieRequestCount =
+      Color(0xFF0C9EDF); //use same color for totalstock linear progress
+  static const pieSterilizationComplete =
+      Color(0xFF3E3C8C); //use same color for totalstock linear progress
+  static const pieSterilizationOnProgress = Color(0xFF7A61D3);
+
+  //total stock colors
+  static const totalStockContainerBackground =
+      Color.fromRGBO(217, 217, 217, 0.02);
+  static const totalStockContainerStockText = Color(0xFFFF9D00);
+
+  //request container  colors
+  static const requestContainerBackground = Color(0xFFFEF7FF);
+  static const requestContainerNumberBackground = Color(0xFFFF4906);
+  static const pickupRequestContainerBackground = Color(0xFFFEF7FF);
 }

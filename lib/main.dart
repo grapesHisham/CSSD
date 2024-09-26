@@ -1,5 +1,6 @@
 import 'package:cssd/provider/splash_provider.dart';
 import 'package:cssd/util/app_routes.dart';
+import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/navigation_observer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,10 +23,13 @@ class MyApp extends StatelessWidget {
         title: 'CSSD',
         navigatorObservers: [MyNavigatorObserver()],
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
+          primarySwatch: Colors.red, //change later on
+          appBarTheme: const AppBarTheme(
+            iconTheme: IconThemeData(color: Colors.white),
+            color: StaticColors.scaffoldBackgroundcolor, 
+          ),
         ),
-        initialRoute: Routes.cssdDashboard,
+        initialRoute: Routes.cssdDashboard_cssdLogin_cssdCustodian,
         routes: Routes.routes,
       ),
     );

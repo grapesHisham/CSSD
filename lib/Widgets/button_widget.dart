@@ -5,22 +5,30 @@ class ButtonWidget extends StatelessWidget {
   final String buttonLabel;
   final Color buttonColor;
   final Function() onPressed;
+  final double? buttonTextSize;
+  final double borderRadius;
   const ButtonWidget(
       {super.key,
       required this.buttonLabel,
       required this.onPressed,
-      required this.buttonColor});
+      this.buttonColor = StaticColors.defaultButton,
+      this.buttonTextSize = 20,
+      this.borderRadius = 20});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-            elevation: 8, backgroundColor: buttonColor),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(borderRadius))),
+            elevation: 5,
+            backgroundColor: buttonColor),
         onPressed: onPressed,
         child: Text(
+          textAlign: TextAlign.center,
           buttonLabel,
-          style:
-              const TextStyle(color: StaticColors.textwhiteLight, fontSize: 20),
+          style: TextStyle(
+              color: StaticColors.textwhiteLight, fontSize: buttonTextSize),
         ));
   }
 }
