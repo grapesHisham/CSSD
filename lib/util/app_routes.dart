@@ -1,4 +1,5 @@
-import 'package:cssd/feature/cssd_as_custodian/Cssd_Login/view/dashboard_view.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/alert_view.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/dashboard_view.dart';
 import 'package:cssd/view/login_screen.dart';
 import 'package:cssd/view/splash_screen.dart';
 import 'package:flutter/material.dart';
@@ -7,14 +8,15 @@ class Routes {
   static const String splashScreen = '/';
   static const String loginScreen = '/loginScreen';
   /*cssd pages  -- cssd custodian*/
-  static const String cssdDashboard_cssdLogin_cssdCustodian = '/cssdDashboard';
+  static const String cssdDashboard_cssdLogin_cssdCustodian = '/cssdDashboard_cssdLogin_cssdCustodian';
+  static const String alertView_cssdCus_cssdLogin = '/AlertView_cssdCus_cssdLogin';
 
   static final Map<String, WidgetBuilder> routes = {
     splashScreen: (context) => const Splash(),
     loginScreen: (context) => const LoginScreen(),
     /*cssd pages -- cssd custodian*/
-    cssdDashboard_cssdLogin_cssdCustodian: (context) =>
-        const DashboardView_cssdlogin_cssdcustodian(),
+    cssdDashboard_cssdLogin_cssdCustodian: (context) =>  const DashboardView_cssdlogin_cssdcustodian(),
+    alertView_cssdCus_cssdLogin: (context) =>  const AlertView_cssdCus_cssdLogin(),
   };
 }
 

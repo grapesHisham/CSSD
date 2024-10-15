@@ -40,4 +40,7 @@ class StaticColors {
   static const requestContainerBackground = Color(0xFFFEF7FF);
   static const requestContainerNumberBackground = Color(0xFFFF4906);
   static const pickupRequestContainerBackground = Color(0xFFFEF7FF);
+
+  // doctor image background 
+  static const doctorImageBackgroundColor = Color(0xff22549B);
 }

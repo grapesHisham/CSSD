@@ -38,6 +38,10 @@ dependencies:
   lottie: ^3.1.2
   provider: ^6.1.2
   fl_chart: ^0.69.0
+  device_preview: ^1.2.0
+  flutter_screenutil: ^5.9.3
+  text_marquee: ^0.0.2
+  fluentui_system_icons: ^1.1.260
 
 dev_dependencies:
   flutter_test:

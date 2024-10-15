@@ -1,11 +1,38 @@
 import 'package:cssd/util/colors.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:text_marquee/text_marquee.dart';
 
 class ClickableCard extends StatelessWidget {
-  const ClickableCard({super.key});
+  final Color? cardColor;
+  final Color? cardLeadingContainerColor;
+  final Color? cardLeadingContainerTextColor;
+  final String requestID;
+  final String requestTitle;
+  final String requestSubTitle;
+  final String requestDate;
+  final String reqiestTime;
+  final String requestDepartment;
+
+  const ClickableCard({
+    super.key,
+    this.cardColor,
+    this.cardLeadingContainerColor =
+        StaticColors.requestContainerNumberBackground,
+    this.cardLeadingContainerTextColor = Colors.white,
+    required this.requestID,
+    required this.requestTitle,
+    required this.requestDate,
+    required this.reqiestTime,
+    required this.requestDepartment,
+    required this.requestSubTitle,
+  });
 
   @override
   Widget build(BuildContext context) {
+    if (kDebugMode) {
+      print("build called");
+    }
     return Card(
       elevation: 4.0, // Adds a shadow to the card
       shape: RoundedRectangleBorder(
@@ -19,15 +46,33 @@ class ClickableCard extends StatelessWidget {
           leading: Container(
             width: 57,
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
-                 color: StaticColors.requestContainerNumberBackground),
+                shape: BoxShape.circle, color: cardLeadingContainerColor),
             child: Center(
-              child: Text("239"),
+              child: Text(
+                requestID,
+                style: TextStyle(color: cardLeadingContainerTextColor),
+              ),
             ),
-          ), // Icon on the left
-          title: Text('Title'), // Main title
-          subtitle: Text('Subtitle'), // Subtitle under the title
-          trailing: Text('Department name Text'), // Text on the right
+          ),
+          title: SizedBox(
+            height: 20,
+            child: Text(requestTitle,overflow: TextOverflow.ellipsis,)),
+          subtitle: SizedBox(
+            width: 20,
+            child: TextMarquee(
+              requestSubTitle,
+              spaceSize: 20,
+            ),
+          ),
+          trailing: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(requestDepartment),
+              Text(requestDate),
+              Text(reqiestTime)
+            ],
+          ),
         ),
       ),
     );
