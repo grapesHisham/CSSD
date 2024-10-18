@@ -34,7 +34,7 @@ class ClickableCard extends StatelessWidget {
       print("build called");
     }
     return Card(
-      elevation: 4.0, // Adds a shadow to the card
+      elevation: 1.0, // Adds a shadow to the card
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0), // Rounded corners
       ),
@@ -55,8 +55,11 @@ class ClickableCard extends StatelessWidget {
             ),
           ),
           title: SizedBox(
-            height: 20,
-            child: Text(requestTitle,overflow: TextOverflow.ellipsis,)),
+              height: 20,
+              child: Text(
+                requestTitle,
+                overflow: TextOverflow.ellipsis,
+              )),
           subtitle: SizedBox(
             width: 20,
             child: TextMarquee(

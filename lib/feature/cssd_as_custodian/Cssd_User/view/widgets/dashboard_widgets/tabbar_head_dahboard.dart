@@ -5,12 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:text_marquee/text_marquee.dart';
 
-class DashboardTabBar extends StatelessWidget {
+class DashboardTabBarHead extends StatelessWidget {
   final String titleText;
   final String countText;
   final int tabIndex;
 
-  const DashboardTabBar({
+  const DashboardTabBarHead({
     super.key,
     required this.titleText,
     required this.countText,
@@ -27,25 +27,24 @@ class DashboardTabBar extends StatelessWidget {
       return Tab(
         child: Row(
           children: [
-            Flexible(
-              flex: 1,
+            Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Flexible(
+                  Expanded(
                     flex: 4,
                     child: TextMarquee(
                       titleText,
                       spaceSize: 15,
                     ),
                   ),
-                  Flexible(
+                  Expanded(
                     flex: 2,
                     child: Container(
                       width: 29.w,
                       height: 29.h,
-                      padding: EdgeInsets.all(1.0.w),
-                      margin: EdgeInsets.only(left: 10.0.w),
+                      padding: EdgeInsets.all(2.0.w),
+                     margin: EdgeInsets.only(left: 2.0.w),
                       decoration: BoxDecoration(
                           color:
                               isSelected ? Colors.white : Colors.grey.shade100,
@@ -54,9 +53,9 @@ class DashboardTabBar extends StatelessWidget {
                         child: Text(countText,
                             style: isSelected
                                 ? FontStyles.todaysSterilizationCount
-                                : TextStyle(
+                                : const TextStyle(
                                     color: Colors.black,
-                                    fontSize: 10.sp,
+                                    fontSize: 10,
                                     fontWeight: FontWeight.w100)),
                       ),
                     ),

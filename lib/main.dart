@@ -1,5 +1,6 @@
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/dashboard_controller.dart';
-import 'package:cssd/provider/splash_provider.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/login_provider.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/request_controler.dart';
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/navigation_observer.dart';
@@ -23,15 +24,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => SplashProvider()),
+        ChangeNotifierProvider(create: (context) => LoginController()),
         ChangeNotifierProvider(create: (context) => DashboardController()),
+        ChangeNotifierProvider(create: (context) => RequestControler()),
       ],
       child: ScreenUtilInit(
-        designSize:   const Size(390, 844),
+        designSize: const Size(390, 844),
         minTextAdapt: true,
         splitScreenMode: true,
-
-        builder:(context, child)=> MaterialApp(
+        builder: (context, child) => MaterialApp(
           debugShowCheckedModeBanner: false,
           useInheritedMediaQuery: true,
           locale: DevicePreview.locale(context),
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
               color: StaticColors.scaffoldBackgroundcolor,
             ),
           ),
-          initialRoute: Routes.cssdDashboard_cssdLogin_cssdCustodian,
+          initialRoute: Routes.loginScreen,
           routes: Routes.routes,
         ),
       ),

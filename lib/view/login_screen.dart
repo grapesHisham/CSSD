@@ -1,68 +1,96 @@
 import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/custom_textfield.dart';
+import 'package:cssd/Widgets/login_widgets/cssd_transparent_title_card.dart';
+import 'package:cssd/Widgets/transparent_blur_conatiner.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/login_provider.dart';
 import 'package:cssd/util/colors.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context).size;
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
+          height: mediaQuery.height,
+          width: mediaQuery.width,
           decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(
-                    "assets/images/face_mask_luggage.jpg",
-                  ),
-                  fit: BoxFit.fitHeight)),
+            image: DecorationImage(
+              image: AssetImage("assets/images/login_wallpaper.jpeg"),
+              fit: BoxFit.cover,
+            ),
+          ),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 130),
-              const Padding(
-                padding: EdgeInsets.only(left: 26.0),
-                child: Text(
-                  textAlign: TextAlign.left,
-                  "Login",
-                  style: TextStyle(fontSize: 70, color: Colors.white),
+              Padding(
+                padding:
+                    EdgeInsets.symmetric(horizontal: mediaQuery.width * 0.20),
+
+                //title notch
+                child: const TransparentTitleCardLogin(),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Spacer(),
+              Padding(
+                padding:
+                    EdgeInsets.symmetric(horizontal: mediaQuery.width * 0.10),
+                child: TransparentBlurConatinerWidget(
+                  borderRadius: BorderRadius.circular(50),
+                  bodyOfTransparentContainer: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 40),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const CustomTextFormField(
+                          prefixIcon: Icons.phone,
+                          label: Text("Phone no."),
+                          keyboardType: TextInputType.number,
+                        ),
+                        SizedBox(height: 20.h),
+                        const CustomTextFormField(
+                          prefixIcon: Icons.medical_services,
+                          label: Text("Hospital name"),
+                        ),
+                        SizedBox(height: 20.h),
+                        Consumer<LoginController>(
+                            builder: (context, loginController, child) {
+                          return CustomTextFormField(
+                            controller: loginController.loginPasswordController,
+                            prefixIcon: Icons.password,
+                            prefixIconOnTap: () {
+                              loginController.toggleObscureText(
+                                  !loginController.obscureText);
+                            },
+                            obscureText: loginController.obscureText,
+                            label: Text("Password"),
+                          );
+                        }),
+                        SizedBox(height: 30.h),
+                        ButtonWidget(
+                          borderRadius: 10,
+                          buttonColor: StaticColors.defaultButton,
+                          buttonLabel: "Login",
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-              const SizedBox(height: 30),
-              Container(
-                // height: 240,
-                margin: const EdgeInsets.only(
-                    left: 20, right: 20, top: 70, bottom: 20),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: StaticColors.transparentGlassContainer),
-
-                child: Column(children: [
-                  const CustomTextFormField(
-                    label: Text("Phone no."),
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20),
-                  const CustomTextFormField(
-                    label: Text("Hospital name"),
-                  ),
-                  const SizedBox(height: 20),
-                  const CustomTextFormField(
-                    label: Text("Password"),
-                  ),
-                  const SizedBox(height: 30),
-                  ButtonWidget(
-                    buttonColor: StaticColors.defaultButton,
-                    buttonLabel: "Login",
-                    onPressed: () {},
-                  )
-                ]),
-              )
+              SizedBox(
+                height: 10.h,
+              ),
             ],
           ),
         ),

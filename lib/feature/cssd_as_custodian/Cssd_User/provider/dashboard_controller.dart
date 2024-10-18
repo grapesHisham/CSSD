@@ -30,6 +30,4 @@ class DashboardController extends ChangeNotifier {
       log("Selected bottom navigation bar index : $_selectedIndexBotomNav");
     }
   }
-
-  //
 }

@@ -29,6 +29,6 @@ class RoundedContainer extends StatelessWidget {
                 width: 1, color: const Color.fromRGBO(0, 0, 0, 0.12)),
             borderRadius: BorderRadius.circular(12),
             color: containerColor),
-        child: InkWell(child: containerBody));
+        child: containerBody);
   }
 }
