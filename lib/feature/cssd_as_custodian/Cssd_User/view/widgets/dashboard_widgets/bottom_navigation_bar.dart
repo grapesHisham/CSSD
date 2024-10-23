@@ -1,7 +1,7 @@
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/dashboard_controller.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/dashboard_view.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/requests_view.dart';
-import 'package:cssd/util/app_routes.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/sterilization_view.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -20,9 +20,10 @@ class BottomNavigationBarDashboard extends StatelessWidget {
       dashboardProvider.updateBottomNav(index);
     }
 
-    List<Widget> _screens = [
-      DashboardView_cssdUser_cssdcustodian(),
-      RequestsView_cssdUser_cssdcustodian(),
+    List<Widget> screens = [
+      const DashboardViewCssdCssCssdLogin(),
+      const RequestsViewCssdCussCssdLogin(),
+      const SterilizationViewCssdCussCssdLogin(),
     ];
 
     return Scaffold(
@@ -64,7 +65,7 @@ class BottomNavigationBarDashboard extends StatelessWidget {
       }),
       body: Consumer<DashboardController>(
         builder: (context, dashboardController, child) =>
-            _screens[dashboardController.selectedIndexBotomNav],
+            screens[dashboardController.selectedIndexBotomNav],
       ),
     );
   }

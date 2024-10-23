@@ -51,10 +51,10 @@ class TransparentTitleCardLogin extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               // Spacer(),
-              Text(
+              const Text(
                 "CSSD",
                 style: TextStyle(
-                  fontSize: 70.sp,
+                  fontSize: 70,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),
@@ -62,10 +62,10 @@ class TransparentTitleCardLogin extends StatelessWidget {
               SizedBox(height: 20.h),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10.0.w),
-                child: Text(
+                child: const Text(
                   "Where quality control meets life-saving care",
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 19.sp),
+                  style: TextStyle(color: Colors.white, fontSize: 19),
                 ),
               ),
             ],

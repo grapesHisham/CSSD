@@ -1,6 +1,8 @@
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/alert_view.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/dashboard_view.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/request_details_view.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/requests_view.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/sterilization_view.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/widgets/dashboard_widgets/bottom_navigation_bar.dart';
 
 import 'package:cssd/view/login_screen.dart';
@@ -12,18 +14,34 @@ class Routes {
   static const String loginScreen = '/loginScreen';
   /*cssd pages  -- cssd custodian*/
   static const String bottomNavBarDashboard = '/BottomNavigationBarDashboard';
-  static const String dashboardView_cssdUser_cssdcustodian = '/dashboardView_cssdUser_cssdcustodian';
-  static const String alertView_cssdCus_cssdLogin = '/AlertView_cssdCus_cssdLogin';
-  static const String requestsView_cssdUser_cssdcustodian = '/RequestsView_cssdUser_cssdcustodian';
+  static const String dashboardViewCssdCssCssdLogin =
+      '/DashboardViewCssdCssCssdLogin';
+  static const String alertViewCssdCusCssdLogin = '/AlertViewCssdCusCssdLogin';
+  static const String requestsViewCssdCussCssdLogin =
+      '/RequestsViewCssdCussCssdLogin';
+  static const String requestDetailsViewCssdCussCssLogin =
+      '/RequestDetailsViewCssdCussCssLogin';
+  static const String sterilizationViewCssdCussCssdLogin =
+      '/SterilizationViewCssdCussCssdLogin';
+  /* static const String sterilizationViewCssdCussCssdLogin = '/SterilizationViewCssdCussCssdLogin';*/
 
   static final Map<String, WidgetBuilder> routes = {
     splashScreen: (context) => const Splash(),
     loginScreen: (context) => const LoginScreen(),
     /*cssd pages -- cssd custodian*/
     bottomNavBarDashboard: (context) => const BottomNavigationBarDashboard(),
-    dashboardView_cssdUser_cssdcustodian: (context) =>  const DashboardView_cssdUser_cssdcustodian(),
-    alertView_cssdCus_cssdLogin: (context) =>  const AlertView_cssdCus_cssdLogin(),
-    requestsView_cssdUser_cssdcustodian: (context) =>   RequestsView_cssdUser_cssdcustodian(),
+    dashboardViewCssdCssCssdLogin: (context) =>
+        const DashboardViewCssdCssCssdLogin(),
+    alertViewCssdCusCssdLogin: (context) => const AlertViewCssdCusCssdLogin(),
+    requestsViewCssdCussCssdLogin: (context) =>
+        const RequestsViewCssdCussCssdLogin(),
+    requestDetailsViewCssdCussCssLogin: (context) =>
+        const RequestDetailsViewCssdCussCssLogin(),
+    sterilizationViewCssdCussCssdLogin: (context) =>
+        const SterilizationViewCssdCussCssdLogin(),
+    /*sterilizationViewCssdCussCssdLogin: (context) =>  const SterilizationViewCssdCussCssdLogin(),*/
+    
+          
   };
 }
 

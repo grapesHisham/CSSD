@@ -19,62 +19,67 @@ class TabBarDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
-      child: Column(  
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Container(
-            height: 40.h,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10.h)),
-                color: Colors.blue.shade100),
-            child: Builder(builder: (context) {
-              return TabBar(
-                isScrollable: false,
-                onTap: (value) {
-                  dashboardProvider.updateSelectedIndex(value);
-                  /* while scrolling we need to update the tabindex */
-                  // if (tabController
-                  //     .indexIsChanging) {
-                  //   log("tabcontroller index is changing ${tabController.indexIsChanging}");
-                  //   Provider.of<DashboardController>(
-                  //           context,
-                  //           listen: false)
-                  //       .updateSelectedIndex(
-                  //           value);
-                  // }
-                },
-                indicator: const BoxDecoration(
-                    color: Colors.blueAccent,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    )),
-                labelColor: Colors.white,
-                labelStyle: FontStyles.todaysSterilizationText,
-                unselectedLabelColor: Colors.grey,
-                indicatorColor: StaticColors.scaffoldBackgroundcolor,
-                indicatorSize: TabBarIndicatorSize.tab,
-                dividerColor: Colors.transparent,
-                tabs: [
-                  DashboardTabBarHead(
-                    titleText: 'High priority',
-                    countText: sampleHighPriorityRequestsList.length.toString(),
-                    tabIndex: 0,
-                  ),
-                  DashboardTabBarHead(
-                    titleText: 'Medium priority',
-                    countText:
-                        sampleMediumPriorityRequestsList.length.toString(),
-                    tabIndex: 1,
-                  ),
-                  DashboardTabBarHead(
-                    titleText: 'Low priority',
-                    countText: sampleLowPriorityRequestsList.length.toString(),
-                    tabIndex: 2,
-                  ),
-                ],
-              );
-            }),
+          Material(
+            elevation: 2.0,
+            borderRadius: BorderRadius.all(Radius.circular(10.h)),
+            child: Container(
+              height: 40.h,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10.h)),
+                  color: Colors.white),
+              child: Builder(builder: (context) {
+                return TabBar(
+                  onTap: (value) {
+                    dashboardProvider.updateSelectedIndex(value);
+                    /* while scrolling we need to update the tabindex */
+                    // if (tabController
+                    //     .indexIsChanging) {
+                    //   log("tabcontroller index is changing ${tabController.indexIsChanging}");
+                    //   Provider.of<DashboardController>(
+                    //           context,
+                    //           listen: false)
+                    //       .updateSelectedIndex(
+                    //           value);
+                    // }
+                  },
+                  indicator: const BoxDecoration(
+                      color: Colors.blueAccent,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      )),
+                  labelColor: Colors.white,
+                  labelStyle: FontStyles.todaysSterilizationText,
+                  unselectedLabelColor: StaticColors.scaffoldBackgroundcolor,
+                  indicatorColor: StaticColors.scaffoldBackgroundcolor,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  dividerColor: Colors.transparent,
+                  tabs: [
+                    DashboardTabBarHead(
+                      titleText: 'High priority',
+                      countText:
+                          sampleHighPriorityRequestsList.length.toString(),
+                      tabIndex: 0,
+                    ),
+                    DashboardTabBarHead(
+                      titleText: 'Medium priority',
+                      countText:
+                          sampleMediumPriorityRequestsList.length.toString(),
+                      tabIndex: 1,
+                    ),
+                    DashboardTabBarHead(
+                      titleText: 'Low priority',
+                      countText:
+                          sampleLowPriorityRequestsList.length.toString(),
+                      tabIndex: 2,
+                    ),
+                  ],
+                );
+              }),
+            ),
           ),
-          SizedBox(height: 10.h),
           Expanded(
             child: TabBarView(
               children: [
@@ -97,6 +102,7 @@ class TabBarDashboard extends StatelessWidget {
         final request = sampleLowPriorityRequestsList[index];
         // final request = dashboardProvider.mediumPriorityRequests[index];
         return ClickableCard(
+          cardColor: Colors.white,
           reqiestTime: request.requestTime,
           requestID: request.requestID,
           requestDate: request.requestDate,
@@ -116,6 +122,8 @@ class TabBarDashboard extends StatelessWidget {
         final request = sampleMediumPriorityRequestsList[index];
         // final request = dashboardProvider.mediumPriorityRequests[index];
         return ClickableCard(
+          cardColor: Colors.white,
+
           reqiestTime: request.requestTime,
           requestID: request.requestID,
           requestDate: request.requestDate,
@@ -135,6 +143,8 @@ class TabBarDashboard extends StatelessWidget {
         final request = sampleHighPriorityRequestsList[index];
         // final request = dashboardProvider.mediumPriorityRequests[index];
         return ClickableCard(
+          cardColor: Colors.white,
+
           reqiestTime: request.requestTime,
           requestID: request.requestID,
           requestDate: request.requestDate,

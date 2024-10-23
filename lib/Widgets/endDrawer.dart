@@ -51,10 +51,6 @@ Drawer endDrawer() {
               ],
             )),
         draweritems(
-            drawerIcon: Icon(Icons.home),
-            drawerTitle: Text("Home"),
-            onTap: () {}),
-        draweritems(
           drawerIcon: Icon(Icons.my_library_books_rounded),
           drawerTitle: Text("Reports"),
           onTap: () {},
@@ -78,7 +74,6 @@ Drawer endDrawer() {
     ),
   );
 }
-
 
 Widget draweritems(
     {required Icon drawerIcon, required Text drawerTitle, Function? onTap}) {

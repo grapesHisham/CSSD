@@ -13,6 +13,7 @@ class ClickableCard extends StatelessWidget {
   final String requestDate;
   final String reqiestTime;
   final String requestDepartment;
+  final Function? cardClickFunction;
 
   const ClickableCard({
     super.key,
@@ -26,6 +27,7 @@ class ClickableCard extends StatelessWidget {
     required this.reqiestTime,
     required this.requestDepartment,
     required this.requestSubTitle,
+    this.cardClickFunction,
   });
 
   @override
@@ -34,14 +36,15 @@ class ClickableCard extends StatelessWidget {
       print("build called");
     }
     return Card(
-      elevation: 1.0, // Adds a shadow to the card
+      color: cardColor ?? null,
+      elevation: 5.0, // Adds a shadow to the card
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0), // Rounded corners
       ),
       child: InkWell(
         onTap: () {
-          // Action when the card is tapped
-        },
+        cardClickFunction ?? null;
+      },
         child: ListTile(
           leading: Container(
             width: 57,

@@ -11,16 +11,14 @@ import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/fonts.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 // ignore: camel_case_types
-class DashboardView_cssdUser_cssdcustodian extends StatelessWidget {
-  const DashboardView_cssdUser_cssdcustodian({super.key});
+class DashboardViewCssdCssCssdLogin extends StatelessWidget {
+  const DashboardViewCssdCssCssdLogin({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final Size mediaQuery = MediaQuery.of(context).size;
     final dashboardProvider =
         Provider.of<DashboardController>(context, listen: false);
 
@@ -31,14 +29,22 @@ class DashboardView_cssdUser_cssdcustodian extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           Column(
+            mainAxisSize: MainAxisSize.max,
             children: [
               AppBar(
+                title: Padding(
+                  padding: const EdgeInsets.only(left: 111.0),
+                  child: Text(
+                    "Hey, Rahul",
+                    style: FontStyles.appBarTitleStyle,
+                  ),
+                ),
                 automaticallyImplyLeading: false,
                 actions: [
                   InkWell(
                       onTap: () {
                         Navigator.pushNamed(
-                            context, Routes.alertView_cssdCus_cssdLogin);
+                            context, Routes.alertViewCssdCusCssdLogin);
                       },
                       child: const NotificationIcon()),
                   const SizedBox(width: 10),
@@ -56,8 +62,6 @@ class DashboardView_cssdUser_cssdcustodian extends StatelessWidget {
               ),
               Expanded(
                 child: Container(
-                  height: mediaQuery.height,
-                  width: mediaQuery.width,
                   decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(25),
@@ -65,97 +69,90 @@ class DashboardView_cssdUser_cssdcustodian extends StatelessWidget {
                     ),
                     color: Colors.white,
                   ),
-                  child: SizedBox(
-                    height: mediaQuery.height,
-                    child: ListView(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Align(
+                                alignment: Alignment.topRight,
+                                child: Text(
+                                  "Request Chart",
+                                  style: FontStyles.bodyPieTitleStyle,
+                                )),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Align(
-                                    alignment: Alignment.topRight,
-                                    child: Text(
-                                      "Request Chart",
-                                      style: FontStyles.bodyPieTitleStyle,
-                                    )),
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 150,
-                                    width: 150,
-                                    child: PieChart(
-                                      PieChartData(sections: [
-                                        PieChartSectionData(
-                                          titleStyle: FontStyles
-                                              .piePercentageValueTextStyle,
-                                          value: 33,
-                                          color: StaticColors.pieRequestCount,
-                                          radius: 30,
-                                        ),
-                                        PieChartSectionData(
-                                          titleStyle: FontStyles
-                                              .piePercentageValueTextStyle,
-                                          value: 55,
-                                          color: StaticColors
-                                              .pieSterilizationOnProgress,
-                                          radius: 30,
-                                        ),
-                                        PieChartSectionData(
-                                          titleStyle: FontStyles
-                                              .piePercentageValueTextStyle,
-                                          value: 12,
-                                          color: StaticColors
-                                              .pieSterilizationComplete,
-                                          radius: 30,
-                                        ),
-                                      ]),
+                              SizedBox(
+                                height: 150,
+                                width: 150,
+                                child: PieChart(
+                                  PieChartData(sections: [
+                                    PieChartSectionData(
+                                      titleStyle: FontStyles
+                                          .piePercentageValueTextStyle,
+                                      value: 33,
+                                      color: StaticColors.pieRequestCount,
+                                      radius: 30,
                                     ),
-                                  ),
-                                  const SizedBox(width: 15),
-                                  pieIndications(),
+                                    PieChartSectionData(
+                                      titleStyle: FontStyles
+                                          .piePercentageValueTextStyle,
+                                      value: 55,
+                                      color: StaticColors
+                                          .pieSterilizationOnProgress,
+                                      radius: 30,
+                                    ),
+                                    PieChartSectionData(
+                                      titleStyle: FontStyles
+                                          .piePercentageValueTextStyle,
+                                      value: 12,
+                                      color:
+                                          StaticColors.pieSterilizationComplete,
+                                      radius: 30,
+                                    ),
+                                  ]),
+                                ),
+                              ),
+                              const SizedBox(width: 15),
+                              pieIndications(),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                      ),
+                      Expanded(
+                        child: RoundedContainer(
+                          containerColor: Colors.white30,
+                          containerBody: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                   Text("Today's Sterilization Requests ", style: FontStyles.bodyPieTitleStyle,),
+                                  ButtonWidget(
+                                      borderRadius: 8,
+                                      buttonTextSize: 14,
+                                      buttonLabel: "ALL",
+                                      onPressed: () {}),
                                 ],
                               ),
                               const SizedBox(height: 10),
-                              SizedBox(
-                                height: mediaQuery.height *0.45,
-                                child: RoundedContainer(
-                                  containerBody: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Text(
-                                              "Today's Sterilization Requests "),
-                                          ButtonWidget(
-                                              borderRadius: 8,
-                                              buttonTextSize: 14,
-                                              buttonLabel: "ALL",
-                                              onPressed: () {}),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Expanded(
-                                        child: TabBarDashboard(
-                                            dashboardProvider: dashboardProvider),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                              Expanded(
+                                child: TabBarDashboard(
+                                    dashboardProvider: dashboardProvider),
                               ),
-                    
-                              // Other content here
                             ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
@@ -168,11 +165,11 @@ class DashboardView_cssdUser_cssdcustodian extends StatelessWidget {
             child: doctorProfile(),
           ),
           // Doctor's Name below the profile image
-          Positioned(
-            top: 25.h,
-            left: 120,
-            child: Text("Hey, Dev", style: FontStyles.appBarTitleStyle),
-          ),
+          // Positioned(
+          //   top: 25.h,
+          //   left: 120,
+          //   child: Text("Hey, Dev", style: FontStyles.appBarTitleStyle),
+          // ),
         ],
       ),
       // bottomNavigationBar: const BottomNavigationBarDashboard(),

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 
 class RequestControler extends ChangeNotifier {
+  late final List<DropdownMenuEntry<String>> _dropdownMenuEntries;
   RequestControler() {
     //init state
 
     //initially _filtered users will be whole list  of users
     _filteredRequestedUsers = _sampleRequestedUsers;
+    _dropdownMenuEntries = _sampleDepartmentName
+        .map((department) =>
+            DropdownMenuEntry(value: department, label: department))
+        .toList();
   }
 
   final ScrollController scrollController = ScrollController();
@@ -37,9 +42,29 @@ class RequestControler extends ChangeNotifier {
     "Sophia Taylor",
   ];
 
+  final List<String> _sampleDepartmentName = [
+    "Cardiology",
+    "Neurology",
+    "Pediatrics",
+    "	Obstetrics and Gynecology",
+    "Oncology",
+    "Orthopedics",
+    "Radiology",
+    "Pathology",
+    "General Surgery"
+    "Urology",
+    "Dermatology",
+    "Gastroenterology",
+    "Nephrology",
+    "Pulmonology",
+    "Psychiatry",
+  ];
+
   //Getters
   List<String> get filteredRequestedUsers => _filteredRequestedUsers;
   List<String> get allRequestedUsers => _sampleRequestedUsers;
+  List<DropdownMenuEntry<String>> get dropdownMenuEntries =>
+      _dropdownMenuEntries;
   String? get selectedUser => _selectedUser;
   bool get showDropDown => _showDropDown;
 

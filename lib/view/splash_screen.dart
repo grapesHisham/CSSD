@@ -15,8 +15,13 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   @override
   void initState() {
-    // Timer(const Duration(seconds: 2),
-    //     () => Navigator.pushNamed(context, Routes.loginScreen));
+    // Timer(
+    //     const Duration(seconds: 4),
+    //     () => Navigator.pushNamedAndRemoveUntil(
+    //           context,
+    //           Routes.loginScreen,
+    //           (route) => false,
+    //         ));
     super.initState();
   }
 

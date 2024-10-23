@@ -44,19 +44,14 @@ class DashboardTabBarHead extends StatelessWidget {
                       width: 29.w,
                       height: 29.h,
                       padding: EdgeInsets.all(2.0.w),
-                     margin: EdgeInsets.only(left: 2.0.w),
+                      margin: EdgeInsets.only(left: 2.0.w),
                       decoration: BoxDecoration(
                           color:
                               isSelected ? Colors.white : Colors.grey.shade100,
                           shape: BoxShape.circle),
                       child: Center(
                         child: Text(countText,
-                            style: isSelected
-                                ? FontStyles.todaysSterilizationCount
-                                : const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w100)),
+                            style: FontStyles.todaysSterilizationCount),
                       ),
                     ),
                   )

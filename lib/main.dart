@@ -1,6 +1,7 @@
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/dashboard_controller.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/login_provider.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/request_controler.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/sterilization_provider.dart';
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/navigation_observer.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => LoginController()),
         ChangeNotifierProvider(create: (context) => DashboardController()),
         ChangeNotifierProvider(create: (context) => RequestControler()),
+        ChangeNotifierProvider(create: (context) => SterilizationProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(390, 844),
@@ -47,10 +49,27 @@ class MyApp extends StatelessWidget {
               color: StaticColors.scaffoldBackgroundcolor,
             ),
           ),
-          initialRoute: Routes.loginScreen,
+          initialRoute: Routes.bottomNavBarDashboard,
           routes: Routes.routes,
         ),
       ),
     );
   }
 }
+
+
+
+
+/* 
+fast run specific pages
+// void main() {
+//   runApp(ChangeNotifierProvider(
+//       create: (context) => RequestControler(),
+//       child: ScreenUtilInit(
+//           designSize: const Size(390, 844),
+//           minTextAdapt: true,
+//           splitScreenMode: true,
+//           builder: (context, child) => ())));
+// }
+
+*/

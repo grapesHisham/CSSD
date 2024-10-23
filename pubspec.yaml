@@ -42,7 +42,6 @@ dependencies:
   flutter_screenutil: ^5.9.3
   text_marquee: ^0.0.2
   fluentui_system_icons: ^1.1.260
-  drop_down_list: ^0.0.8
 
 dev_dependencies:
   flutter_test:

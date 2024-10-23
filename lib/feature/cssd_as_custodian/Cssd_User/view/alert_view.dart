@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class AlertView_cssdCus_cssdLogin extends StatelessWidget{
-  const AlertView_cssdCus_cssdLogin({super.key});
+class AlertViewCssdCusCssdLogin extends StatelessWidget{
+  const AlertViewCssdCusCssdLogin({super.key});
 
   @override
   Widget build(BuildContext context) {

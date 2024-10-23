@@ -4,7 +4,6 @@ import 'package:cssd/Widgets/login_widgets/cssd_transparent_title_card.dart';
 import 'package:cssd/Widgets/transparent_blur_conatiner.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/login_provider.dart';
 import 'package:cssd/util/colors.dart';
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -73,7 +72,7 @@ class LoginScreen extends StatelessWidget {
                                   !loginController.obscureText);
                             },
                             obscureText: loginController.obscureText,
-                            label: Text("Password"),
+                            label: const Text("Password"),
                           );
                         }),
                         SizedBox(height: 30.h),
@@ -81,7 +80,9 @@ class LoginScreen extends StatelessWidget {
                           borderRadius: 10,
                           buttonColor: StaticColors.defaultButton,
                           buttonLabel: "Login",
-                          onPressed: () {},
+                          onPressed: () {
+                            
+                          },
                         ),
                       ],
                     ),

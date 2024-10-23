@@ -9,15 +9,17 @@ class ButtonWidget extends StatelessWidget {
   final EdgeInsetsGeometry? buttonPadding;
   final Size? buttonSize;
   final double borderRadius;
+  final bool useFitterBox;
   const ButtonWidget(
       {super.key,
       required this.buttonLabel,
       required this.onPressed,
       this.buttonColor = StaticColors.defaultButton,
       this.buttonTextSize = 20,
-      this.borderRadius = 20,
+      this.borderRadius = 10,
       this.buttonPadding,
-      this.buttonSize});
+      this.buttonSize,
+      this.useFitterBox = true});
 
   @override
   Widget build(BuildContext context) {
@@ -30,11 +32,22 @@ class ButtonWidget extends StatelessWidget {
             elevation: 5,
             backgroundColor: buttonColor),
         onPressed: onPressed,
-        child: Text(
-          textAlign: TextAlign.center,
-          buttonLabel,
-          style: TextStyle(
-              color: StaticColors.textwhiteLight, fontSize: buttonTextSize),
-        ));
+        child: useFitterBox
+            ? FittedBox(
+                child: Text(
+                  textAlign: TextAlign.center,
+                  buttonLabel,
+                  style: TextStyle(
+                      color: StaticColors.textwhiteLight,
+                      fontSize: buttonTextSize),
+                ),
+              )
+            : Text(
+                textAlign: TextAlign.center,
+                buttonLabel,
+                style: TextStyle(
+                    color: StaticColors.textwhiteLight,
+                    fontSize: buttonTextSize),
+              ));
   }
 }
