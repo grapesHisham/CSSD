@@ -6,7 +6,7 @@ import 'package:cssd/Widgets/rounded_container.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/model/sampleBatchNoQuantity.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/model/sampleRequestList.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/pickup_provider.dart';
-import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/widgets/requests_widgets/from_to_date_picker_widget.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/widgets/pickup_widgets/items_list_card_container_widget.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/fonts.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,7 @@ class PickupPageCssdCussCssdLogin extends StatelessWidget {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
 
-    final pickupProvider = Provider.of<PickupProvider>(context, listen: false);
+    // final pickupProvider = Provider.of<PickupProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: StaticColors.scaffoldBackgroundcolor,
       endDrawer: endDrawer(),
@@ -43,8 +43,11 @@ class PickupPageCssdCussCssdLogin extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(
+                  height: 10.0.h,
+                ),
+                // department selection dropdown
                 Center(
-                  // department selection dropdown
                   child: Consumer<PickupProvider>(
                       builder: (context, pickupProvider, child) {
                     return DropdownMenu(
@@ -136,65 +139,9 @@ class PickupPageCssdCussCssdLogin extends StatelessWidget {
                 ),
                 //items list
                 ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: mediaQuery.height * 0.25
-                  ),
-                  child: SizedBox(
-                    height: mediaQuery.height * 0.30,
-                    child: RoundedContainer(
-                        containerBody: Scrollbar(
-                      child: ListView.builder(
-                        itemCount: sampleHighPriorityRequestsList.length,
-                        itemBuilder: (context, index) {
-                          final request = sampleHighPriorityRequestsList[index];
-                          final quantity =
-                              SamplebBatchNo().sampleQuantityList[index];
-                          final batch = SamplebBatchNo().sampleBatchNo[index];
-                          return Card(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Checkbox(
-                                    value: true,
-                                    onChanged: (value) {},
-                                  ),
-                                ),
-                                SizedBox(width: 10.w),
-                                Expanded(
-                                  flex: 6,
-                                  child: Text(request.requestSubTitle),
-                                ),
-                                SizedBox(width: 10.w),
-                                Expanded(
-                                  flex: 4,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      FittedBox(
-                                        child: Text(
-                                          'Batch no. : $batch',
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 9.0.h,
-                                      ),
-                                      FittedBox(
-                                        child: Text(
-                                          'Quantity : $quantity',
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    )),
-                  ),
+                  constraints:
+                      BoxConstraints(maxHeight: mediaQuery.height * 0.25),
+                  child: ItemsListCardContainerWidget(mediaQuery: mediaQuery),
                 ),
 
                 Center(

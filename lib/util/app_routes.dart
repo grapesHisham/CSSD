@@ -1,10 +1,12 @@
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/alert_view.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/dashboard_view.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/issue_view.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/pickup_page.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/request_details_view.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/requests_view.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/sterilization_view.dart';
-import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/widgets/dashboard_widgets/bottom_navigation_bar.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/bottom_navigation_bar.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/timeline_view.dart';
 
 import 'package:cssd/view/login_screen.dart';
 import 'package:cssd/view/splash_screen.dart';
@@ -24,9 +26,12 @@ class Routes {
       '/RequestDetailsViewCssdCussCssLogin';
   static const String sterilizationViewCssdCussCssdLogin =
       '/SterilizationViewCssdCussCssdLogin';
-  /* static const String sterilizationViewCssdCussCssdLogin = '/SterilizationViewCssdCussCssdLogin';*/
   static const String pickupPageCssdCussCssdLogin =
       '/PickupPageCssdCussCssdLogin';
+  static const String issueViewCssdCussCssdLogin =
+      '/IssueViewCssdCussCssdLogin';
+   static const String timelineViewCssdCussCssdLogin = '/TimelineViewCssdCussCssdLogin';
+  // static const String sterilizationViewCssdCussCssdLogin = '/SterilizationViewCssdCussCssdLogin';
 
   static final Map<String, WidgetBuilder> routes = {
     splashScreen: (context) => const Splash(),
@@ -44,6 +49,9 @@ class Routes {
         SterilizationViewCssdCussCssdLogin(),
     pickupPageCssdCussCssdLogin: (context) =>
         const PickupPageCssdCussCssdLogin(),
+    issueViewCssdCussCssdLogin: (context) => const IssueViewCssdCussCssdLogin(),
+   timelineViewCssdCussCssdLogin: (context) => const TimelineViewCssdCussCssdLogin(),
+    // issueViewCssdCussCssdLogin: (context) => const IssueViewCssdCussCssdLogin(),
   };
 }
 
