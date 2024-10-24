@@ -144,7 +144,6 @@ class TabBarDashboard extends StatelessWidget {
         // final request = dashboardProvider.mediumPriorityRequests[index];
         return ClickableCard(
           cardColor: Colors.white,
-
           reqiestTime: request.requestTime,
           requestID: request.requestID,
           requestDate: request.requestDate,

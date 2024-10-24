@@ -7,6 +7,14 @@ class SterilizationProvider extends ChangeNotifier {
   TextEditingController endTimeController = TextEditingController();
 
   String? selectedMachine;
+  bool _expansionTileExpanded = true;
+
+  bool get expansionTileExpanded => _expansionTileExpanded;
+
+  void updateExpansionTileStatus(bool value) {
+    _expansionTileExpanded = value;
+    notifyListeners();
+  }
 
   void updateSelectedMachine(String? newMachine) {
     selectedMachine = newMachine;

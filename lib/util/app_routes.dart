@@ -1,5 +1,6 @@
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/alert_view.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/dashboard_view.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/pickup_page.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/request_details_view.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/requests_view.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/sterilization_view.dart';
@@ -24,6 +25,8 @@ class Routes {
   static const String sterilizationViewCssdCussCssdLogin =
       '/SterilizationViewCssdCussCssdLogin';
   /* static const String sterilizationViewCssdCussCssdLogin = '/SterilizationViewCssdCussCssdLogin';*/
+  static const String pickupPageCssdCussCssdLogin =
+      '/PickupPageCssdCussCssdLogin';
 
   static final Map<String, WidgetBuilder> routes = {
     splashScreen: (context) => const Splash(),
@@ -38,10 +41,9 @@ class Routes {
     requestDetailsViewCssdCussCssLogin: (context) =>
         const RequestDetailsViewCssdCussCssLogin(),
     sterilizationViewCssdCussCssdLogin: (context) =>
-        const SterilizationViewCssdCussCssdLogin(),
-    /*sterilizationViewCssdCussCssdLogin: (context) =>  const SterilizationViewCssdCussCssdLogin(),*/
-    
-          
+        SterilizationViewCssdCussCssdLogin(),
+    pickupPageCssdCussCssdLogin: (context) =>
+        const PickupPageCssdCussCssdLogin(),
   };
 }
 

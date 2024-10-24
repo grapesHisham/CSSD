@@ -1,10 +1,10 @@
 import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/custom_date_picker_widget.dart';
+import 'package:cssd/Widgets/custom_dialog.dart';
 import 'package:cssd/Widgets/custom_textfield.dart';
 import 'package:cssd/Widgets/endDrawer.dart';
 import 'package:cssd/Widgets/rounded_container.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/sterilization_provider.dart';
-import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/widgets/sterilization_widgets/sterilization_delete_button.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/widgets/sterilization_widgets/sterilization_item_card_widget.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/fonts.dart';
@@ -14,7 +14,6 @@ import 'package:provider/provider.dart';
 
 class SterilizationViewCssdCussCssdLogin extends StatelessWidget {
   const SterilizationViewCssdCussCssdLogin({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +56,50 @@ class SterilizationViewCssdCussCssdLogin extends StatelessWidget {
                             borderRadius: 6,
                             buttonSize: const Size(0, 0),
                             buttonLabel: "Items",
-                            onPressed: () {},
+                            onPressed: () {
+                              customDialog(
+                                dialogContext: context,
+                                onCancelDefaultAction: () {
+                                  Navigator.of(context).pop();
+                                },
+                                defaultAcceptText: "Add",
+                                defaultCancelText: "Cancel",
+                                dialogContent: SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.5,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(
+                                          height: 20,
+                                          child: Text("Single items :")),
+                                      SizedBox(
+                                        height: 50,
+                                        child: ListView.builder(
+                                          itemCount: 1,
+                                          itemBuilder: (context, index) {
+                                            return Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Checkbox(
+                                                    value: false,
+                                                    onChanged: (value) {})
+                                              ],
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                          height: 20,
+                                          child: Text("Package Items :"))
+                                    ],
+                                  ),
+                                ),
+                                dialogShowDefaultActions: true,
+                              );
+                            },
                           )
                         ],
                       ),
@@ -148,7 +190,7 @@ class SterilizationViewCssdCussCssdLogin extends StatelessWidget {
                               }),
                             ),
                             SizedBox(width: 10.w),
-                            Expanded(
+                           const  Expanded(
                                 child: CustomTextFormField(
                               textfieldBorder: true,
                               hintText: 'Enter to search',
@@ -192,23 +234,52 @@ class SterilizationViewCssdCussCssdLogin extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0, vertical: 5.0),
-                    child: RoundedContainer(
-                      containerColor: Colors.white70,
-                      containerHeight: 400,
-                      containerBody: Scrollbar(
-                        child: ListView.builder(
-                          itemCount: 2,
-                          itemBuilder: (context, index) {
-                            return Column(
-                              children: [
-                                SterilizationItemsCardWidget(),
-                                SterilizationItemsCardWidget(),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
+                        horizontal: 8.0, vertical: 5.0),
+                    child: Theme(
+                      data: Theme.of(context)
+                          .copyWith(dividerColor: Colors.transparent),
+                      child: Consumer<SterilizationProvider>(
+                          builder: (context, sterilizationProvider, child) {
+                        return Card(
+                          color: Colors.white,
+                          child: ExpansionTile(
+                            onExpansionChanged: (value) {
+                              sterilizationProvider
+                                  .updateExpansionTileStatus(value);
+                            },
+                            controlAffinity: ListTileControlAffinity.leading,
+                            initiallyExpanded: true,
+                            title:
+                                sterilizationProvider.expansionTileExpanded ==
+                                        true
+                                    ? Text(
+                                        "Hide Added Items",
+                                        style: FontStyles.bodyPieTitleStyle,
+                                      )
+                                    : Text("Show Added Items",
+                                        style: FontStyles.bodyPieTitleStyle),
+                            children: [
+                              RoundedContainer(
+                                containerColor: Colors.white70,
+                                containerHeight: 400,
+                                containerBody: Scrollbar(
+                                  child: ListView.builder(
+                                    itemCount: 2,
+                                    itemBuilder: (context, index) {
+                                      return Column(
+                                        children: [
+                                          SterilizationItemsCardWidget(),
+                                          SterilizationItemsCardWidget(),
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      }),
                     ),
                   ),
                   Row(
@@ -222,8 +293,8 @@ class SterilizationViewCssdCussCssdLogin extends StatelessWidget {
                             Consumer<SterilizationProvider>(builder:
                                 (context, sterilizationController, child) {
                               return CustomDatePicker(
-                                  controller:
-                                      sterilizationController.startTimeController,
+                                  controller: sterilizationController
+                                      .startTimeController,
                                   firstDate: DateTime(1900),
                                   initialDate: DateTime.now(),
                                   lastDate: DateTime.now(),
@@ -237,7 +308,8 @@ class SterilizationViewCssdCussCssdLogin extends StatelessWidget {
                       Consumer<SterilizationProvider>(
                           builder: (context, sterilizationController, child) {
                         return CustomDatePicker(
-                            controller: sterilizationController.endTimeController,
+                            controller:
+                                sterilizationController.endTimeController,
                             firstDate: DateTime(1900),
                             initialDate: DateTime.now(),
                             lastDate: DateTime(2100),

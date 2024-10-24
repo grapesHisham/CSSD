@@ -1,4 +1,4 @@
-class Request {
+class SampleRequest {
   final String requestID;
   final String requestDate;
   final String requestTime;
@@ -6,7 +6,7 @@ class Request {
   final String requestSubTitle;
   final String requestTitle;
 
-  Request({
+  SampleRequest({
     required this.requestTime,
     required this.requestID,
     required this.requestDate,
@@ -16,215 +16,9 @@ class Request {
   });
 }
 
-// List<Request> sampleHighPriorityRequestsList = [
-//   Request(
-//     requestID: '23',
-//     requestDate: '12/10/2024',
-//     requestDepartment: 'Operation Theater',
-//     requestTime: '12:30 am',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'OT PACKAGE',
-//   ),
-//   Request(
-//     requestTime: '12:30 am',
-//     requestID: '56',
-//     requestDate: '11/10/2024',
-//     requestDepartment: 'Cardiology',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'Single items',
-//   ),
-//   Request(
-//     requestTime: '12:30 am',
-//     requestID: '23',
-//     requestDate: '12/10/2024',
-//     requestDepartment: 'Operation Theater',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'OT Package & Other items',
-//   ),
-//   Request(
-//     requestTime: '12:30 am',
-//     requestID: '23',
-//     requestDate: '12/10/2024',
-//     requestDepartment: 'Operation Theater',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'Single items',
-//   ),
-
-//   Request(
-//     requestID: '23',
-//     requestDate: '12/10/2024',
-//     requestDepartment: 'Operation Theater',
-//     requestTime: '12:30 am',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'OT PACKAGE',
-//   ),
-//   Request(
-//     requestTime: '12:30 am',
-//     requestID: '56',
-//     requestDate: '11/10/2024',
-//     requestDepartment: 'Cardiology',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'Single items',
-//   ),
-//   Request(
-//     requestTime: '12:30 am',
-//     requestID: '23',
-//     requestDate: '12/10/2024',
-//     requestDepartment: 'Operation Theater',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'OT Package & Other items',
-//   ),
-//   Request(
-//     requestTime: '12:30 am',
-//     requestID: '23',
-//     requestDate: '12/10/2024',
-//     requestDepartment: 'Operation Theater',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'Single items',
-//   ),
-//   Request(
-//     requestID: '23',
-//     requestDate: '12/10/2024',
-//     requestDepartment: 'Operation Theater',
-//     requestTime: '12:30 am',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'OT PACKAGE',
-//   ),
-//   Request(
-//     requestTime: '12:30 am',
-//     requestID: '56',
-//     requestDate: '11/10/2024',
-//     requestDepartment: 'Cardiology',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'Single items',
-//   ),
-//   Request(
-//     requestTime: '12:30 am',
-//     requestID: '23',
-//     requestDate: '12/10/2024',
-//     requestDepartment: 'Operation Theater',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'OT Package & Other items',
-//   ),
-//   Request(
-//     requestTime: '12:30 am',
-//     requestID: '23',
-//     requestDate: '12/10/2024',
-//     requestDepartment: 'Operation Theater',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'Single items',
-//   ),
-//   Request(
-//     requestID: '23',
-//     requestDate: '12/10/2024',
-//     requestDepartment: 'Operation Theater',
-//     requestTime: '12:30 am',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'OT PACKAGE',
-//   ),
-//   Request(
-//     requestTime: '12:30 am',
-//     requestID: '56',
-//     requestDate: '11/10/2024',
-//     requestDepartment: 'Cardiology',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'Single items',
-//   ),
-//   Request(
-//     requestTime: '12:30 am',
-//     requestID: '23',
-//     requestDate: '12/10/2024',
-//     requestDepartment: 'Operation Theater',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'OT Package & Other items',
-//   ),
-//   Request(
-//     requestTime: '12:30 am',
-//     requestID: '23',
-//     requestDate: '12/10/2024',
-//     requestDepartment: 'Operation Theater',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'Single items',
-//   ),
-// ];
-// List<Request> sampleMediumPriorityRequestsList = [
-//   Request(
-//     requestID: '23',
-//     requestDate: '12/10/2024',
-//     requestDepartment: 'Operation Theater',
-//     requestTime: '12:30 am',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'OT PACKAGE',
-//   ),
-//   Request(
-//     requestTime: '12:30 am',
-//     requestID: '56',
-//     requestDate: '11/10/2024',
-//     requestDepartment: 'Cardiology',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'Single items',
-//   ),
-//   Request(
-//     requestTime: '12:30 am',
-//     requestID: '23',
-//     requestDate: '12/10/2024',
-//     requestDepartment: 'Operation Theater',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'OT Package & Other items',
-//   ),
-//   Request(
-//     requestTime: '12:30 am',
-//     requestID: '23',
-//     requestDate: '12/10/2024',
-//     requestDepartment: 'Operation Theater',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'Single items',
-//   ),
-// ];
-
-// List<Request> sampleLowPriorityRequestsList = [
-//   Request(
-//     requestID: '23',
-//     requestDate: '12/10/2024',
-//     requestDepartment: 'Operation Theater',
-//     requestTime: '12:30 am',
-//     requestSubTitle:
-//         "NEEDLE NO 24 X 1 , BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'OT PACKAGE',
-//   ),
-//   Request(
-//     requestTime: '2:30 pm',
-//     requestID: '3',
-//     requestDate: '1/10/2024',
-//     requestDepartment: 'Operation Theater',
-//     requestSubTitle: " BIOCOMPOSITE INTERFERENCE SCREW 7 X 28 MM",
-//     requestTitle: 'OT Package & Other items',
-//   ),
-// ];
-
 // High Priority Requests
-List<Request> sampleHighPriorityRequestsList = [
-  Request(
+List<SampleRequest> sampleHighPriorityRequestsList = [
+  SampleRequest(
     requestID: '1001',
     requestDate: '21/10/2024',
     requestTime: '10:15 am',
@@ -232,7 +26,7 @@ List<Request> sampleHighPriorityRequestsList = [
     requestSubTitle: "SCALPEL BLADE NO 11, SURGICAL SUTURE VICRYL 3-0",
     requestTitle: 'Emergency Surgery - OT Package',
   ),
-  Request(
+  SampleRequest(
     requestID: '1002',
     requestDate: '21/10/2024',
     requestTime: '11:00 am',
@@ -240,7 +34,7 @@ List<Request> sampleHighPriorityRequestsList = [
     requestSubTitle: "CARDIAC CATHETER, GUIDE WIRE 0.014 inch",
     requestTitle: 'Angioplasty Instruments',
   ),
-  Request(
+  SampleRequest(
     requestID: '1003',
     requestDate: '20/10/2024',
     requestTime: '09:30 am',
@@ -248,7 +42,7 @@ List<Request> sampleHighPriorityRequestsList = [
     requestSubTitle: "ENDOTRACHEAL TUBE 7.5 MM, VENTILATOR CIRCUIT",
     requestTitle: 'ICU Emergency Setup',
   ),
-  Request(
+  SampleRequest(
     requestID: '1004',
     requestDate: '20/10/2024',
     requestTime: '08:00 am',
@@ -256,7 +50,7 @@ List<Request> sampleHighPriorityRequestsList = [
     requestSubTitle: "SCREW 6 X 20 MM, DRILL BIT 3.5 MM, CANNULATED SCREW",
     requestTitle: 'Orthopedic Surgery Kit',
   ),
-  Request(
+  SampleRequest(
     requestID: '1005',
     requestDate: '19/10/2024',
     requestTime: '02:30 pm',
@@ -267,8 +61,8 @@ List<Request> sampleHighPriorityRequestsList = [
 ];
 
 // Medium Priority Requests
-List<Request> sampleMediumPriorityRequestsList = [
-  Request(
+List<SampleRequest> sampleMediumPriorityRequestsList = [
+  SampleRequest(
     requestID: '2001',
     requestDate: '19/10/2024',
     requestTime: '11:00 am',
@@ -276,7 +70,7 @@ List<Request> sampleMediumPriorityRequestsList = [
     requestSubTitle: "BIOPSY NEEDLE, SPECIMEN CONTAINER",
     requestTitle: 'Pathology Lab Tools',
   ),
-  Request(
+  SampleRequest(
     requestID: '2002',
     requestDate: '18/10/2024',
     requestTime: '03:45 pm',
@@ -284,7 +78,7 @@ List<Request> sampleMediumPriorityRequestsList = [
     requestSubTitle: "ENDOSCOPE BRUSHES, STERILE SYRINGES 5 ML",
     requestTitle: 'Endoscopy Reprocessing',
   ),
-  Request(
+  SampleRequest(
     requestID: '2003',
     requestDate: '18/10/2024',
     requestTime: '12:30 pm',
@@ -295,8 +89,8 @@ List<Request> sampleMediumPriorityRequestsList = [
 ];
 
 // Low Priority Requests
-List<Request> sampleLowPriorityRequestsList = [
-  Request(
+List<SampleRequest> sampleLowPriorityRequestsList = [
+  SampleRequest(
     requestID: '3001',
     requestDate: '17/10/2024',
     requestTime: '02:00 pm',
@@ -304,7 +98,7 @@ List<Request> sampleLowPriorityRequestsList = [
     requestSubTitle: "SURGICAL CLAMP, HEMOSTAT",
     requestTitle: 'Routine Surgery Instruments',
   ),
-  Request(
+  SampleRequest(
     requestID: '3002',
     requestDate: '16/10/2024',
     requestTime: '10:45 am',
@@ -312,7 +106,7 @@ List<Request> sampleLowPriorityRequestsList = [
     requestSubTitle: "DENTAL MIRROR, STERILE FORCEPS",
     requestTitle: 'Dental Instruments Reprocessing',
   ),
-  Request(
+  SampleRequest(
     requestID: '3003',
     requestDate: '16/10/2024',
     requestTime: '03:00 pm',

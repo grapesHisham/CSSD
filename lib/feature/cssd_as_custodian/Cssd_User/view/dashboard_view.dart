@@ -13,7 +13,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-// ignore: camel_case_types
 class DashboardViewCssdCssCssdLogin extends StatelessWidget {
   const DashboardViewCssdCssCssdLogin({super.key});
 

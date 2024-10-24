@@ -1,5 +1,6 @@
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/dashboard_controller.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/dashboard_view.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/pickup_page.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/requests_view.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/sterilization_view.dart';
 import 'package:cssd/util/colors.dart';
@@ -23,7 +24,8 @@ class BottomNavigationBarDashboard extends StatelessWidget {
     List<Widget> screens = [
       const DashboardViewCssdCssCssdLogin(),
       const RequestsViewCssdCussCssdLogin(),
-      const SterilizationViewCssdCussCssdLogin(),
+      SterilizationViewCssdCussCssdLogin(),
+      const PickupPageCssdCussCssdLogin(),
     ];
 
     return Scaffold(

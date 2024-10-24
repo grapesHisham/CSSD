@@ -18,37 +18,40 @@ import 'package:flutter/material.dart';
 @override
 Future<void> customDialog({
   required BuildContext dialogContext,
-  required Widget dialogTitle,
+  Widget? dialogTitle,
+  required Widget dialogContent,
   List<Widget>? dialogActions,
   bool dialogShowDefaultActions = true,
+  String defaultAcceptText = "Ok",
+  String defaultCancelText = "Cancel",
   void Function()? onCancelDefaultAction,
   void Function()? onAcceptDefaultAction,
 }) async {
   return showDialog(
-    
+      useSafeArea: true,
       context: dialogContext,
       builder: (context) {
         return AlertDialog(
-          
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           title: dialogTitle,
+          content: dialogContent,
           actions: dialogShowDefaultActions
-              ? _defaultActions(
-                  context,
+              ? _defaultActions(context,
                   onCancelDefaultAction: onCancelDefaultAction,
                   onAcceptDefaultAction: onAcceptDefaultAction,
-                )
+                  defaultAcceptText: defaultAcceptText,
+                  defaultCancelText: defaultCancelText)
               : dialogActions,
         );
       });
 }
 
-List<Widget> _defaultActions(
-  BuildContext context, {
-  void Function()? onCancelDefaultAction,
-  void Function()? onAcceptDefaultAction,
-}) {
+List<Widget> _defaultActions(BuildContext context,
+    {void Function()? onCancelDefaultAction,
+    void Function()? onAcceptDefaultAction,
+    required String defaultAcceptText,
+    required String defaultCancelText}) {
   return [
     ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -59,10 +62,10 @@ List<Widget> _defaultActions(
       ),
       onPressed: () {
         // Navigator.of(context).pop(false);
-        onCancelDefaultAction;
+        onCancelDefaultAction!();
       },
-      child: const Text(
-        'Cancel',
+      child: Text(
+        defaultCancelText,
         style: TextStyle(color: Colors.white),
       ),
     ),
@@ -73,9 +76,10 @@ List<Widget> _defaultActions(
             borderRadius: BorderRadius.circular(10),
           ),
         ),
-        child: const Text("Ok", style: TextStyle(color: Colors.white)),
+        child: Text(defaultAcceptText,
+            style: const TextStyle(color: Colors.white)),
         onPressed: () {
-          onAcceptDefaultAction;
+          onAcceptDefaultAction!();
         }),
   ];
 }

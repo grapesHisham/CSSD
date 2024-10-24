@@ -1,5 +1,6 @@
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/dashboard_controller.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/login_provider.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/pickup_provider.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/request_controler.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/sterilization_provider.dart';
 import 'package:cssd/util/app_routes.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => DashboardController()),
         ChangeNotifierProvider(create: (context) => RequestControler()),
         ChangeNotifierProvider(create: (context) => SterilizationProvider()),
+        ChangeNotifierProvider(create: (context) => PickupProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(390, 844),

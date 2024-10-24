@@ -4,6 +4,7 @@ import 'package:cssd/Widgets/endDrawer.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/model/sampleRequestList.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/request_controler.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/widgets/requests_widgets/dropdown_search.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/widgets/requests_widgets/from_to_date_picker_widget.dart';
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/fonts.dart';
@@ -42,130 +43,11 @@ class RequestsViewCssdCussCssdLogin extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 10.h,
-                ),
-                // select from and to date textfield
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "From",
-                            style: FontStyles.bodyPieTitleStyle,
-                          ),
-                        ),
-                        TextFormField(
-                          onTap: () {
-                            showDatePicker(
-                                    context: context,
-                                    firstDate: DateTime(1998),
-                                    initialDate: DateTime.now(),
-                                    lastDate: DateTime.now())
-                                .then((pickedDate) {
-                              if (pickedDate != null) {
-                                String formatedDate =
-                                    "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
-                                requestControler.fromDateController.text =
-                                    formatedDate;
-                              }
-                            });
-                          },
-                          readOnly: true,
-                          keyboardType: TextInputType.number,
-                          controller: requestControler.fromDateController,
-                          decoration: InputDecoration(
-                            hintText: 'Day-Month-Year',
-                            hintStyle: TextStyle(color: Colors.grey.shade300),
-                            constraints: BoxConstraints(
-                                maxWidth: mediaQuery.width / 2.5),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Colors.lightBlue),
-                                borderRadius: BorderRadius.circular(15)),
-                            border: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(15)),
-                            label: const FittedBox(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text("dd-mm-yy"),
-                                ],
-                              ),
-                            ),
-                            labelStyle: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "To",
-                            style: FontStyles.bodyPieTitleStyle,
-                          ),
-                        ),
-                        TextFormField(
-                          onTap: () {
-                            showDatePicker(
-                                    context: context,
-                                    firstDate: DateTime(1998),
-                                    initialDate: DateTime.now(),
-                                    lastDate: DateTime(2200))
-                                .then((pickedDate) {
-                              if (pickedDate != null) {
-                                String formatedDate =
-                                    "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
-                                requestControler.toDateController.text =
-                                    formatedDate;
-                              }
-                            });
-                          },
-                          readOnly: true,
-                          keyboardType: TextInputType.number,
-                          controller: requestControler.toDateController,
-                          decoration: InputDecoration(
-                            hintText: 'Day-Month-Year',
-                            hintStyle: TextStyle(color: Colors.grey.shade300),
-                            constraints: BoxConstraints(
-                                maxWidth: mediaQuery.width / 2.5),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Colors.lightBlue),
-                                borderRadius: BorderRadius.circular(15)),
-                            border: OutlineInputBorder(
-                                borderSide:
-                                    const BorderSide(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(15)),
-                            label: const FittedBox(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text("dd-mm-yy"),
-                                ],
-                              ),
-                            ),
-                            labelStyle: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                  height: 20.h,
+                ), 
+                FromToDatePicker(
+                    fromDateController: requestControler.fromDateController,
+                    toDateController: requestControler.toDateController),
                 SizedBox(height: 20.h),
                 // select department and select user dropdowns
                 Row(
@@ -226,7 +108,7 @@ class RequestsViewCssdCussCssdLogin extends StatelessWidget {
                           cardClickFunction: () {
                             Navigator.pushNamed(context,
                                 Routes.requestDetailsViewCssdCussCssLogin);
-                                print("Card clicked");
+                            print("Card clicked");
                           },
                           cardColor: Colors.white,
                           requestID: request.requestID,
