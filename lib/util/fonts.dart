@@ -29,4 +29,11 @@ class FontStyles {
 
   static TextStyle todaysSterilizationCount =
       const TextStyle(fontSize: 10, color: Colors.black);
+
+      //Timeline fonts 
+
+  static TextStyle timelineHead = const TextStyle(fontSize: 13.0, color: Colors.white, fontWeight: FontWeight.bold);
+  static TextStyle timelineBody = const TextStyle( color: Colors.white);
+  static TextStyle timelineSubHead = const TextStyle(fontSize: 11.0, color: Colors.white);
+
 }

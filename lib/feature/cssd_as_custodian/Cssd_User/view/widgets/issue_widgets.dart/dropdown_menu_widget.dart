@@ -4,16 +4,19 @@ class CustomDropDownMenuWidget extends StatelessWidget {
   final List<DropdownMenuEntry<dynamic>> dropdownMenuEntries;
   final Function(dynamic) onSelected;
   final String label;
+  final double? dropDownWidth;
 
   const CustomDropDownMenuWidget(
       {super.key,
       required this.dropdownMenuEntries,
       required this.onSelected,
-      required this.label});
+      required this.label,
+      this.dropDownWidth});
 
   @override
   Widget build(BuildContext context) {
     return DropdownMenu(
+        width: dropDownWidth,
         label: Text(label),
         inputDecorationTheme: InputDecorationTheme(
             border:

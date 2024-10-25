@@ -29,6 +29,8 @@ class RequestsViewCssdCussCssdLogin extends StatelessWidget {
         automaticallyImplyLeading: false,
       ),
       body: Container(
+        height: double.infinity,
+        width: mediaQuery.width,
         decoration: const BoxDecoration(
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(25),
@@ -36,7 +38,7 @@ class RequestsViewCssdCussCssdLogin extends StatelessWidget {
             ),
             color: Colors.white),
         child: Column(
-          mainAxisSize: MainAxisSize.max,
+          
           children: [
             Column(
               mainAxisSize: MainAxisSize.min,
@@ -44,7 +46,7 @@ class RequestsViewCssdCussCssdLogin extends StatelessWidget {
               children: [
                 SizedBox(
                   height: 20.h,
-                ), 
+                ),
                 FromToDatePicker(
                     fromDateController: requestControler.fromDateController,
                     toDateController: requestControler.toDateController),
@@ -79,9 +81,9 @@ class RequestsViewCssdCussCssdLogin extends StatelessWidget {
                     )
                   ],
                 ),
-
+        
                 SizedBox(height: 10.h),
-
+        
                 Padding(
                   padding: EdgeInsets.only(left: mediaQuery.width / 14),
                   child: ButtonWidget(

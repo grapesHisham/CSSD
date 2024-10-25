@@ -3,6 +3,7 @@ import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/login_provider
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/pickup_provider.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/request_controler.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/sterilization_provider.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/timeline_controller.dart';
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/navigation_observer.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => RequestControler()),
         ChangeNotifierProvider(create: (context) => SterilizationProvider()),
         ChangeNotifierProvider(create: (context) => PickupProvider()),
+        ChangeNotifierProvider(create: (context) => TimelineController()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(390, 844),

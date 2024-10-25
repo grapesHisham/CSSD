@@ -27,3 +27,21 @@ List<DropdownMenuEntry<String>> sampleUsersDropDownEntries = const [
   DropdownMenuEntry(value: "Robert Moore", label: "Robert Moore"),
   DropdownMenuEntry(value: "Sophia Taylor", label: "Sophia Taylor"),
 ];
+List<DropdownMenuEntry<String>> sampleDepartmentDropDownEntries = const [
+  DropdownMenuEntry(value: "Cardiology", label: "Cardiology"),
+  DropdownMenuEntry(value: "Neurology", label: "Neurology"),
+  DropdownMenuEntry(value: "Pediatrics", label: "Pediatrics"),
+  DropdownMenuEntry(
+      value: "Obstetrics and Gynecology", label: "Obstetrics and Gynecology"),
+  DropdownMenuEntry(value: "Oncology", label: "Oncology"),
+  DropdownMenuEntry(value: "Orthopedics", label: "Orthopedics"),
+  DropdownMenuEntry(value: "Radiology", label: "Radiology"),
+  DropdownMenuEntry(value: "Pathology", label: "Pathology"),
+  DropdownMenuEntry(value: "General Surgery", label: "General Surgery"),
+  DropdownMenuEntry(value: "Urology", label: "Urology"),
+  DropdownMenuEntry(value: "Dermatology", label: "Dermatology"),
+  DropdownMenuEntry(value: "Gastroenterology", label: "Gastroenterology"),
+  DropdownMenuEntry(value: "Nephrology", label: "Nephrology"),
+  DropdownMenuEntry(value: "Pulmonology", label: "Pulmonology"),
+  DropdownMenuEntry(value: "Psychiatry", label: "Psychiatry"),
+];
