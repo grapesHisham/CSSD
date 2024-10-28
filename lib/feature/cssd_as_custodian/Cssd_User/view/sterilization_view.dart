@@ -5,7 +5,10 @@ import 'package:cssd/Widgets/custom_textfield.dart';
 import 'package:cssd/Widgets/endDrawer.dart';
 import 'package:cssd/Widgets/rounded_container.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/sterilization_provider.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/widgets/pickup_widgets/items_list_card_container_widget.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/widgets/sterilization_widgets/sterilization_item_card_widget.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/widgets/sterilization_widgets/sterilization_package_items_popup_widget.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/widgets/sterilization_widgets/sterilization_single_items_popup_widget%20.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/fonts.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +19,8 @@ class SterilizationViewCssdCussCssdLogin extends StatelessWidget {
   const SterilizationViewCssdCussCssdLogin({super.key});
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context).size;
+    var isMobile = mediaQuery.width <= 500;
     return Scaffold(
       backgroundColor: StaticColors.scaffoldBackgroundcolor,
       endDrawer: endDrawer(),
@@ -67,33 +72,21 @@ class SterilizationViewCssdCussCssdLogin extends StatelessWidget {
                                 dialogContent: SizedBox(
                                   height:
                                       MediaQuery.of(context).size.height * 0.5,
-                                  child: Column(
+                                  width: MediaQuery.of(context).size.width * 0.5,
+                                  child: const Column(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const SizedBox(
-                                          height: 20,
-                                          child: Text("Single items :")),
-                                      SizedBox(
-                                        height: 50,
-                                        child: ListView.builder(
-                                          itemCount: 1,
-                                          itemBuilder: (context, index) {
-                                            return Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Checkbox(
-                                                    value: false,
-                                                    onChanged: (value) {})
-                                              ],
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                          height: 20,
-                                          child: Text("Package Items :"))
+                                      Text("Single items :"),
+                                      Expanded(
+                                          child:
+                                              SterilizationSingleItemsPopupWidget()),
+                                      SizedBox(height: 20),
+                                      Text("Package Items :"),
+                                      Expanded(
+                                          child:
+                                              SterilizationPackageItemsPopupWidget()),
                                     ],
                                   ),
                                 ),
@@ -190,7 +183,7 @@ class SterilizationViewCssdCussCssdLogin extends StatelessWidget {
                               }),
                             ),
                             SizedBox(width: 10.w),
-                           const  Expanded(
+                            const Expanded(
                                 child: CustomTextFormField(
                               textfieldBorder: true,
                               hintText: 'Enter to search',

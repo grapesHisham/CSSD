@@ -1,5 +1,6 @@
 import 'package:cssd/Widgets/custom_textfield.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/widgets/sterilization_widgets/sterilization_delete_button.dart';
+import 'package:cssd/util/hex_to_color_with_opacity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -11,6 +12,7 @@ class SterilizationItemsCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: hexToColorWithOpacity(hexColor: "EBF9FF"),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(

@@ -16,49 +16,108 @@ class SampleRequest {
   });
 }
 
+//i need list of items with priority,
+// requested user,
+// status of items ,
+// request date and time ,
+// request id ,
+// departement  name. for timeline
+
 // High Priority Requests
 List<SampleRequest> sampleHighPriorityRequestsList = [
   SampleRequest(
-    requestID: '1001',
+    requestID: '1006',
+    requestDate: '22/10/2024',
+    requestTime: '10:30 am',
+    requestDepartment: 'Maternity Ward',
+    requestSubTitle: "UMBILICAL CLAMP, DISPOSABLE SCALPEL",
+    requestTitle: 'Newborn Delivery Kit',
+  ),
+  SampleRequest(
+    requestID: '1007',
+    requestDate: '22/10/2024',
+    requestTime: '11:15 am',
+    requestDepartment: 'Endoscopy Unit',
+    requestSubTitle: "ENDOSCOPE, BIOPSY FORCEPS",
+    requestTitle: 'Endoscopy Procedure Tools',
+  ),
+  SampleRequest(
+    requestID: '1008',
     requestDate: '21/10/2024',
-    requestTime: '10:15 am',
-    requestDepartment: 'Operation Theater',
-    requestSubTitle: "SCALPEL BLADE NO 11, SURGICAL SUTURE VICRYL 3-0",
-    requestTitle: 'Emergency Surgery - OT Package',
+    requestTime: '02:45 pm',
+    requestDepartment: 'Dental Clinic',
+    requestSubTitle: "DENTAL MIRROR, CURETTE, SCALER",
+    requestTitle: 'Dental Examination Kit',
   ),
   SampleRequest(
-    requestID: '1002',
-    requestDate: '21/10/2024',
-    requestTime: '11:00 am',
-    requestDepartment: 'Cardiology',
-    requestSubTitle: "CARDIAC CATHETER, GUIDE WIRE 0.014 inch",
-    requestTitle: 'Angioplasty Instruments',
-  ),
-  SampleRequest(
-    requestID: '1003',
+    requestID: '1009',
     requestDate: '20/10/2024',
-    requestTime: '09:30 am',
-    requestDepartment: 'ICU',
-    requestSubTitle: "ENDOTRACHEAL TUBE 7.5 MM, VENTILATOR CIRCUIT",
-    requestTitle: 'ICU Emergency Setup',
+    requestTime: '03:00 pm',
+    requestDepartment: 'Emergency Room',
+    requestSubTitle: "IV CANNULA, SYRINGES, TOURNIQUET",
+    requestTitle: 'Emergency IV Setup',
   ),
   SampleRequest(
-    requestID: '1004',
+    requestID: '1010',
     requestDate: '20/10/2024',
-    requestTime: '08:00 am',
-    requestDepartment: 'Operation Theater',
-    requestSubTitle: "SCREW 6 X 20 MM, DRILL BIT 3.5 MM, CANNULATED SCREW",
-    requestTitle: 'Orthopedic Surgery Kit',
+    requestTime: '01:30 pm',
+    requestDepartment: 'Laboratory',
+    requestSubTitle: "SLIDE COVERS, MICROSCOPE SLIDES, PIPETTES",
+    requestTitle: 'Microscope Preparation Kit',
   ),
   SampleRequest(
-    requestID: '1005',
+    requestID: '1011',
     requestDate: '19/10/2024',
-    requestTime: '02:30 pm',
-    requestDepartment: 'Neurosurgery',
-    requestSubTitle: "CRANIOTOMY KIT, DURAPATCH, COTTONOID PATTIES",
-    requestTitle: 'Neurosurgery OT Instruments',
+    requestTime: '12:00 pm',
+    requestDepartment: 'ICU',
+    requestSubTitle: "ENDOTRACHEAL TUBE, AMBU BAG",
+    requestTitle: 'Respiratory Emergency Kit',
+  ),
+  SampleRequest(
+    requestID: '1012',
+    requestDate: '19/10/2024',
+    requestTime: '09:45 am',
+    requestDepartment: 'Operation Theater',
+    requestSubTitle: "BONE DRILL, SCREWS, SAW BLADE",
+    requestTitle: 'Orthopedic Surgery Instruments',
+  ),
+  SampleRequest(
+    requestID: '1013',
+    requestDate: '18/10/2024',
+    requestTime: '11:30 am',
+    requestDepartment: 'Ophthalmology',
+    requestSubTitle: "TONOMETER, EYE SPECULUM, FORCEPS",
+    requestTitle: 'Eye Examination Tools',
+  ),
+  SampleRequest(
+    requestID: '1014',
+    requestDate: '18/10/2024',
+    requestTime: '03:15 pm',
+    requestDepartment: 'General Surgery',
+    requestSubTitle: "LAPAROSCOPE, TROCAR, SCISSORS",
+    requestTitle: 'Laparoscopic Surgery Kit',
+  ),
+  SampleRequest(
+    requestID: '1015',
+    requestDate: '17/10/2024',
+    requestTime: '10:00 am',
+    requestDepartment: 'Orthopedics',
+    requestSubTitle: "CERVICAL COLLAR, CAST MATERIALS",
+    requestTitle: 'Orthopedic Support Items',
   ),
 ];
+
+// extracting single items from list
+
+List<String> singleItemsList =
+    extractSingleItems(sampleHighPriorityRequestsList);
+List<String> extractSingleItems(List<SampleRequest> mainList) {
+  List<String> items = [];
+  for (var item in mainList) {
+    items.addAll(item.requestSubTitle.split(',').map((item) => item.trim()));
+  }
+  return items;
+}
 
 // Medium Priority Requests
 List<SampleRequest> sampleMediumPriorityRequestsList = [

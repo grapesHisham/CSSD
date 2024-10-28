@@ -18,6 +18,8 @@ class DashboardViewCssdCssCssdLogin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context).size;
+    final isMobile = mediaQuery.width <= 500;
     final dashboardProvider =
         Provider.of<DashboardController>(context, listen: false);
 
@@ -87,8 +89,8 @@ class DashboardViewCssdCssCssdLogin extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
-                                height: 150,
-                                width: 150,
+                                height: isMobile ? 120 : 150,
+                                width: isMobile ? 120 : 150,
                                 child: PieChart(
                                   PieChartData(sections: [
                                     PieChartSectionData(
@@ -96,7 +98,7 @@ class DashboardViewCssdCssCssdLogin extends StatelessWidget {
                                           .piePercentageValueTextStyle,
                                       value: 33,
                                       color: StaticColors.pieRequestCount,
-                                      radius: 30,
+                                      radius: isMobile ? 26 : 33,
                                     ),
                                     PieChartSectionData(
                                       titleStyle: FontStyles
@@ -104,7 +106,7 @@ class DashboardViewCssdCssCssdLogin extends StatelessWidget {
                                       value: 55,
                                       color: StaticColors
                                           .pieSterilizationOnProgress,
-                                      radius: 30,
+                                      radius: isMobile ? 26 : 33,
                                     ),
                                     PieChartSectionData(
                                       titleStyle: FontStyles
@@ -112,7 +114,7 @@ class DashboardViewCssdCssCssdLogin extends StatelessWidget {
                                       value: 12,
                                       color:
                                           StaticColors.pieSterilizationComplete,
-                                      radius: 30,
+                                      radius: isMobile ? 26 : 33,
                                     ),
                                   ]),
                                 ),
@@ -129,12 +131,16 @@ class DashboardViewCssdCssCssdLogin extends StatelessWidget {
                           containerColor: Colors.white30,
                           containerBody: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
+
                             children: [
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                   Text("Today's Sterilization Requests ", style: FontStyles.bodyPieTitleStyle,),
+                                  Text(
+                                    "Today's Sterilization Requests ",
+                                    style: FontStyles.bodyPieTitleStyle,
+                                  ),
                                   ButtonWidget(
                                       borderRadius: 8,
                                       buttonTextSize: 14,

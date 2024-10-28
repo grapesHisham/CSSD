@@ -3,7 +3,6 @@ import 'package:cssd/Widgets/clickable_card.dart';
 import 'package:cssd/Widgets/date_picker_widget.dart';
 import 'package:cssd/Widgets/endDrawer.dart';
 import 'package:cssd/Widgets/rounded_container.dart';
-import 'package:cssd/feature/cssd_as_custodian/Cssd_User/model/sampleBatchNoQuantity.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/model/sampleRequestList.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/pickup_provider.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/widgets/pickup_widgets/items_list_card_container_widget.dart';
@@ -19,7 +18,7 @@ class PickupPageCssdCussCssdLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
-
+    final isMobile = mediaQuery.width <= 500;
     // final pickupProvider = Provider.of<PickupProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: StaticColors.scaffoldBackgroundcolor,
@@ -40,62 +39,55 @@ class PickupPageCssdCussCssdLogin extends StatelessWidget {
             color: Colors.white),
         child: SingleChildScrollView(
           child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              
               children: [
                 SizedBox(
                   height: 10.0.h,
                 ),
                 // department selection dropdown
-                Center(
-                  child: Consumer<PickupProvider>(
-                      builder: (context, pickupProvider, child) {
-                    return DropdownMenu(
-                      inputDecorationTheme: InputDecorationTheme(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15))),
-                      width: 1.0.sw - 30,
-                      menuHeight: 250,
-                      label: const Text("Select Deparment"),
-                      controller: pickupProvider.departmentSelection,
-                      enableSearch: false,
-                      enableFilter: false,
-                      dropdownMenuEntries: pickupProvider.sampleDepartmentName
-                          .map((dept) =>
-                              DropdownMenuEntry(value: dept, label: dept))
-                          .toList(),
-                    );
-                  }),
-                ),
+
                 //date picker and show button
                 Consumer<PickupProvider>(
                     builder: (context, pickupProvider, child) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisSize: MainAxisSize.max,
+                  return Wrap(
+                    runAlignment: WrapAlignment.end,
+                    runSpacing: 10,
+                    spacing: 10,
                     children: [
-                      Expanded(
-                        child: DatePickerWidget(
-                          label: "From",
-                          controller: pickupProvider.fromDateTextController,
-                          firstDate: DateTime(1900),
-                          lastDate: DateTime(2100),
-                        ),
+                      
+                      DatePickerWidget(
+                        label: "From",
+                        controller: pickupProvider.fromDateTextController,
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime(2100),
+                      ),
+                     
+                      DatePickerWidget(
+                        label: "To",
+                        controller: pickupProvider.toDateTextController,
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime(2100),
                       ),
                       SizedBox(
-                        width: 10.w,
-                      ),
-                      Expanded(
-                        child: DatePickerWidget(
-                          label: "To",
-                          controller: pickupProvider.toDateTextController,
-                          firstDate: DateTime(1900),
-                          lastDate: DateTime(2100),
+                        width: isMobile
+                            ? mediaQuery.width * 0.40
+                            : mediaQuery.width * 0.25,
+                        child: DropdownMenu(
+                          inputDecorationTheme: InputDecorationTheme(
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15))),
+                          width: 1.0.sw - 30,
+                          menuHeight: 250,
+                          label: const Text("Select Deparment"),
+                          controller: pickupProvider.departmentSelection,
+                          enableSearch: false,
+                          enableFilter: false,
+                          dropdownMenuEntries: pickupProvider
+                              .sampleDepartmentName
+                              .map((dept) =>
+                                  DropdownMenuEntry(value: dept, label: dept))
+                              .toList(),
                         ),
-                      ),
-                      SizedBox(
-                        width: 10.w,
                       ),
                       ButtonWidget(
                         buttonLabel: "Show",
@@ -141,7 +133,7 @@ class PickupPageCssdCussCssdLogin extends StatelessWidget {
                 ConstrainedBox(
                   constraints:
                       BoxConstraints(maxHeight: mediaQuery.height * 0.25),
-                  child: ItemsListCardContainerWidget(mediaQuery: mediaQuery),
+                  child: const ItemsListCardContainerWidget(),
                 ),
 
                 Center(

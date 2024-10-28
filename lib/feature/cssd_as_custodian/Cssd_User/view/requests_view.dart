@@ -1,5 +1,6 @@
 import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/clickable_card.dart';
+import 'package:cssd/Widgets/date_picker_widget.dart';
 import 'package:cssd/Widgets/endDrawer.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/model/sampleRequestList.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/request_controler.dart';
@@ -8,6 +9,7 @@ import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/widgets/requests_w
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/fonts.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +20,7 @@ class RequestsViewCssdCussCssdLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size mediaQuery = MediaQuery.of(context).size;
+    final isMobile = mediaQuery.width <= 500;
     final requestControler =
         Provider.of<RequestControler>(context, listen: false);
 
@@ -38,66 +41,66 @@ class RequestsViewCssdCussCssdLogin extends StatelessWidget {
             ),
             color: Colors.white),
         child: Column(
-          
           children: [
             Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  height: 20.h,
-                ),
-                FromToDatePicker(
-                    fromDateController: requestControler.fromDateController,
-                    toDateController: requestControler.toDateController),
+                // FromToDatePicker(
+                //     fromDateController: requestControler.fromDateController,
+                //     toDateController: requestControler.toDateController),
+
                 SizedBox(height: 20.h),
                 // select department and select user dropdowns
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                Wrap(
+                  runSpacing: 10,
+                  spacing: 10,
+                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Flexible(
-                      flex: 1,
-                      child: SizedBox(
-                        width: mediaQuery.width * 0.40,
-                        child: DropdownMenu(
-                          inputDecorationTheme: InputDecorationTheme(
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15))),
-                          width: mediaQuery.width / 2.5,
-                          label: const Text("Select Deparment"),
-                          controller: requestControler.departmentTextController,
-                          enableSearch: false,
-                          enableFilter: false,
-                          dropdownMenuEntries:
-                              requestControler.dropdownMenuEntries,
-                        ),
+                    DatePickerWidget(
+                        label: 'From Date',
+                        controller: requestControler.fromDateController,
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime(2100)),
+                    DatePickerWidget(
+                        label: 'To Date',
+                        controller: requestControler.toDateController,
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime(2100)),
+                    SizedBox(
+                      width: mediaQuery.width * 0.40,
+                      child: DropdownMenu(
+                        inputDecorationTheme: InputDecorationTheme(
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15))),
+                        width: mediaQuery.width / 2.5,
+                        label: const Text("Select Deparment"),
+                        controller: requestControler.departmentTextController,
+                        enableSearch: false,
+                        enableFilter: false,
+                        dropdownMenuEntries:
+                            requestControler.dropdownMenuEntries,
                       ),
                     ),
-                    Flexible(
-                      flex: 1,
-                      child: dropDownWithSearchFiltering(
-                          mediaQuery: mediaQuery,
-                          requestControler: requestControler),
-                    )
+                    dropDownWithSearchFiltering(
+                        mediaQuery: mediaQuery,
+                        requestControler: requestControler),
+                    ButtonWidget(
+                      borderRadius: 12,
+                      buttonLabel: 'Show',
+                      onPressed: () {},
+                    ),
                   ],
                 ),
-        
-                SizedBox(height: 10.h),
-        
-                Padding(
-                  padding: EdgeInsets.only(left: mediaQuery.width / 14),
-                  child: ButtonWidget(
-                    borderRadius: 12,
-                    buttonLabel: 'Show',
-                    onPressed: () {},
-                  ),
-                ),
+
+                // SizedBox(height: 10.h),
               ],
             ),
             Expanded(
               // height: mediaQuery.height / 2, // Set a finite height
               child: ListView.builder(
                 padding:
+
                     EdgeInsets.symmetric(horizontal: 10.0.h, vertical: 10.w),
                 shrinkWrap: true,
                 itemCount:
@@ -110,7 +113,9 @@ class RequestsViewCssdCussCssdLogin extends StatelessWidget {
                           cardClickFunction: () {
                             Navigator.pushNamed(context,
                                 Routes.requestDetailsViewCssdCussCssLogin);
-                            print("Card clicked");
+                            if (kDebugMode) {
+                              print("Card clicked");
+                            }
                           },
                           cardColor: Colors.white,
                           requestID: request.requestID,

@@ -26,7 +26,11 @@ List<DropdownMenuEntry<String>> sampleUsersDropDownEntries = const [
   DropdownMenuEntry(value: "Ashley Wilson", label: "Ashley Wilson"),
   DropdownMenuEntry(value: "Robert Moore", label: "Robert Moore"),
   DropdownMenuEntry(value: "Sophia Taylor", label: "Sophia Taylor"),
+  DropdownMenuEntry(value: "Linda Harris", label: "Linda Harris"),
+  DropdownMenuEntry(value: "Charles Martin", label: "Charles Martin"),
+  DropdownMenuEntry(value: "Patricia Anderson", label: "Patricia Anderson"),
 ];
+
 List<DropdownMenuEntry<String>> sampleDepartmentDropDownEntries = const [
   DropdownMenuEntry(value: "Cardiology", label: "Cardiology"),
   DropdownMenuEntry(value: "Neurology", label: "Neurology"),

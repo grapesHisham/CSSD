@@ -1,4 +1,5 @@
 import 'package:cssd/Widgets/clickable_card.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/model/sampleBatchNoQuantity.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/model/sampleRequestList.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/dashboard_controller.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/widgets/dashboard_widgets/tabbar_head_dahboard.dart';
@@ -123,7 +124,6 @@ class TabBarDashboard extends StatelessWidget {
         // final request = dashboardProvider.mediumPriorityRequests[index];
         return ClickableCard(
           cardColor: Colors.white,
-
           reqiestTime: request.requestTime,
           requestID: request.requestID,
           requestDate: request.requestDate,
@@ -141,11 +141,12 @@ class TabBarDashboard extends StatelessWidget {
       itemCount: sampleHighPriorityRequestsList.length,
       itemBuilder: (context, index) {
         final request = sampleHighPriorityRequestsList[index];
+        final requestID = SampleGeneratedList().sampleRequestNumber[index];
         // final request = dashboardProvider.mediumPriorityRequests[index];
         return ClickableCard(
           cardColor: Colors.white,
           reqiestTime: request.requestTime,
-          requestID: request.requestID,
+          requestID: requestID.toString(),
           requestDate: request.requestDate,
           requestDepartment: request.requestDepartment,
           requestSubTitle: request.requestSubTitle,

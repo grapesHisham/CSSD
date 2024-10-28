@@ -1,21 +1,22 @@
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/model/sampleBatchNoQuantity.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/model/sampleRequestList.dart';
+import 'package:cssd/util/fonts.dart';
 import 'package:cssd/util/hex_to_color_with_opacity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ItemsListCardContainerWidget extends StatelessWidget {
-  const ItemsListCardContainerWidget({
+class SterilizationSingleItemsPopupWidget extends StatelessWidget {
+  const SterilizationSingleItemsPopupWidget({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return  ListView.builder(
+    return ListView.builder(
       shrinkWrap: true,
       itemCount: sampleHighPriorityRequestsList.length,
       itemBuilder: (context, index) {
-        final request = sampleHighPriorityRequestsList[index];
+        final singleItems = singleItemsList[index];
         final quantity = SampleGeneratedList().sampleQuantityList[index];
         final batch = SampleGeneratedList().sampleBatchNo[index];
         return Card(
@@ -35,7 +36,7 @@ class ItemsListCardContainerWidget extends StatelessWidget {
                 SizedBox(width: 10.w),
                 Expanded(
                   flex: 6,
-                  child: Text(request.requestSubTitle),
+                  child: Text(singleItems),
                 ),
                 SizedBox(width: 10.w),
                 Expanded(

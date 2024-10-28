@@ -11,7 +11,7 @@ class TimeLineTileWidget extends StatelessWidget {
   final String endChildTitle;
   final String endChildSubTitle;
 
-  TimeLineTileWidget({
+  const TimeLineTileWidget({
     super.key,
     this.endChild,
     required this.isFirst,

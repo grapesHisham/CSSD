@@ -28,7 +28,8 @@ Future<void> customDialog({
   void Function()? onAcceptDefaultAction,
 }) async {
   return showDialog(
-      useSafeArea: true,
+
+      // useSafeArea: true,
       context: dialogContext,
       builder: (context) {
         return AlertDialog(
@@ -66,7 +67,7 @@ List<Widget> _defaultActions(BuildContext context,
       },
       child: Text(
         defaultCancelText,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
       ),
     ),
     ElevatedButton(

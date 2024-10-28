@@ -1,6 +1,7 @@
 import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/date_picker_widget.dart';
 import 'package:cssd/Widgets/endDrawer.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/model/sampleBatchNoQuantity.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/model/sampleDropDownMenuEntries.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/model/sampleRequestList.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/timeline_controller.dart';
@@ -9,11 +10,10 @@ import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/widgets/timeline_w
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/fonts.dart';
 import 'package:cssd/util/hex_to_color_with_opacity.dart';
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:timeline_tile/timeline_tile.dart';
 
 class TimelineViewCssdCussCssdLogin extends StatelessWidget {
   const TimelineViewCssdCussCssdLogin({super.key});
@@ -37,7 +37,7 @@ class TimelineViewCssdCussCssdLogin extends StatelessWidget {
           Builder(
             builder: (BuildContext context) {
               return IconButton(
-                icon: Icon(Icons.menu),
+                icon: const Icon(Icons.menu),
                 onPressed: () {
                   Scaffold.of(context).openEndDrawer(); // Opens the end drawer
                 },
@@ -47,7 +47,7 @@ class TimelineViewCssdCussCssdLogin extends StatelessWidget {
         ],
         title: Row(
           children: [
-            Text(
+            const Text(
               "10",
               style: TextStyle(
                   fontSize: 50,
@@ -57,7 +57,7 @@ class TimelineViewCssdCussCssdLogin extends StatelessWidget {
             SizedBox(
               width: 9.0.w,
             ),
-            Column(
+            const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -118,7 +118,9 @@ class TimelineViewCssdCussCssdLogin extends StatelessWidget {
                         : mediaQuery.width * 0.25,
                     dropdownMenuEntries: sampleDepartmentDropDownEntries,
                     onSelected: (p0) {
-                      print(mediaQuery.width);
+                      if (kDebugMode) {
+                        print(mediaQuery.width);
+                      }
                     },
                     label: "Selected Department",
                   ),
@@ -129,7 +131,7 @@ class TimelineViewCssdCussCssdLogin extends StatelessWidget {
                 ],
               ),
               SizedBox(
-                height: 10.0,
+                height: 10.0.h,
               ),
               Expanded(
                   child: ScrollbarTheme(
@@ -143,6 +145,7 @@ class TimelineViewCssdCussCssdLogin extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final dept = sampleDepartmentDropDownEntries[index].label;
                       final request = sampleHighPriorityRequestsList[index];
+                      final requestedUsers = sampleUsersDropDownEntries[index];
                       //background container of the timeline
                       return Container(
                         color: Colors.white,
@@ -167,13 +170,20 @@ class TimelineViewCssdCussCssdLogin extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    " REQUEST: $index",
-                                    style: FontStyles.timelineHead,
+                                  Expanded(
+                                    child: Text(
+                                      " REQUEST: ${SampleGeneratedList().sampleRequestNumber[index]}",
+                                      style: FontStyles.timelineHead,
+                                    ),
                                   ),
-                                  Text(
-                                    " Department: $dept",
-                                    style: FontStyles.timelineHead,
+                                  SizedBox(
+                                    width: 10.h,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      " Department: $dept",overflow: TextOverflow.visible,
+                                      style: FontStyles.timelineHead,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -217,7 +227,7 @@ class TimelineViewCssdCussCssdLogin extends StatelessWidget {
                                     TimeLineTileWidget(
                                       endChildTitle: 'Pickup',
                                       endChildSubTitle:
-                                          '${request.requestDate}  ${request.requestTime }',
+                                          '${request.requestDate}  ${request.requestTime}',
                                       isFirst: false,
                                       isDone: false,
                                       isLast: false,
@@ -232,6 +242,16 @@ class TimelineViewCssdCussCssdLogin extends StatelessWidget {
                                     )
                                   ],
                                 ),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                // crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    "Requested User : ${requestedUsers.label}",
+                                    style: FontStyles.timelineHead,
+                                  )
+                                ],
                               )
                             ],
                           ),

@@ -17,7 +17,8 @@ class DatePickerWidget extends StatelessWidget {
   final DateTime firstDate;
   final DateTime lastDate;
 
-  DatePickerWidget({
+  const DatePickerWidget({
+    super.key,
     required this.label,
     required this.controller,
     required this.firstDate,
@@ -26,47 +27,54 @@ class DatePickerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            label, // Use the passed label (e.g., "From" or "To")
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-        ),
-        TextFormField(
-          onTap: () {
-            showDatePicker(
-              context: context,
-              firstDate: firstDate,
-              initialDate: DateTime.now(),
-              lastDate: lastDate,
-            ).then((pickedDate) {
-              if (pickedDate != null) {
-                String formattedDate =
-                    "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
-                controller.text = formattedDate;
-              }
-            });
-          },
-          readOnly: true,
-          controller: controller,
-          decoration: InputDecoration(
-            hintText: 'Day-Month-Year',
-            hintStyle: TextStyle(color: Colors.grey.shade300),
-            focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.lightBlue),
-              borderRadius: BorderRadius.circular(15),
+    final Size mediaQuery = MediaQuery.of(context).size;
+    final isMobile = mediaQuery.width <= 500;
+    return SizedBox(
+      width: isMobile ? mediaQuery.width * 0.40 : mediaQuery.width * 0.25,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Padding(
+          //   padding: const EdgeInsets.all(3.0),
+          //   child: Text(
+          //     label, // Use the passed label (e.g., "From" or "To")
+          //     style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          //   ),
+          // ),
+          TextFormField(
+            onTap: () {
+              showDatePicker(
+                context: context,
+                firstDate: firstDate,
+                initialDate: DateTime.now(),
+                lastDate: lastDate,
+              ).then((pickedDate) {
+                if (pickedDate != null) {
+                  String formattedDate =
+                      "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+                  controller.text = formattedDate;
+                }
+              });
+            },
+            readOnly: true,
+            controller: controller,
+            decoration: InputDecoration(
+              label: Text(label),
+              hintText: 'Day-Month-Year',
+              prefixIcon: const Icon(Icons.date_range),
+              hintStyle: TextStyle(color: Colors.grey.shade300),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.lightBlue),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              border: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.grey),
+                borderRadius: BorderRadius.circular(15),
+              ),
             ),
-            border: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.grey),
-              borderRadius: BorderRadius.circular(15),
-            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

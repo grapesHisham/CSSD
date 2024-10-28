@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/model/sampleRequestList.dart';
 
-class SamplebBatchNo {
+class SampleGeneratedList {
   List<String> sampleBatchNo =
       List.generate(sampleHighPriorityRequestsList.length, (index) {
     final Random random = Random();
@@ -13,5 +13,11 @@ class SamplebBatchNo {
       List.generate(sampleHighPriorityRequestsList.length, (index) {
     final Random random = Random();
     return random.nextInt(10) + 5;
+  });
+
+  List<int> sampleRequestNumber =
+      List.generate(sampleHighPriorityRequestsList.length, (index) {
+    final Random random = Random();
+    return random.nextInt(1000) + 1;
   });
 }
