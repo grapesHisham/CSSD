@@ -2,7 +2,9 @@ import 'package:cssd/Widgets/clickable_card.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/model/sampleBatchNoQuantity.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/model/sampleRequestList.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/dashboard_controller.dart';
+import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/request_details_view.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/widgets/dashboard_widgets/tabbar_head_dahboard.dart';
+import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/fonts.dart';
 import 'package:flutter/material.dart';
@@ -144,6 +146,14 @@ class TabBarDashboard extends StatelessWidget {
         final requestID = SampleGeneratedList().sampleRequestNumber[index];
         // final request = dashboardProvider.mediumPriorityRequests[index];
         return ClickableCard(
+          cardClickFunction: () {
+            // Navigator.pushNamed(context, Routes.requestDetailsViewCssdCussCssLogin);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RequestDetailsViewCssdCussCssLogin(),
+                ));
+          },
           cardColor: Colors.white,
           reqiestTime: request.requestTime,
           requestID: requestID.toString(),

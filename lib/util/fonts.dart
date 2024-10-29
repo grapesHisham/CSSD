@@ -12,7 +12,7 @@ class FontStyles {
   );
 
   static TextStyle bodyPieTitleStyle = const TextStyle(
-      color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold);
+      color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold);
 
   static TextStyle piePercentageValueTextStyle = const TextStyle(
       color: Colors.white, fontSize: 12.0, fontWeight: FontWeight.bold);
@@ -30,10 +30,10 @@ class FontStyles {
   static TextStyle todaysSterilizationCount =
       const TextStyle(fontSize: 10, color: Colors.black);
 
-      //Timeline fonts 
-
-  static TextStyle timelineHead = const TextStyle(fontSize: 13.0, color: Colors.white, fontWeight: FontWeight.bold);
-  static TextStyle timelineBody = const TextStyle( color: Colors.white);
-  static TextStyle timelineSubHead = const TextStyle(fontSize: 11.0, color: Colors.white);
-
+  //Timeline fonts
+  static TextStyle timelineHead = const TextStyle(
+      fontSize: 13.0, color: Colors.white, fontWeight: FontWeight.bold);
+  static TextStyle timelineBody = const TextStyle(color: Colors.white);
+  static TextStyle timelineSubHead =
+      const TextStyle(fontSize: 11.0, color: Colors.white);
 }

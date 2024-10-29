@@ -13,11 +13,11 @@ class ClickableCard extends StatelessWidget {
   final String requestDate;
   final String reqiestTime;
   final String requestDepartment;
-  final Function? cardClickFunction;
+  final GestureTapCallback? cardClickFunction;
 
   const ClickableCard({
     super.key,
-    this.cardColor,
+    this.cardColor ,
     this.cardLeadingContainerColor =
         StaticColors.requestContainerNumberBackground,
     this.cardLeadingContainerTextColor = Colors.white,
@@ -33,18 +33,16 @@ class ClickableCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (kDebugMode) {
-      print("build called");
+      print("Card");
     }
     return Card(
-      color: cardColor ?? null,
+      color: cardColor ,
       elevation: 5.0, // Adds a shadow to the card
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0), // Rounded corners
       ),
       child: InkWell(
-        onTap: () {
-        cardClickFunction ?? null;
-      },
+        onTap: cardClickFunction,
         child: ListTile(
           leading: Container(
             width: 57,
