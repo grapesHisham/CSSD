@@ -1,16 +1,16 @@
-import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/alert_view.dart';
-import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/dashboard_view.dart';
-import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/issue_view.dart';
-import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/pickup_page.dart';
-import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/request_details_view.dart';
-import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/requests_view.dart';
-import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/sterilization_view.dart';
-import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/bottom_navigation_bar.dart';
-import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/timeline_view.dart';
-import 'package:cssd/feature/cssd_as_custodian/Department_User/view/dashboard_view_dept.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/alert_view.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/dashboard_view.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/issue_view.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/pickup_page.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/request_details_view.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/requests_view.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/sterilization_view.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/bottom_navigation_bar.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/timeline_view.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/dashboard_view_dept.dart';
 
-import 'package:cssd/view/login_screen.dart';
-import 'package:cssd/view/splash_screen.dart';
+import 'package:cssd/app/modules/login_module/login_screen.dart';
+import 'package:cssd/app/modules/login_module/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
@@ -36,15 +36,14 @@ class Routes {
       '/TimelineViewCssdCussCssdLogin';
 
   /*Department pages  -- cssd custodian*/
-
   static const String dashboardViewCssdCussDeptUser =
       '/DashboardViewCssdCussDeptUser';
-  // static const String sterilizationViewCssdCussCssdLogin = '/SterilizationViewCssdCussCssdLogin';
   // static const String sterilizationViewCssdCussCssdLogin = '/SterilizationViewCssdCussCssdLogin';
 
   static final Map<String, WidgetBuilder> routes = {
     splashScreen: (context) => const Splash(),
     loginScreen: (context) => const LoginScreen(),
+
     /*cssd pages -- cssd custodian*/
     bottomNavBarDashboard: (context) => const BottomNavigationBarDashboard(),
     dashboardViewCssdCssCssdLogin: (context) =>
@@ -55,17 +54,19 @@ class Routes {
     requestDetailsViewCssdCussCssLogin: (context) =>
         const RequestDetailsViewCssdCussCssLogin(),
     sterilizationViewCssdCussCssdLogin: (context) =>
-        SterilizationViewCssdCussCssdLogin(),
+        const SterilizationViewCssdCussCssdLogin(),
     pickupPageCssdCussCssdLogin: (context) =>
         const PickupPageCssdCussCssdLogin(),
     issueViewCssdCussCssdLogin: (context) => const IssueViewCssdCussCssdLogin(),
     timelineViewCssdCussCssdLogin: (context) =>
         const TimelineViewCssdCussCssdLogin(),
 
-    /*Department pages  -- cssd custodian*/
 
+
+    /*Department pages  -- cssd custodian*/
     dashboardViewCssdCussDeptUser: (context) =>
         const DashboardViewCssdCussDeptUser(),
+
     // issueViewCssdCussCssdLogin: (context) => const IssueViewCssdCussCssdLogin(),
   };
 }

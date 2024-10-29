@@ -33,10 +33,14 @@ Future<void> customDialog({
       context: dialogContext,
       builder: (context) {
         return AlertDialog(
+          
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           title: dialogTitle,
-          content: dialogContent,
+          content: SizedBox(
+            width: 300,
+            height: 400,
+            child: dialogContent),
           actions: dialogShowDefaultActions
               ? _defaultActions(context,
                   onCancelDefaultAction: onCancelDefaultAction,

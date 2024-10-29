@@ -1,9 +1,9 @@
-import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/dashboard_controller.dart';
-import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/login_provider.dart';
-import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/pickup_provider.dart';
-import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/request_controler.dart';
-import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/sterilization_provider.dart';
-import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/timeline_controller.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/dashboard_controller.dart';
+import 'package:cssd/app/modules/login_module/controller/login_provider.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/pickup_provider.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/request_controler.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/sterilization_provider.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/timeline_controller.dart';
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/navigation_observer.dart';
