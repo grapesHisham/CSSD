@@ -1,4 +1,5 @@
 import 'package:cssd/util/colors.dart';
+import 'package:cssd/util/hex_to_color_with_opacity.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:text_marquee/text_marquee.dart';
@@ -15,11 +16,10 @@ class ClickableCard extends StatelessWidget {
   final String requestDepartment;
   final GestureTapCallback? cardClickFunction;
 
-  const ClickableCard({
+  ClickableCard({
     super.key,
-    this.cardColor ,
-    this.cardLeadingContainerColor =
-        StaticColors.requestContainerNumberBackground,
+    this.cardColor,
+    this.cardLeadingContainerColor = const Color(0xff0C9EDF),
     this.cardLeadingContainerTextColor = Colors.white,
     required this.requestID,
     required this.requestTitle,
@@ -36,7 +36,7 @@ class ClickableCard extends StatelessWidget {
       print("Card");
     }
     return Card(
-      color: cardColor ,
+      color: cardColor,
       elevation: 5.0, // Adds a shadow to the card
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0), // Rounded corners

@@ -18,6 +18,8 @@ class BottomNavigationBarDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     final mediaQuery = MediaQuery.of(context).size;
+    final isMobile = mediaQuery.width <= 500;
     final dashboardProvider =
         Provider.of<DashboardController>(context, listen: false);
     void onBottomItemTap(int index) {
@@ -37,7 +39,7 @@ class BottomNavigationBarDashboard extends StatelessWidget {
       bottomNavigationBar: Consumer<DashboardController>(
           builder: (context, dashboardController, child) {
         return CurvedNavigationBar(
-          height: 60,
+          height:isMobile ?   50 : 60,
           backgroundColor: Colors.white,
           color: StaticColors.scaffoldBackgroundcolor,
           onTap: (value) {

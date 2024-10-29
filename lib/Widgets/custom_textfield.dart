@@ -9,7 +9,8 @@ class CustomTextFormField extends StatelessWidget {
   final TextInputType? keyboardType;
   final bool obscureText;
   final String? labelText;
-  final Widget? label; // if you need other properties like to wrap with fitted box then use label instead of label text
+  final Widget?
+      label; // if you need other properties like to wrap with fitted box then use label instead of label text
   final Widget? suffix;
   final bool? textfieldBorder;
   final Size? textFieldSize;
@@ -39,6 +40,7 @@ class CustomTextFormField extends StatelessWidget {
         maxWidth: textFieldSize?.width ?? double.infinity,
       ),
       child: TextFormField(
+        
         controller: controller,
         validator: validator,
         keyboardType: keyboardType,

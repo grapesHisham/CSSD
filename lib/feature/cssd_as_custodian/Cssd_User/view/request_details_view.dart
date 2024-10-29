@@ -18,7 +18,7 @@ class RequestDetailsViewCssdCussCssLogin extends StatelessWidget {
         endDrawer: endDrawer(),
         appBar: AppBar(
           title: Text('Requests Details', style: FontStyles.appBarTitleStyle),
-          automaticallyImplyLeading: false,
+          
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),

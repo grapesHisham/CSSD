@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
               color: StaticColors.scaffoldBackgroundcolor,
             ),
           ),
-          initialRoute: Routes.bottomNavBarDashboard,
+          initialRoute: Routes.loginScreen,
           routes: Routes.routes,
         ),
       ),

@@ -4,9 +4,8 @@ import 'package:cssd/feature/cssd_as_custodian/Cssd_User/model/sampleRequestList
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/dashboard_controller.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/request_details_view.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/widgets/dashboard_widgets/tabbar_head_dahboard.dart';
-import 'package:cssd/util/app_routes.dart';
-import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/fonts.dart';
+import 'package:cssd/util/hex_to_color_with_opacity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -20,68 +19,73 @@ class TabBarDashboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     final mediaQuery = MediaQuery.of(context).size;
+    final isMobile = mediaQuery.width <= 500;
     return DefaultTabController(
       length: 3,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Material(
-            elevation: 2.0,
-            borderRadius: BorderRadius.all(Radius.circular(10.h)),
-            child: Container(
-              height: 40.h,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(10.h)),
-                  color: Colors.white),
-              child: Builder(builder: (context) {
-                return TabBar(
-                  onTap: (value) {
-                    dashboardProvider.updateSelectedIndex(value);
-                    /* while scrolling we need to update the tabindex */
-                    // if (tabController
-                    //     .indexIsChanging) {
-                    //   log("tabcontroller index is changing ${tabController.indexIsChanging}");
-                    //   Provider.of<DashboardController>(
-                    //           context,
-                    //           listen: false)
-                    //       .updateSelectedIndex(
-                    //           value);
-                    // }
-                  },
-                  indicator: const BoxDecoration(
-                      color: Colors.blueAccent,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      )),
-                  labelColor: Colors.white,
-                  labelStyle: FontStyles.todaysSterilizationText,
-                  unselectedLabelColor: StaticColors.scaffoldBackgroundcolor,
-                  indicatorColor: StaticColors.scaffoldBackgroundcolor,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  dividerColor: Colors.transparent,
-                  tabs: [
-                    DashboardTabBarHead(
-                      titleText: 'High priority',
-                      countText:
-                          sampleHighPriorityRequestsList.length.toString(),
-                      tabIndex: 0,
-                    ),
-                    DashboardTabBarHead(
-                      titleText: 'Medium priority',
-                      countText:
-                          sampleMediumPriorityRequestsList.length.toString(),
-                      tabIndex: 1,
-                    ),
-                    DashboardTabBarHead(
-                      titleText: 'Low priority',
-                      countText:
-                          sampleLowPriorityRequestsList.length.toString(),
-                      tabIndex: 2,
-                    ),
-                  ],
-                );
-              }),
-            ),
+          Container(
+            height: 40.h,
+            decoration: BoxDecoration(
+                boxShadow: const [
+                  BoxShadow(
+                      color: Color.fromARGB(255, 197, 197, 197),
+                      blurRadius: 2.0,
+
+                      offset: Offset(1, 4),
+                      spreadRadius: -0.5),
+                ],
+                borderRadius: BorderRadius.all(Radius.circular(10.h)),
+                color: hexToColorWithOpacity(hexColor: "FDF7FF"),
+                // gradient: LinearGradient(
+                //     begin: Alignment.centerLeft,
+                //     end: Alignment.centerRight,
+                //     colors: [
+                //       // hexToColorWithOpacity(hexColor: "DADADF"),
+                //       hexToColorWithOpacity(hexColor: "F2F2F7"),
+                //       hexToColorWithOpacity(hexColor: "F2F2F7"),
+                //     ]),
+                ),
+            child: Builder(builder: (context) {
+              return TabBar(
+                onTap: (value) {
+                  dashboardProvider.updateSelectedIndex(value);
+                },
+                indicator: BoxDecoration(
+                    color: hexToColorWithOpacity(hexColor: "5D55B3"),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(10),
+                    )),
+                labelColor: Colors.white,
+                labelStyle: FontStyles.todaysSterilizationText,
+                unselectedLabelColor: Colors.black87,
+                // indicatorColor: StaticColors.scaffoldBackgroundcolor,
+                indicatorColor: hexToColorWithOpacity(hexColor: "5D55B3"),
+                indicatorSize: TabBarIndicatorSize.tab,
+                dividerColor: Colors.transparent,
+
+                tabs: [
+                  DashboardTabBarHead(
+                    titleText: isMobile ? 'High ' : 'High Priority',
+                    countText: sampleHighPriorityRequestsList.length.toString(),
+                    tabIndex: 0,
+                  ),
+                  DashboardTabBarHead(
+                    titleText: isMobile ? 'Medium ' : 'Medium Priority',
+                    countText:
+                        sampleMediumPriorityRequestsList.length.toString(),
+                    tabIndex: 1,
+                  ),
+                  DashboardTabBarHead(
+                   titleText: isMobile ? 'Low ' : 'Low Priority',
+                    countText: sampleLowPriorityRequestsList.length.toString(),
+                    tabIndex: 2,
+                  ),
+                ],
+              );
+            }),
           ),
           Expanded(
             child: TabBarView(

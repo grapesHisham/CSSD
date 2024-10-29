@@ -7,6 +7,7 @@ import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/requests_view.dart
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/sterilization_view.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/bottom_navigation_bar.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/timeline_view.dart';
+import 'package:cssd/feature/cssd_as_custodian/Department_User/view/dashboard_view_dept.dart';
 
 import 'package:cssd/view/login_screen.dart';
 import 'package:cssd/view/splash_screen.dart';
@@ -15,6 +16,7 @@ import 'package:flutter/material.dart';
 class Routes {
   static const String splashScreen = '/';
   static const String loginScreen = '/loginScreen';
+
   /*cssd pages  -- cssd custodian*/
   static const String bottomNavBarDashboard = '/BottomNavigationBarDashboard';
   static const String dashboardViewCssdCssCssdLogin =
@@ -30,7 +32,14 @@ class Routes {
       '/PickupPageCssdCussCssdLogin';
   static const String issueViewCssdCussCssdLogin =
       '/IssueViewCssdCussCssdLogin';
-   static const String timelineViewCssdCussCssdLogin = '/TimelineViewCssdCussCssdLogin';
+  static const String timelineViewCssdCussCssdLogin =
+      '/TimelineViewCssdCussCssdLogin';
+
+  /*Department pages  -- cssd custodian*/
+
+  static const String dashboardViewCssdCussDeptUser =
+      '/DashboardViewCssdCussDeptUser';
+  // static const String sterilizationViewCssdCussCssdLogin = '/SterilizationViewCssdCussCssdLogin';
   // static const String sterilizationViewCssdCussCssdLogin = '/SterilizationViewCssdCussCssdLogin';
 
   static final Map<String, WidgetBuilder> routes = {
@@ -50,7 +59,13 @@ class Routes {
     pickupPageCssdCussCssdLogin: (context) =>
         const PickupPageCssdCussCssdLogin(),
     issueViewCssdCussCssdLogin: (context) => const IssueViewCssdCussCssdLogin(),
-   timelineViewCssdCussCssdLogin: (context) => const TimelineViewCssdCussCssdLogin(),
+    timelineViewCssdCussCssdLogin: (context) =>
+        const TimelineViewCssdCussCssdLogin(),
+
+    /*Department pages  -- cssd custodian*/
+
+    dashboardViewCssdCussDeptUser: (context) =>
+        const DashboardViewCssdCussDeptUser(),
     // issueViewCssdCussCssdLogin: (context) => const IssueViewCssdCussCssdLogin(),
   };
 }

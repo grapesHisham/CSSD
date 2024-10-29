@@ -51,7 +51,15 @@ class LoginScreen extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const CustomTextFormField(
+                         CustomTextFormField(
+                        
+                          validator: (phoneNumber) {
+                           if (phoneNumber!.length == 10 ) {
+                             //call api to  check if the number is registered
+                             
+
+                           }
+                          },
                           prefixIcon: Icons.phone,
                           label: Text("Phone no."),
                           keyboardType: TextInputType.number,

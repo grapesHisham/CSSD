@@ -3,7 +3,6 @@ import 'package:cssd/Widgets/doctorProfileImage.dart';
 import 'package:cssd/Widgets/endDrawer.dart';
 import 'package:cssd/Widgets/notification_icon.dart';
 import 'package:cssd/Widgets/pie_indicator.dart';
-import 'package:cssd/Widgets/rounded_container.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/provider/dashboard_controller.dart';
 import 'package:cssd/feature/cssd_as_custodian/Cssd_User/view/widgets/dashboard_widgets/tabbar_dashboard.dart';
 import 'package:cssd/util/app_routes.dart';
@@ -24,6 +23,11 @@ class DashboardViewCssdCssCssdLogin extends StatelessWidget {
         Provider.of<DashboardController>(context, listen: false);
 
     return Scaffold(
+      floatingActionButton: Consumer<DashboardController>(
+        builder: (context, dashboardProvider, child) {
+          return _buildFloatingActionButton(dashboardProvider);
+        },
+      ),
       backgroundColor: StaticColors.scaffoldBackgroundcolor,
       endDrawer: endDrawer(),
       body: Stack(
@@ -127,11 +131,9 @@ class DashboardViewCssdCssCssdLogin extends StatelessWidget {
                         ],
                       ),
                       Expanded(
-                        child: RoundedContainer(
-                          containerColor: Colors.white30,
-                          containerBody: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
                             children: [
                               Row(
                                 mainAxisAlignment:
@@ -146,9 +148,19 @@ class DashboardViewCssdCssCssdLogin extends StatelessWidget {
                                       buttonTextSize: 14,
                                       buttonLabel: "ALL",
                                       onPressed: () {}),
+                                  
                                 ],
                               ),
-                              const SizedBox(height: 10),
+                              
+                              const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding:  EdgeInsets.only(left : 8.0,bottom: 2.0),
+                                  child: Text(
+                                        "Priority : ", 
+                                      ),
+                                ),
+                              ),
                               Expanded(
                                 child: TabBarDashboard(
                                     dashboardProvider: dashboardProvider),
@@ -169,15 +181,8 @@ class DashboardViewCssdCssCssdLogin extends StatelessWidget {
             left: 0,
             child: doctorProfile(),
           ),
-          // Doctor's Name below the profile image
-          // Positioned(
-          //   top: 25.h,
-          //   left: 120,
-          //   child: Text("Hey, Dev", style: FontStyles.appBarTitleStyle),
-          // ),
         ],
       ),
-      // bottomNavigationBar: const BottomNavigationBarDashboard(),
     );
   }
 
@@ -204,6 +209,21 @@ class DashboardViewCssdCssCssdLogin extends StatelessWidget {
         ),
         SizedBox(height: 4),
       ],
+    );
+  }
+
+  //check previlege and build floating action button
+  Widget _buildFloatingActionButton(DashboardController dashboardProvider) {
+    if (!dashboardProvider.adminPrivilege) {
+      return const SizedBox.shrink();
+    }
+    return FloatingActionButton.extended(
+      backgroundColor: StaticColors.scaffoldBackgroundcolor,
+      label: const Text(
+        "Switch to departement",
+        style: TextStyle(color: Colors.white),
+      ),
+      onPressed: () {},
     );
   }
 }
