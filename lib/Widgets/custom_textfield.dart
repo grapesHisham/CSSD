@@ -13,10 +13,11 @@ class CustomTextFormField extends StatelessWidget {
       label; // if you need other properties like to wrap with fitted box then use label instead of label text
   final Widget? suffix;
   final bool? textfieldBorder;
+  final bool? isReadOnly;
   final Size? textFieldSize;
   final BorderRadius borderRadius;
   final int? maxLendgth;
-  final  Function(String)? onChanged;
+  final Function(String)? onChanged;
 
   const CustomTextFormField(
       {super.key,
@@ -33,7 +34,9 @@ class CustomTextFormField extends StatelessWidget {
       this.textfieldBorder = true,
       this.textFieldSize,
       this.borderRadius = const BorderRadius.all(Radius.circular(10)),
-      this.maxLendgth, this.onChanged});
+      this.maxLendgth,
+      this.onChanged,
+      this.isReadOnly});
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +46,7 @@ class CustomTextFormField extends StatelessWidget {
         maxWidth: textFieldSize?.width ?? double.infinity,
       ),
       child: TextFormField(
+        readOnly: isReadOnly ?? false,
         onChanged: onChanged,
         maxLength: maxLendgth,
         controller: controller,

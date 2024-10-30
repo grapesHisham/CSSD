@@ -59,31 +59,51 @@ class LoginScreen extends StatelessWidget {
                   bodyOfTransparentContainer: Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 40),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CustomTextFormField(
-                          onChanged: (value) {
-                            if (value.length == 10) {
-                              loginProvider.submitPhoneForHospitalIds(value, context);
-                            }
-                            
-                          },
-                          maxLendgth: 10,
-                          controller: loginProvider.loginPhoneNumberController,
-                          prefixIcon: Icons.phone,
-                          label: const Text("Phone no."),
-                          keyboardType: TextInputType.number,
-                        ),
-                        SizedBox(height: 20.h),
-                        const CustomTextFormField(
-                          prefixIcon: Icons.medical_services,
-                          label: Text("Hospital name"),
-                        ),
-                        SizedBox(height: 20.h),
-                        Consumer<LoginController>(
-                            builder: (context, loginController, child) {
-                          return CustomTextFormField(
+                    child: Consumer<LoginController>(
+                        builder: (context, loginController, child) {
+                      return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          CustomTextFormField(
+                            onChanged: (value) {
+                              if (value.length == 10) {
+                                loginProvider.submitPhoneForHospitalIds(
+                                    value, context);
+                              }
+                            },
+                            maxLendgth: 10,
+                            controller:
+                                loginProvider.loginPhoneNumberController,
+                            prefixIcon: Icons.phone,
+                            label: const Text("Phone no."),
+                            keyboardType: TextInputType.number,
+                          ),
+                          SizedBox(height: 20.h),
+                          Visibility(
+                            visible: loginController.loginPhoneNumberController
+                                        .text.length ==
+                                    10
+                                ? true
+                                : false,
+                            child: CustomTextFormField(
+                              //data received and received data is empty = not readonly
+                              //data received and received data is not empty = readonly
+                              //data not received = readonly 
+                              
+                              isReadOnly: (loginController
+                                              .preLoginResponseDataReceived ==
+                                          true &&
+                                      loginController.preLoginResponse.isEmpty)
+                                  ? false
+                                  : true,
+                              controller:
+                                  loginProvider.loginHospitalNameController,
+                              prefixIcon: Icons.medical_services,
+                              label: const Text("Hospital name"),
+                            ),
+                          ),
+                          SizedBox(height: 20.h),
+                          CustomTextFormField(
                             controller: loginController.loginPasswordController,
                             prefixIcon: Icons.password,
                             prefixIconOnTap: () {
@@ -92,20 +112,21 @@ class LoginScreen extends StatelessWidget {
                             },
                             obscureText: loginController.obscureText,
                             label: const Text("Password"),
-                          );
-                        }),
-                        SizedBox(height: 30.h),
-                        ButtonWidget(
-                          borderRadius: 10,
-                          buttonColor: StaticColors.defaultButton,
-                          buttonLabel: "Login",
-                          onPressed: () {
-                            loginProvider.submitPhoneForHospitalIds(
-                                loginProvider.loginPhoneNumberController.text, context);
-                          },
-                        ),
-                      ],
-                    ),
+                          ),
+                          SizedBox(height: 30.h),
+                          ButtonWidget(
+                            borderRadius: 10,
+                            buttonColor: StaticColors.defaultButton,
+                            buttonLabel: "Login",
+                            onPressed: () {
+                              loginProvider.submitPhoneForHospitalIds(
+                                  loginProvider.loginPhoneNumberController.text,
+                                  context);
+                            },
+                          ),
+                        ],
+                      );
+                    }),
                   ),
                 ),
               ),
