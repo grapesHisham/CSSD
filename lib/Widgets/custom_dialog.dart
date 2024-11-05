@@ -28,12 +28,11 @@ Future<void> customDialog({
   void Function()? onAcceptDefaultAction,
 }) async {
   return showDialog(
-barrierDismissible: false,
+
       // useSafeArea: true,
       context: dialogContext,
       builder: (context) {
         return AlertDialog(
-          
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           title: dialogTitle,

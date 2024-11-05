@@ -51,8 +51,8 @@ class MyApp extends StatelessWidget {
             appBarTheme: const AppBarTheme(
               iconTheme: IconThemeData(color: Colors.white),
               color: StaticColors.scaffoldBackgroundcolor,
-            ),
-          ),
+            ), 
+          ), 
           initialRoute: Routes.loginScreen,
           routes: Routes.routes,
         ),

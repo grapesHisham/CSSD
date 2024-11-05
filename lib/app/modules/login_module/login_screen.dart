@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/custom_textfield.dart';
 import 'package:cssd/Widgets/login_widgets/cssd_transparent_title_card.dart';
@@ -80,26 +82,73 @@ class LoginScreen extends StatelessWidget {
                           ),
                           SizedBox(height: 20.h),
                           Visibility(
-                            visible: loginController.loginPhoneNumberController
-                                        .text.length ==
-                                    10
-                                ? true
-                                : false,
-                            child: CustomTextFormField(
-                              //data received and received data is empty = not readonly
-                              //data received and received data is not empty = readonly
-                              //data not received = readonly 
-                              
-                              isReadOnly: (loginController
-                                              .preLoginResponseDataReceived ==
-                                          true &&
-                                      loginController.preLoginResponse.isEmpty)
-                                  ? false
-                                  : true,
+                            visible: loginController.isAdmin ? false : true,
+                            replacement: CustomTextFormField(
                               controller:
-                                  loginProvider.loginHospitalNameController,
-                              prefixIcon: Icons.medical_services,
-                              label: const Text("Hospital name"),
+                                  loginController.loginHospitalNameController,
+                              hintText: "Please Enter hospital ID",
+                            ),
+                            child: DropdownButtonFormField<String>(
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: Colors
+                                          .white, // Border when the field is not focused
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  errorBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: Colors
+                                          .red, // Border when the field is not focused
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                      color: Colors
+                                          .white, // Border when the field is not focused
+                                      width: 1.0,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: const BorderSide(
+                                          color: Colors.blue, width: 1.0))),
+                              menuMaxHeight: 400,
+                              disabledHint:
+                                  const Text("Enter a valid phone number"),
+                              iconDisabledColor: Colors.grey,
+                              value: loginController.selectedHospitalDropdown,
+                              hint: const Text("Select a hospital"),
+                              items:
+                                  loginController.preLoginResponse.map((items) {
+                                return DropdownMenuItem<String>(
+                                  value: items.hospitalId.toString(),
+                                  child: ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                          maxWidth: mediaQuery.width / 1.8),
+                                      child: Text(
+                                        "${items.hospitalName}",
+                                      )),
+                                );
+                              }).toList(),
+                              onChanged: (data) {
+                                if (data != null) {
+                                  log("$data");
+                                  loginController.updateSelectedHospital(data);
+                                  loginController
+                                      .loginHospitalNameController.text = data;
+                                  loginProvider.submitPhoneForHospitalIds(
+                                      data, context);
+                                  log(data);
+                                }
+                              },
                             ),
                           ),
                           SizedBox(height: 20.h),
@@ -119,9 +168,7 @@ class LoginScreen extends StatelessWidget {
                             buttonColor: StaticColors.defaultButton,
                             buttonLabel: "Login",
                             onPressed: () {
-                              loginProvider.submitPhoneForHospitalIds(
-                                  loginProvider.loginPhoneNumberController.text,
-                                  context);
+                              
                             },
                           ),
                         ],
