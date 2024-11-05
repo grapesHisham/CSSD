@@ -23,7 +23,7 @@ class SterilizationViewCssdCussCssdLogin extends StatelessWidget {
     var isMobile = mediaQuery.width <= 500;
     return Scaffold(
       backgroundColor: StaticColors.scaffoldBackgroundcolor,
-      endDrawer: endDrawer(),
+      endDrawer: endDrawer(context),
       appBar: AppBar(
         title: Text('Sterilize', style: FontStyles.appBarTitleStyle),
         automaticallyImplyLeading: false,

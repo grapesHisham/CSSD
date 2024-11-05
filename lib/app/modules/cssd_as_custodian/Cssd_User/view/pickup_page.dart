@@ -22,7 +22,7 @@ class PickupPageCssdCussCssdLogin extends StatelessWidget {
     // final pickupProvider = Provider.of<PickupProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: StaticColors.scaffoldBackgroundcolor,
-      endDrawer: endDrawer(),
+      endDrawer: endDrawer(context),
       appBar: AppBar(
         title: Text('Pickup', style: FontStyles.appBarTitleStyle),
         automaticallyImplyLeading: false,

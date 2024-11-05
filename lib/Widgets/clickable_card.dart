@@ -1,6 +1,3 @@
-import 'package:cssd/util/colors.dart';
-import 'package:cssd/util/hex_to_color_with_opacity.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:text_marquee/text_marquee.dart';
 

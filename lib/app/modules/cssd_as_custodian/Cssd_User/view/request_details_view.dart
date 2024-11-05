@@ -15,7 +15,7 @@ class RequestDetailsViewCssdCussCssLogin extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: StaticColors.scaffoldBackgroundcolor,
-        endDrawer: endDrawer(),
+        endDrawer: endDrawer(context),
         appBar: AppBar(
           title: Text('Requests Details', style: FontStyles.appBarTitleStyle),
           

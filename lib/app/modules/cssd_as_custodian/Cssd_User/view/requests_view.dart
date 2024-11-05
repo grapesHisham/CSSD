@@ -26,7 +26,7 @@ class RequestsViewCssdCussCssdLogin extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: StaticColors.scaffoldBackgroundcolor,
-      endDrawer: endDrawer(),
+      endDrawer: endDrawer(context),
       appBar: AppBar(
         title: Text('All Requests', style: FontStyles.appBarTitleStyle),
         automaticallyImplyLeading: false,

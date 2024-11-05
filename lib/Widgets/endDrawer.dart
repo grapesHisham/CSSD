@@ -1,10 +1,12 @@
 import 'package:cssd/Widgets/button_widget.dart';
+import 'package:cssd/Widgets/custom_dialog.dart';
 import 'package:cssd/Widgets/doctorProfileImage.dart';
+import 'package:cssd/app/modules/login_module/view/widgets/logout_popup.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/fonts.dart';
 import 'package:flutter/material.dart';
 
-Drawer endDrawer() {
+Drawer endDrawer(BuildContext context) {
   return Drawer(
     child: Column(
       children: <Widget>[
@@ -37,7 +39,9 @@ Drawer endDrawer() {
 
                         ButtonWidget(
                           buttonLabel: 'Logout',
-                          onPressed: () {},
+                          onPressed: () {
+                            logoutPopup(context);
+                          },
                           buttonColor: StaticColors.cancelButton,
                           borderRadius: 10,
                           buttonTextSize: 16,

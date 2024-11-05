@@ -18,7 +18,7 @@ class IssueViewCssdCussCssdLogin extends StatelessWidget {
     final mediaQuery = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: StaticColors.scaffoldBackgroundcolor,
-      endDrawer: endDrawer(),
+      endDrawer: endDrawer(context),
       appBar: AppBar(
         title: Text('Issue', style: FontStyles.appBarTitleStyle),
         automaticallyImplyLeading: false,

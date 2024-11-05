@@ -26,7 +26,7 @@ class TimelineViewCssdCussCssdLogin extends StatelessWidget {
     var isMobile = mediaQuery.width <= 500;
     return Scaffold(
       backgroundColor: StaticColors.scaffoldBackgroundcolor,
-      endDrawer: endDrawer(),
+      endDrawer: endDrawer(context),
       appBar: AppBar(
         actions: [
           ButtonWidget(

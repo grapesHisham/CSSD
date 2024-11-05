@@ -30,12 +30,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => LoginController()),
-        ChangeNotifierProvider(create: (context) => DashboardController()),
-        ChangeNotifierProvider(create: (context) => RequestControler()),
-        ChangeNotifierProvider(create: (context) => SterilizationProvider()),
-        ChangeNotifierProvider(create: (context) => PickupProvider()),
-        ChangeNotifierProvider(create: (context) => TimelineController()),
+          ChangeNotifierProvider(create: (context) => LoginController()),
+          ChangeNotifierProvider(create: (context) => DashboardController()),
+          ChangeNotifierProvider(create: (context) => RequestControler()),
+          ChangeNotifierProvider(create: (context) => SterilizationProvider()),
+          ChangeNotifierProvider(create: (context) => PickupProvider()),
+          ChangeNotifierProvider(create: (context) => TimelineController()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(390, 844),
@@ -57,6 +57,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
           initialRoute: Routes.loginScreen,
+          
           routes: Routes.routes,
         ),
       ),

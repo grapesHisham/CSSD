@@ -133,15 +133,24 @@ class LoginController extends ChangeNotifier {
         } else if (_privileges.contains("312") && _privileges.contains("316")) {
           await LocalStorageManager.setBool(
               StorageKeys.privilegeFlagCssdAndDept, true);
-          Navigator.pushNamedAndRemoveUntil(context, Routes.bottomNavBarDashboardCssdUser,(Route<dynamic> route) => false);
+          Navigator.pushNamedAndRemoveUntil(
+              context,
+              Routes.bottomNavBarDashboardCssdUser,
+              (Route<dynamic> route) => false);
         } else if (_privileges.contains("312")) {
           await LocalStorageManager.setBool(
               StorageKeys.privilegeFlagCssdAndDept, false);
-          Navigator.pushNamedAndRemoveUntil(context, Routes.bottomNavBarDashboardCssdUser,(Route<dynamic> route) => false);
+          Navigator.pushNamedAndRemoveUntil(
+              context,
+              Routes.bottomNavBarDashboardCssdUser,
+              (Route<dynamic> route) => false);
         } else if (_privileges.contains("316")) {
           await LocalStorageManager.setBool(
               StorageKeys.privilegeFlagCssdAndDept, false);
-          Navigator.pushNamedAndRemoveUntil(context, Routes.dashboardViewCssdCussDeptUser,(Route<dynamic> route) => false);
+          Navigator.pushNamedAndRemoveUntil(
+              context,
+              Routes.dashboardViewCssdCussDeptUser,
+              (Route<dynamic> route) => false);
         }
         log("prefs - login token : ${LocalStorageManager.getString(StorageKeys.loginToken)}");
       } else if (response.status == 300) {
