@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/doctorProfileImage.dart';
 import 'package:cssd/Widgets/endDrawer.dart';
@@ -8,12 +10,29 @@ import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/widgets/dashbo
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/fonts.dart';
+import 'package:cssd/util/local_storage_manager.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DashboardViewCssdCssCssdLogin extends StatelessWidget {
+class DashboardViewCssdCssCssdLogin extends StatefulWidget {
   const DashboardViewCssdCssCssdLogin({super.key});
+
+  @override
+  State<DashboardViewCssdCssCssdLogin> createState() =>
+      _DashboardViewCssdCssCssdLoginState();
+}
+
+class _DashboardViewCssdCssCssdLoginState
+    extends State<DashboardViewCssdCssCssdLogin> {
+  bool? hasPrivileges;
+
+  @override
+  void initState() {
+    hasPrivileges =
+        LocalStorageManager.getBool(StorageKeys.privilegeFlagCssdAndDept);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +42,7 @@ class DashboardViewCssdCssCssdLogin extends StatelessWidget {
         Provider.of<DashboardController>(context, listen: false);
 
     return Scaffold(
-      floatingActionButton: Consumer<DashboardController>(
-        builder: (context, dashboardProvider, child) {
-          return _buildFloatingActionButton(dashboardProvider);
-        },
-      ),
+      floatingActionButton: _buildFloatingActionButton(hasPrivileges),
       backgroundColor: StaticColors.scaffoldBackgroundcolor,
       endDrawer: endDrawer(),
       body: Stack(
@@ -148,17 +163,16 @@ class DashboardViewCssdCssCssdLogin extends StatelessWidget {
                                       buttonTextSize: 14,
                                       buttonLabel: "ALL",
                                       onPressed: () {}),
-                                  
                                 ],
                               ),
-                              
                               const Align(
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
-                                  padding:  EdgeInsets.only(left : 8.0,bottom: 2.0),
+                                  padding:
+                                      EdgeInsets.only(left: 8.0, bottom: 2.0),
                                   child: Text(
-                                        "Priority : ", 
-                                      ),
+                                    "Priority : ",
+                                  ),
                                 ),
                               ),
                               Expanded(
@@ -212,18 +226,28 @@ class DashboardViewCssdCssCssdLogin extends StatelessWidget {
     );
   }
 
-  //check previlege and build floating action button
-  Widget _buildFloatingActionButton(DashboardController dashboardProvider) {
-    if (!dashboardProvider.adminPrivilege) {
-      return const SizedBox.shrink();
+  // //check previlege and build floating action button
+  Widget _buildFloatingActionButton(hasPrivileges) {
+    // Get the privilege flag value from local storage
+
+    // Log the status for debugging purposes
+    log("Privilege Status: $hasPrivileges");
+
+    // Check if the user does not have the required privilege
+    if (!hasPrivileges) {
+      return const SizedBox.shrink(); // Return an empty widget if no privileges
     }
+
+    // Return the floating action button if the privilege flag is true
     return FloatingActionButton.extended(
       backgroundColor: StaticColors.scaffoldBackgroundcolor,
       label: const Text(
-        "Switch to departement",
+        "Switch to department",
         style: TextStyle(color: Colors.white),
       ),
-      onPressed: () {},
+      onPressed: () {
+        // Handle the button press action
+      },
     );
   }
 }

@@ -168,6 +168,7 @@ class LoginScreen extends StatelessWidget {
                             buttonColor: StaticColors.defaultButton,
                             buttonLabel: "Login",
                             onPressed: () {
+                              loginProvider.login(context);
                               
                             },
                           ),

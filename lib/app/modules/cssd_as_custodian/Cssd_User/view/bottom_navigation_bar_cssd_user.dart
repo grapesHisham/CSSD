@@ -11,8 +11,8 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class BottomNavigationBarDashboard extends StatelessWidget {
-  const BottomNavigationBarDashboard({
+class BottomNavigationBarDashboardCssdUser extends StatelessWidget {
+  const BottomNavigationBarDashboardCssdUser({
     super.key,
   });
 

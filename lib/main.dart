@@ -6,6 +6,7 @@ import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/steriliz
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/timeline_controller.dart';
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/colors.dart';
+import 'package:cssd/util/local_storage_manager.dart';
 import 'package:cssd/util/navigation_observer.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
@@ -13,7 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await LocalStorageManager.init();
   runApp(DevicePreview(
     enabled: !kReleaseMode,
     builder: (context) => MyApp(),
@@ -51,8 +54,8 @@ class MyApp extends StatelessWidget {
             appBarTheme: const AppBarTheme(
               iconTheme: IconThemeData(color: Colors.white),
               color: StaticColors.scaffoldBackgroundcolor,
-            ), 
-          ), 
+            ),
+          ),
           initialRoute: Routes.loginScreen,
           routes: Routes.routes,
         ),

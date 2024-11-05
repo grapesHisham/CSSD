@@ -32,9 +32,7 @@ class ClickableCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (kDebugMode) {
-      print("Card");
-    }
+    
     return Card(
       color: cardColor,
       elevation: 5.0, // Adds a shadow to the card

@@ -5,7 +5,7 @@ import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/pickup_page.da
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/request_details_view.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/requests_view.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/sterilization_view.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/bottom_navigation_bar.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/bottom_navigation_bar_cssd_user.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/timeline_view.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/dashboard_view_dept.dart';
 
@@ -17,8 +17,9 @@ class Routes {
   static const String splashScreen = '/';
   static const String loginScreen = '/loginScreen';
 
-  /*cssd pages  -- cssd custodian*/
-  static const String bottomNavBarDashboard = '/BottomNavigationBarDashboard';
+  /*cssd pages  -- cssd custodian ------------------------------------------------------------------------*/
+  static const String bottomNavBarDashboardCssdUser =
+      '/BottomNavigationBarDashboardCssdUser';
   static const String dashboardViewCssdCssCssdLogin =
       '/DashboardViewCssdCssCssdLogin';
   static const String alertViewCssdCusCssdLogin = '/AlertViewCssdCusCssdLogin';
@@ -35,17 +36,22 @@ class Routes {
   static const String timelineViewCssdCussCssdLogin =
       '/TimelineViewCssdCussCssdLogin';
 
-  /*Department pages  -- cssd custodian*/
+  /*Department pages  -- cssd custodian--------------------------------------------------------------*/
   static const String dashboardViewCssdCussDeptUser =
       '/DashboardViewCssdCussDeptUser';
   // static const String sterilizationViewCssdCussCssdLogin = '/SterilizationViewCssdCussCssdLogin';
+
+
+//  #################################################################################################################
+
 
   static final Map<String, WidgetBuilder> routes = {
     splashScreen: (context) => const Splash(),
     loginScreen: (context) => const LoginScreen(),
 
-    /*cssd pages -- cssd custodian*/
-    bottomNavBarDashboard: (context) => const BottomNavigationBarDashboard(),
+    /*cssd pages -- cssd custodian-----------------------------------------------------------------------*/
+    bottomNavBarDashboardCssdUser: (context) =>
+        const BottomNavigationBarDashboardCssdUser(),
     dashboardViewCssdCssCssdLogin: (context) =>
         const DashboardViewCssdCssCssdLogin(),
     alertViewCssdCusCssdLogin: (context) => const AlertViewCssdCusCssdLogin(),
@@ -61,9 +67,7 @@ class Routes {
     timelineViewCssdCussCssdLogin: (context) =>
         const TimelineViewCssdCussCssdLogin(),
 
-
-
-    /*Department pages  -- cssd custodian*/
+    /*Department pages  -- cssd custodian-------------------------------------------------------------------*/
     dashboardViewCssdCussDeptUser: (context) =>
         const DashboardViewCssdCussDeptUser(),
 
@@ -74,28 +78,34 @@ class Routes {
 
 
 
-// /*  Navigations 
 
 
-// Navigator.pushNamedAndRemoveUntil(
-//   context,
-//   Routes.home,
-//   (Route<dynamic> route) => false, 
-// );
 
-// Navigator.pushReplacementNamed(context, Routes.login);
+//  #################################################################################################################
 
-// Navigator.pushNamed(context, Routes.details);
 
-// Navigator.pushNamed(
-//   context,
-//   Routes.deviceSettings,
-//   arguments: {
-//     'name': 'ExampleName',
-//     'id': 'ExampleID',
-//   },
-// );
+/*  Navigations 
 
-// Navigator.popUntil(context, ModalRoute.withName(Routes.home));
 
-// */
+ Navigator.pushNamedAndRemoveUntil(
+   context,
+  Routes.home,
+   (Route<dynamic> route) => false, 
+ );
+
+ Navigator.pushReplacementNamed(context, Routes.login);
+
+ Navigator.pushNamed(context, Routes.details);
+
+ Navigator.pushNamed(
+   context,
+   Routes.deviceSettings,
+   arguments: {
+     'name': 'ExampleName',
+     'id': 'ExampleID',
+   },
+ );
+
+ Navigator.popUntil(context, ModalRoute.withName(Routes.home));
+
+ */

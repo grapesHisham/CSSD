@@ -3,21 +3,25 @@ import 'package:flutter/foundation.dart';
 
 class DashboardController extends ChangeNotifier {
   //admin previlege - checks if user has both privilege for cssd login and department login
-  bool _adminPrivilege = true;
 
   // dashboard tabbar selection
   int _selectedTabbarIndex = 0;
 
   int get selectedTabbarIndex => _selectedTabbarIndex;
-  bool get adminPrivilege => _adminPrivilege;
 
 
-  void  setAdminPrivilege(bool privilege) {
-    if (_adminPrivilege != privilege) {
-      _adminPrivilege = privilege;
-      notifyListeners();
-    }
-  }
+
+
+  // bool _adminPrivilege = true;                          //now using localstorage manager 
+  // bool get adminPrivilege => _adminPrivilege;
+  // void  setAdminPrivilege(bool privilege) {
+  //   if (_adminPrivilege != privilege) {
+  //     _adminPrivilege = privilege;
+  //     notifyListeners();
+  //   }
+  // }
+
+
 
 
   void updateSelectedIndex(int index) {

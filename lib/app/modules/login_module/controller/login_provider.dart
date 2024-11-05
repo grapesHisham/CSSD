@@ -1,10 +1,11 @@
 import 'dart:developer';
-
-import 'package:cssd/Widgets/custom_dialog.dart';
+import 'package:cssd/app/modules/login_module/model/login_model.dart';
 import 'package:cssd/app/modules/login_module/model/pre_login_authentication_model.dart';
+import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/app_util.dart';
-import 'package:flutter/foundation.dart';
+import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:retrofit/retrofit.dart';
 
 class LoginController extends ChangeNotifier {
   LoginController() {
@@ -23,7 +24,7 @@ class LoginController extends ChangeNotifier {
     });
   }
   // show or hide password
-  bool _obscureText = false;
+  bool _obscureText = true;
   bool get obscureText => _obscureText;
 
   String? _selectedHospitalDropdown;
@@ -34,21 +35,15 @@ class LoginController extends ChangeNotifier {
   bool get isAdmin => _isAdmin;
   bool? _preLoginResponseDataReceived;
   bool? get preLoginResponseDataReceived => _preLoginResponseDataReceived;
-  bool _isHospitalTextfieldenabled = false;
-  bool? get isHospitalTextfieldenabled => _isHospitalTextfieldenabled;
-
-  void toggleHospitalTextFieldStatus(bool value) {
-    //to make the textfield readonly
-    _isHospitalTextfieldenabled = value;
-    notifyListeners();
-  }
 
   void updateSelectedHospital(String? newvalue) {
+    //dropdown selected hospital ID
     _selectedHospitalDropdown = newvalue;
     notifyListeners();
   }
 
   void toggleObscureText(bool value) {
+    //visibility of password field
     _obscureText = value;
     notifyListeners();
   }
@@ -56,7 +51,8 @@ class LoginController extends ChangeNotifier {
   //text controllers
   TextEditingController loginPasswordController = TextEditingController();
   TextEditingController loginPhoneNumberController = TextEditingController();
-  TextEditingController loginHospitalNameController = TextEditingController();
+  TextEditingController loginHospitalNameController =
+      TextEditingController(); //stores the hospital name , stores  entered id only if admin phone number
 
   //function to call for receiving hospitals lists
   List<Data> preLoginResponse = [];
@@ -82,35 +78,6 @@ class LoginController extends ChangeNotifier {
               null); // to remove the current selected value form the dropwdown when a new phone number is passed
           preLoginResponse.addAll(response.data ?? []);
         }
-
-        // if (preLoginResponse.isNotEmpty) {
-        //   // should enable and disable the hospital text field
-        //   // when phone entered && data is not empty read only and ontap
-        //   // when phone entered && data is empty enable text field
-        //   // when phone not entered  disable text field
-
-        //   // customDialog(
-        //   //     dialogContext: context,
-        //   //     dialogShowDefaultActions: false,
-        //   //     dialogTitle: const Text("Select Hospital"),
-        //   //     dialogContent: SizedBox(
-        //   //       width: 200,
-        //   //       height: 250,
-        //   //       child: ListView.builder(
-        //   //         itemCount: preLoginResponse.length,
-        //   //         itemBuilder: (context, index) {
-        //   //           return ListTile(
-        //   //               onTap: () {
-        //   //                 loginHospitalNameController.text =
-        //   //                     preLoginResponse[index].hospitalName!;
-        //   //                 Navigator.pop(context);
-        //   //               },
-        //   //               title: Text(preLoginResponse[index].hospitalName ??
-        //   //                   " hospital name fetch error"));
-        //   //         },
-        //   //       ),
-        //   //     ));
-        // }
       } else if (response.status == 300) {
         _preLoginResponseDataReceived = false;
         _isAdmin = false;
@@ -129,5 +96,60 @@ class LoginController extends ChangeNotifier {
     }
   }
 
-  
+  List<String> _privileges = [];
+
+  List<String> get privileges => _privileges;
+  // function to login
+  Future<void> login(BuildContext context) async {
+    Map<String, dynamic> body = {
+      "PhoneNumber": loginPhoneNumberController.text,
+      "Password": loginPasswordController.text,
+      "Hospitals": _selectedHospitalDropdown ??
+          loginHospitalNameController
+              .text //when selecting dropdown its _selected hospital has value otherwise its the entered value in the hospital id text field
+    };
+    try {
+      final client = await AppUtil.createApiClient();
+      LoginModel response = await client.login(body);
+      if (response.status == 200) {
+        //when status is 200 save the user name and their previleges and redirect them to their required screen by checking the previleges
+        LocalStorageManager.setString(StorageKeys.loginToken, response.token!);
+        LocalStorageManager.setString(
+            StorageKeys.loggedinUser, response.username!);
+        _privileges.clear();
+        // _privileges.addAll(response.previlages.map((privilege)=> privilege['PRIVILEGES']) );
+        // LocalStorageManager.setStringList(StorageKeys.loggedinUser, response.previlages);
+        _privileges.addAll(response.getPrivileges());
+        LocalStorageManager.setStringList(
+            StorageKeys.loggedinUserPrivilegesList, _privileges);
+        log("privileges list is : ${_privileges.toString()}");
+        if (_privileges.isEmpty) {
+          //312 - cssd
+          //315 - cssd add stock
+          //316 - send to cssd
+          //317 - cssd admin
+          //318 - dept cssd report
+          showSnackBar(context, "Error", "You dont have CSSD privilege");
+        } else if (_privileges.contains("312") && _privileges.contains("316")) {
+          await LocalStorageManager.setBool(
+              StorageKeys.privilegeFlagCssdAndDept, true);
+          Navigator.pushNamedAndRemoveUntil(context, Routes.bottomNavBarDashboardCssdUser,(Route<dynamic> route) => false);
+        } else if (_privileges.contains("312")) {
+          await LocalStorageManager.setBool(
+              StorageKeys.privilegeFlagCssdAndDept, false);
+          Navigator.pushNamedAndRemoveUntil(context, Routes.bottomNavBarDashboardCssdUser,(Route<dynamic> route) => false);
+        } else if (_privileges.contains("316")) {
+          await LocalStorageManager.setBool(
+              StorageKeys.privilegeFlagCssdAndDept, false);
+          Navigator.pushNamedAndRemoveUntil(context, Routes.dashboardViewCssdCussDeptUser,(Route<dynamic> route) => false);
+        }
+        log("prefs - login token : ${LocalStorageManager.getString(StorageKeys.loginToken)}");
+      } else if (response.status == 300) {
+        log(response.message.toString());
+        showSnackBar(context, "Error", "${response.message}");
+      } else if (_privileges.isEmpty || _privileges == []) {}
+    } catch (e) {
+      log(e.toString());
+    }
+  }
 }
