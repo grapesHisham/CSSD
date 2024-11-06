@@ -3,20 +3,51 @@ import 'package:flutter/material.dart';
 
 class ButtonWidget extends StatelessWidget {
   final String buttonLabel;
+  final Color buttonColor;
   final Function() onPressed;
+  final double? buttonTextSize;
+  final EdgeInsetsGeometry? buttonPadding;
+  final Size? buttonSize;
+  final double borderRadius;
+  final bool useFitterBox;
   const ButtonWidget(
-      {super.key, required this.buttonLabel, required this.onPressed});
+      {super.key,
+      required this.buttonLabel,
+      required this.onPressed,
+      this.buttonColor = StaticColors.defaultButton,
+      this.buttonTextSize = 20,
+      this.borderRadius = 10,
+      this.buttonPadding,
+      this.buttonSize,
+      this.useFitterBox = true});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-            elevation: 8, backgroundColor: StaticColors.buttonPurple1),
+            minimumSize: buttonSize,
+            padding: buttonPadding,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(borderRadius))),
+            elevation: 5,
+            backgroundColor: buttonColor),
         onPressed: onPressed,
-        child: Text(
-          buttonLabel,
-          style:
-              const TextStyle(color: StaticColors.textwhiteLight, fontSize: 20),
-        ));
+        child: useFitterBox
+            ? FittedBox(
+                child: Text(
+                  textAlign: TextAlign.center,
+                  buttonLabel,
+                  style: TextStyle(
+                      color: StaticColors.textwhiteLight,
+                      fontSize: buttonTextSize),
+                ),
+              )
+            : Text(
+                textAlign: TextAlign.center,
+                buttonLabel,
+                style: TextStyle(
+                    color: StaticColors.textwhiteLight,
+                    fontSize: buttonTextSize),
+              ));
   }
 }

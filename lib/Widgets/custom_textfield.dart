@@ -2,64 +2,106 @@ import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String? hintText;
-  final IconData? icon;
+  final IconData? prefixIcon;
+  final VoidCallback? prefixIconOnTap;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
   final bool obscureText;
   final String? labelText;
-  final Widget? label;
+  final Widget?
+      label; // if you need other properties like to wrap with fitted box then use label instead of label text
   final Widget? suffix;
+  final bool? textfieldBorder;
+  final bool? isReadOnly;
+  final Size? textFieldSize;
+  final BorderRadius borderRadius;
+  final int? maxLendgth;
+  final Function(String)? onChanged;
 
   const CustomTextFormField(
       {super.key,
       this.hintText,
-      this.icon,
+      this.prefixIcon,
       this.controller,
       this.validator,
       this.keyboardType,
       this.obscureText = false,
       this.labelText,
       this.label,
-      this.suffix});
+      this.suffix,
+      this.prefixIconOnTap,
+      this.textfieldBorder = true,
+      this.textFieldSize,
+      this.borderRadius = const BorderRadius.all(Radius.circular(10)),
+      this.maxLendgth,
+      this.onChanged,
+      this.isReadOnly});
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      validator: validator,
-      keyboardType: keyboardType,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        suffixIcon: suffix,
-        label: label,
-        labelText: labelText,
-        hintText: hintText,
-        prefixIcon: icon != null ? Icon(icon) : null,
-        border: InputBorder.none,
-        filled: true,
-        fillColor: Colors.white,
-
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
-          borderSide: const BorderSide(color: Colors.white),
+    return ConstrainedBox(
+      constraints: BoxConstraints(
+        maxHeight: textFieldSize?.height ?? 48.0,
+        maxWidth: textFieldSize?.width ?? double.infinity,
+      ),
+      child: TextFormField(
+        readOnly: isReadOnly ?? false,
+        onChanged: onChanged,
+        maxLength: maxLendgth,
+        controller: controller,
+        validator: validator,
+        keyboardType: keyboardType,
+        obscureText: obscureText,
+        decoration: InputDecoration(
+          counterText: '', //shows the count of maxlength , disbling it 4 now
+          suffixIcon: suffix,
+          label: label,
+          labelText: labelText,
+          hintText: hintText,
+          prefixIcon: prefixIcon != null
+              ? IconButton(
+                  onPressed: prefixIconOnTap,
+                  icon: Icon(
+                    prefixIcon,
+                    size: 12,
+                  ),
+                )
+              : null,
+          border: textfieldBorder == false
+              ? InputBorder.none
+              : OutlineInputBorder(
+                  borderRadius: borderRadius,
+                  borderSide:
+                      const BorderSide(color: Colors.black, width: 1.0)),
+          filled: true,
+          fillColor: Colors.white,
+          enabledBorder: textfieldBorder == true
+              ? OutlineInputBorder(
+                  borderRadius: borderRadius,
+                  borderSide: const BorderSide(
+                    color: Colors.grey, // Border when the field is not focused
+                    width: 1.0,
+                  ),
+                )
+              : InputBorder.none,
+          focusedBorder: OutlineInputBorder(
+            borderRadius: borderRadius,
+            borderSide: const BorderSide(color: Colors.blue, width: 1.5),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: borderRadius,
+            borderSide: const BorderSide(
+              color: Colors.red,
+            ),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: borderRadius,
+            borderSide: const BorderSide(
+              color: Colors.red,
+            ),
+          ),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
-          borderSide: const BorderSide(color: Colors.blue, width: 1.5),
-        ),
-        // errorBorder: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(10.0),
-        //   borderSide: const BorderSide(
-        //     color: Colors.red,
-        //   ),
-        // ),
-        // focusedErrorBorder: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(10.0),
-        //   borderSide: const BorderSide(
-        //     color: Colors.red,
-        //   ),
-        // ),
       ),
     );
   }
