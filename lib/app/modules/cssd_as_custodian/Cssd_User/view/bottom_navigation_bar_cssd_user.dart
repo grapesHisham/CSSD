@@ -5,6 +5,7 @@ import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/pickup_page.da
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/requests_view.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/sterilization_view.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/timeline_view.dart';
+import 'package:cssd/app/modules/login_module/view/widgets/logout_popup.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
@@ -18,7 +19,7 @@ class BottomNavigationBarDashboardCssdUser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     final mediaQuery = MediaQuery.of(context).size;
+    final mediaQuery = MediaQuery.of(context).size;
     final isMobile = mediaQuery.width <= 500;
     final dashboardProvider =
         Provider.of<DashboardController>(context, listen: false);
@@ -35,48 +36,57 @@ class BottomNavigationBarDashboardCssdUser extends StatelessWidget {
       const TimelineViewCssdCussCssdLogin()
     ];
 
-    return Scaffold(
-      bottomNavigationBar: Consumer<DashboardController>(
-          builder: (context, dashboardController, child) {
-        return CurvedNavigationBar(
-          height:isMobile ?   50 : 60,
-          backgroundColor: Colors.white,
-          color: StaticColors.scaffoldBackgroundcolor,
-          onTap: (value) {
-            onBottomItemTap(value);
-          },
-          items: const [
-            Icon(
-              FluentIcons.home_12_filled,
-              semanticLabel: 'Home',
-              color: Colors.white,
-            ),
-            Icon(
-              FluentIcons.branch_request_16_filled,
-              color: Colors.white,
-            ),
-            Icon(
-              FluentIcons.paint_brush_16_filled,
-              color: Colors.white,
-            ),
-            Icon(
-              FluentIcons.tray_item_add_20_filled,
-              color: Colors.white,
-            ),
-            Icon(
-              FluentIcons.vehicle_truck_profile_16_filled,
-              color: Colors.white,
-            ),
-            Icon(
-              FluentIcons.timeline_24_filled,
-              color: Colors.white,
-            ),
-          ],
-        );
-      }),
-      body: Consumer<DashboardController>(
-        builder: (context, dashboardController, child) =>
-            screens[dashboardController.selectedIndexBotomNav],
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) {
+          return;
+        }
+        logoutPopup(context);
+      },
+      child: Scaffold(
+        bottomNavigationBar: Consumer<DashboardController>(
+            builder: (context, dashboardController, child) {
+          return CurvedNavigationBar(
+            height: isMobile ? 50 : 60,
+            backgroundColor: Colors.white,
+            color: StaticColors.scaffoldBackgroundcolor,
+            onTap: (value) {
+              onBottomItemTap(value);
+            },
+            items: const [
+              Icon(
+                FluentIcons.home_12_filled,
+                semanticLabel: 'Home',
+                color: Colors.white,
+              ),
+              Icon(
+                FluentIcons.branch_request_16_filled,
+                color: Colors.white,
+              ),
+              Icon(
+                FluentIcons.paint_brush_16_filled,
+                color: Colors.white,
+              ),
+              Icon(
+                FluentIcons.tray_item_add_20_filled,
+                color: Colors.white,
+              ),
+              Icon(
+                FluentIcons.vehicle_truck_profile_16_filled,
+                color: Colors.white,
+              ),
+              Icon(
+                FluentIcons.timeline_24_filled,
+                color: Colors.white,
+              ),
+            ],
+          );
+        }),
+        body: Consumer<DashboardController>(
+          builder: (context, dashboardController, child) =>
+              screens[dashboardController.selectedIndexBotomNav],
+        ),
       ),
     );
   }

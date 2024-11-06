@@ -1,4 +1,5 @@
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/dashboard_controller.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/sterilization_controller.dart';
 import 'package:cssd/app/modules/login_module/controller/login_provider.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/pickup_provider.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/request_controler.dart';
@@ -30,12 +31,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        // cssd user providers
           ChangeNotifierProvider(create: (context) => LoginController()),
           ChangeNotifierProvider(create: (context) => DashboardController()),
           ChangeNotifierProvider(create: (context) => RequestControler()),
           ChangeNotifierProvider(create: (context) => SterilizationProvider()),
           ChangeNotifierProvider(create: (context) => PickupProvider()),
           ChangeNotifierProvider(create: (context) => TimelineController()),
+
+          // department user providers
+          ChangeNotifierProvider(create: (context) => SterilizationControllerCssdCussDeptUser()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(390, 844),
@@ -56,7 +61,7 @@ class MyApp extends StatelessWidget {
               color: StaticColors.scaffoldBackgroundcolor,
             ),
           ),
-          initialRoute: Routes.loginScreen,
+          initialRoute: Routes.switchBetweenCssdAndDepartment,
           
           routes: Routes.routes,
         ),

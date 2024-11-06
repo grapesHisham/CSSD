@@ -1,10 +1,12 @@
 class ApiLinks{
 
-  static String baseIp = "http://192.168.0.251:65113/api/Home/" ;
+  static String baseIp = "http://192.168.0.251:65113/api/" ;
 
-  static const String preLoginAuth = "PreLoginAuthentication";
-  static const String login = "Login";
+  //cssd user
+  static const String preLoginAuth = "Home/PreLoginAuthentication";
+  static const String login = "Home/Login";
 
-
+  //department user
+  static const String departementList = 'Department/DepartmentList';
 
 }

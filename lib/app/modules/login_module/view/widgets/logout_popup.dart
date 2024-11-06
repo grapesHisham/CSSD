@@ -13,6 +13,7 @@ Future<void> logoutPopup(BuildContext context) async {
         // create the logout function here
         // clear the local storage on logout
         
+        Navigator.pop(context);
         showSnackBar(context, "Error", "Logged out");
       },
       onCancelDefaultAction: () {

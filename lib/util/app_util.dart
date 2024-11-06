@@ -1,7 +1,9 @@
+import 'package:cssd/app/api/dio_interceptors/dio_interceptor.dart';
 import 'package:cssd/app/api/model/api_client.dart';
 import 'package:cssd/app/api/model/api_links.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class AppUtil {
   //api client
@@ -10,6 +12,36 @@ class AppUtil {
 
     Dio dioclient = Dio(BaseOptions(contentType: "application/json"));
 
+    /*if live pls comment this*/
+    dioclient.interceptors.add(PrettyDioLogger(
+        requestHeader: true,
+        requestBody: true,
+        responseBody: true,
+        responseHeader: false,
+        error: true,
+        compact: true,
+        maxWidth: 90));
+    final client = ApiClient(dioclient, baseUrl: baseUrl);
+    return client;
+  }
+
+  static Future<ApiClient> createAdminTokenApiClient() async {
+    String baseUrl = ApiLinks.baseIp;
+
+    Dio dioclient = Dio(BaseOptions(contentType: "application/json"));
+
+    dioclient.interceptors.clear();
+    /*if live pls comment this*/
+    dioclient.interceptors.addAll([
+      AdminTokenInterceptor(dioclient),
+      PrettyDioLogger(
+          requestHeader: true,
+          requestBody: true,
+          responseBody: true,
+          error: true,
+          compact: true,
+          maxWidth: 90)
+    ]);
     final client = ApiClient(dioclient, baseUrl: baseUrl);
     return client;
   }

@@ -49,6 +49,9 @@ dependencies:
   dio: ^5.7.0
   json_annotation: ^4.9.0
   shared_preferences: ^2.3.2
+  pretty_dio_logger: ^1.4.0
+  loading_animation_widget: ^1.2.0+4
+  slide_to_act: ^2.0.2 #replaced with login button remove if unnecessary
 
 dev_dependencies:
   flutter_test:

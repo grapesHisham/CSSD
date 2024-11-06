@@ -16,7 +16,7 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     // Timer(
-    //     const Duration(seconds: 4),
+    //     const Duration(seconds: 2),
     //     () => Navigator.pushNamedAndRemoveUntil(
     //           context,
     //           Routes.loginScreen,

@@ -1,9 +1,22 @@
+import 'dart:developer';
+
+import 'package:cssd/util/local_storage_manager.dart';
 import 'package:dio/dio.dart';
 
-class DioInterceptor {
+class AdminTokenInterceptor extends Interceptor {
+  final Dio dio;
+  AdminTokenInterceptor(this.dio);
 
-  // final  Dio _dio;
+  String? adminToken;
 
-
-
+  Future onRequest(
+      RequestOptions options, RequestInterceptorHandler handler) async {
+    adminToken = LocalStorageManager.getString(StorageKeys.loginToken);
+    if (adminToken != null) {
+      options.headers['Authorization'] = 'Bearer $adminToken';
+    } else {
+      log("admin token not received");
+    }
+    super.onRequest(options, handler);
+  }
 }

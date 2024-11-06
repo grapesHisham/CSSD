@@ -6,7 +6,6 @@ import 'package:cssd/Widgets/notification_icon.dart';
 import 'package:cssd/Widgets/pie_indicator.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/dashboard_controller.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/widgets/dashboard_widgets/tabbar_dashboard.dart';
-import 'package:cssd/app/modules/login_module/view/widgets/logout_popup.dart';
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/fonts.dart';
@@ -41,170 +40,161 @@ class _DashboardViewCssdCssCssdLoginState
     final dashboardProvider =
         Provider.of<DashboardController>(context, listen: false);
 
-    return PopScope(
-      onPopInvokedWithResult: (didPop, result) {
-        if (didPop) {
-          log(didPop.toString());
-          log(result.toString());
-          logoutPopup(context);
-        }
-      },
-      child: Scaffold(
-        floatingActionButton: _buildFloatingActionButton(hasPrivileges),
-        backgroundColor: StaticColors.scaffoldBackgroundcolor,
-        endDrawer: endDrawer(context),
-        body: Stack(
-          clipBehavior: Clip.none,
-          children: [
-            Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                AppBar(
-                  title: Padding(
-                    padding: const EdgeInsets.only(left: 111.0),
-                    child: Text(
-                      "Hey, Rahul",
-                      style: FontStyles.appBarTitleStyle,
-                    ),
+    return Scaffold(
+      floatingActionButton: _buildFloatingActionButton(hasPrivileges),
+      backgroundColor: StaticColors.scaffoldBackgroundcolor,
+      endDrawer: endDrawer(context),
+      body: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              AppBar(
+                title: Padding(
+                  padding: const EdgeInsets.only(left: 111.0),
+                  child: Text(
+                    "Hey, Rahul",
+                    style: FontStyles.appBarTitleStyle,
                   ),
-                  automaticallyImplyLeading: false,
-                  actions: [
-                    InkWell(
-                        onTap: () {
-                          Navigator.pushNamed(
-                              context, Routes.alertViewCssdCusCssdLogin);
-                        },
-                        child: const NotificationIcon()),
-                    const SizedBox(width: 10),
-                    Builder(
-                      builder: (context) {
-                        return IconButton(
-                          icon: const Icon(Icons.menu, size: 30),
-                          onPressed: () {
-                            Scaffold.of(context).openEndDrawer();
-                          },
-                        );
-                      },
-                    ),
-                  ],
                 ),
-                Expanded(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(25),
-                        topRight: Radius.circular(25),
-                      ),
-                      color: Colors.white,
+                automaticallyImplyLeading: false,
+                actions: [
+                  InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, Routes.alertViewCssdCusCssdLogin);
+                      },
+                      child: const NotificationIcon()),
+                  const SizedBox(width: 10),
+                  Builder(
+                    builder: (context) {
+                      return IconButton(
+                        icon: const Icon(Icons.menu, size: 30),
+                        onPressed: () {
+                          Scaffold.of(context).openEndDrawer();
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+              Expanded(
+                child: Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25),
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Align(
-                                  alignment: Alignment.topRight,
-                                  child: Text(
-                                    "Request Chart",
-                                    style: FontStyles.bodyPieTitleStyle,
-                                  )),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  height: isMobile ? 120 : 150,
-                                  width: isMobile ? 120 : 150,
-                                  child: PieChart(
-                                    PieChartData(sections: [
-                                      PieChartSectionData(
-                                        titleStyle: FontStyles
-                                            .piePercentageValueTextStyle,
-                                        value: 33,
-                                        color: StaticColors.pieRequestCount,
-                                        radius: isMobile ? 26 : 33,
-                                      ),
-                                      PieChartSectionData(
-                                        titleStyle: FontStyles
-                                            .piePercentageValueTextStyle,
-                                        value: 55,
-                                        color: StaticColors
-                                            .pieSterilizationOnProgress,
-                                        radius: isMobile ? 26 : 33,
-                                      ),
-                                      PieChartSectionData(
-                                        titleStyle: FontStyles
-                                            .piePercentageValueTextStyle,
-                                        value: 12,
-                                        color:
-                                            StaticColors.pieSterilizationComplete,
-                                        radius: isMobile ? 26 : 33,
-                                      ),
-                                    ]),
-                                  ),
-                                ),
-                                const SizedBox(width: 15),
-                                pieIndications(),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                          ],
-                        ),
-                        Expanded(
-                          child: Container(
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Today's Sterilization Requests ",
-                                      style: FontStyles.bodyPieTitleStyle,
+                            child: Align(
+                                alignment: Alignment.topRight,
+                                child: Text(
+                                  "Request Chart",
+                                  style: FontStyles.bodyPieTitleStyle,
+                                )),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: isMobile ? 120 : 150,
+                                width: isMobile ? 120 : 150,
+                                child: PieChart(
+                                  PieChartData(sections: [
+                                    PieChartSectionData(
+                                      titleStyle: FontStyles
+                                          .piePercentageValueTextStyle,
+                                      value: 33,
+                                      color: StaticColors.pieRequestCount,
+                                      radius: isMobile ? 26 : 33,
                                     ),
-                                    ButtonWidget(
-                                        borderRadius: 8,
-                                        buttonTextSize: 14,
-                                        buttonLabel: "ALL",
-                                        onPressed: () {}),
-                                  ],
+                                    PieChartSectionData(
+                                      titleStyle: FontStyles
+                                          .piePercentageValueTextStyle,
+                                      value: 55,
+                                      color: StaticColors
+                                          .pieSterilizationOnProgress,
+                                      radius: isMobile ? 26 : 33,
+                                    ),
+                                    PieChartSectionData(
+                                      titleStyle: FontStyles
+                                          .piePercentageValueTextStyle,
+                                      value: 12,
+                                      color:
+                                          StaticColors.pieSterilizationComplete,
+                                      radius: isMobile ? 26 : 33,
+                                    ),
+                                  ]),
                                 ),
-                                const Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Padding(
-                                    padding:
-                                        EdgeInsets.only(left: 8.0, bottom: 2.0),
-                                    child: Text(
-                                      "Priority : ",
-                                    ),
+                              ),
+                              const SizedBox(width: 15),
+                              pieIndications(),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                        ],
+                      ),
+                      Expanded(
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Today's Sterilization Requests ",
+                                    style: FontStyles.bodyPieTitleStyle,
+                                  ),
+                                  ButtonWidget(
+                                      borderRadius: 8,
+                                      buttonTextSize: 14,
+                                      buttonLabel: "ALL",
+                                      onPressed: () {}),
+                                ],
+                              ),
+                              const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 8.0, bottom: 2.0),
+                                  child: Text(
+                                    "Priority : ",
                                   ),
                                 ),
-                                Expanded(
-                                  child: TabBarDashboard(
-                                      dashboardProvider: dashboardProvider),
-                                ),
-                              ],
-                            ),
+                              ),
+                              Expanded(
+                                child: TabBarDashboard(
+                                    dashboardProvider: dashboardProvider),
+                              ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-            // Hovering Doctor's Profile Image
-            const Positioned(
-              top: -20,
-              left: 0,
-              child: doctorProfile(),
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+          // Hovering Doctor's Profile Image
+          const Positioned(
+            top: -20,
+            left: 0,
+            child: doctorProfile(),
+          ),
+        ],
       ),
     );
   }
@@ -235,11 +225,11 @@ class _DashboardViewCssdCssCssdLoginState
     );
   }
 
-  // //check previlege and build floating action button
+  
   Widget _buildFloatingActionButton(hasPrivileges) {
-    // Get the privilege flag value from local storage
+    
 
-    // Log the status for debugging purposes
+   
     log("Privilege Status: $hasPrivileges");
 
     // Check if the user does not have the required privilege
@@ -255,7 +245,7 @@ class _DashboardViewCssdCssCssdLoginState
         style: TextStyle(color: Colors.white),
       ),
       onPressed: () {
-        // Handle the button press action
+        Navigator.pushNamed(context, Routes.dashboardViewCssdCussDeptUser);
       },
     );
   }
