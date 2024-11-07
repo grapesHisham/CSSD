@@ -1,5 +1,4 @@
 import 'package:cssd/Widgets/button_widget.dart';
-import 'package:cssd/Widgets/custom_dialog.dart';
 import 'package:cssd/Widgets/doctorProfileImage.dart';
 import 'package:cssd/app/modules/login_module/view/widgets/logout_popup.dart';
 import 'package:cssd/util/colors.dart';
@@ -11,13 +10,14 @@ Drawer endDrawer(BuildContext context) {
     child: Column(
       children: <Widget>[
         DrawerHeader(
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             decoration: const BoxDecoration(color: Colors.white),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                doctorProfile(),
+                const DoctorProfile(
+                    imageUrl: 'assets/images/alosious edited1.png'),
                 const SizedBox(
                   width: 10,
                 ),
@@ -30,7 +30,7 @@ Drawer endDrawer(BuildContext context) {
                       "Dr. Dev",
                       style: FontStyles.bodyPieTitleStyle,
                     ), // change to logedin user name
-                    Text("SPD Technician"), // change their designation
+                    const Text("SPD Technician"), // change their designation
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,

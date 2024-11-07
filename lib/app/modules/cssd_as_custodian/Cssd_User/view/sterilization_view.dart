@@ -2,7 +2,7 @@ import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/custom_date_picker_widget.dart';
 import 'package:cssd/Widgets/custom_dialog.dart';
 import 'package:cssd/Widgets/custom_textfield.dart';
-import 'package:cssd/Widgets/endDrawer.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/endDrawer.dart';
 import 'package:cssd/Widgets/rounded_container.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/sterilization_provider.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/widgets/pickup_widgets/items_list_card_container_widget.dart';

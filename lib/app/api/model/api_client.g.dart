@@ -90,12 +90,12 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<HttpResponse<DepartmentListModel>> getDepartementList() async {
+  Future<DepartmentListModel> getDepartementList() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<DepartmentListModel>>(Options(
+    final _options = _setStreamType<DepartmentListModel>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -119,8 +119,7 @@ class _ApiClient implements ApiClient {
       errorLogger?.logError(e, s, _options);
       rethrow;
     }
-    final httpResponse = HttpResponse(_value, _result);
-    return httpResponse;
+    return _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

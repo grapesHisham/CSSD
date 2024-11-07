@@ -5,7 +5,6 @@ import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/app_util.dart';
 import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:retrofit/retrofit.dart';
 
 class LoginController extends ChangeNotifier {
   LoginController() {
@@ -53,6 +52,14 @@ class LoginController extends ChangeNotifier {
   TextEditingController loginPhoneNumberController = TextEditingController();
   TextEditingController loginHospitalNameController =
       TextEditingController(); //stores the hospital name , stores  entered id only if admin phone number
+  @override
+  void dispose() {
+    // this is not working check
+    loginPasswordController.dispose();
+    loginPhoneNumberController.dispose();
+    loginHospitalNameController.dispose();
+    super.dispose();
+  }
 
   //function to call for receiving hospitals lists
   List<Data> preLoginResponse = [];
@@ -117,18 +124,22 @@ class LoginController extends ChangeNotifier {
         LocalStorageManager.setString(
             StorageKeys.loggedinUser, response.username!);
         _privileges.clear();
-        // _privileges.addAll(response.previlages.map((privilege)=> privilege['PRIVILEGES']) );
+        // _privileges.addAll(response.previlages.map((privilege)=> privilege['PRIVILEGES']));
         // LocalStorageManager.setStringList(StorageKeys.loggedinUser, response.previlages);
         _privileges.addAll(response.getPrivileges());
         LocalStorageManager.setStringList(
             StorageKeys.loggedinUserPrivilegesList, _privileges);
         log("privileges list is : ${_privileges.toString()}");
         if (_privileges.isEmpty) {
-          //312 - cssd
-          //315 - cssd add stock
-          //316 - send to cssd
-          //317 - cssd admin
-          //318 - dept cssd report
+          /* 
+          Privileges
+          312 - cssd
+          315 - cssd add stock
+          316 - send to cssd
+          317 - cssd admin
+          318 - dept cssd report 
+          */
+
           showSnackBar(context, "Error", "You dont have CSSD privilege");
         } else if (_privileges.contains("312") && _privileges.contains("316")) {
           await LocalStorageManager.setBool(
@@ -156,9 +167,18 @@ class LoginController extends ChangeNotifier {
       } else if (response.status == 300) {
         log(response.message.toString());
         showSnackBar(context, "Error", "${response.message}");
-      } else if (_privileges.isEmpty || _privileges == []) {}
+      } 
     } catch (e) {
       log(e.toString());
     }
+  }
+
+  void logoutFunction(){
+    LocalStorageManager.clear();  // clears all values inside the local storage manager
+    log("Clearing local storage manager");
+    log(LocalStorageManager.getString(StorageKeys.loggedinUser) ?? "data null");
+    loginPasswordController.clear();
+    loginPhoneNumberController.clear();
+    loginHospitalNameController.clear();
   }
 }

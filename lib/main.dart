@@ -37,8 +37,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (context) => RequestControler()),
           ChangeNotifierProvider(create: (context) => SterilizationProvider()),
           ChangeNotifierProvider(create: (context) => PickupProvider()),
-          ChangeNotifierProvider(create: (context) => TimelineController()),
-
+          ChangeNotifierProvider(create: (context) => TimelineController()), 
           // department user providers
           ChangeNotifierProvider(create: (context) => SterilizationControllerCssdCussDeptUser()),
       ],
@@ -61,8 +60,7 @@ class MyApp extends StatelessWidget {
               color: StaticColors.scaffoldBackgroundcolor,
             ),
           ),
-          initialRoute: Routes.switchBetweenCssdAndDepartment,
-          
+          initialRoute: Routes.loginScreen,
           routes: Routes.routes,
         ),
       ),
@@ -83,6 +81,5 @@ fast run specific pages
 //           minTextAdapt: true,
 //           splitScreenMode: true,
 //           builder: (context, child) => ())));
-// }
-
+// } 
 */

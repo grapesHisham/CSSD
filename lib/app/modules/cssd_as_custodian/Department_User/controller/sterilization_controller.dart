@@ -1,78 +1,70 @@
-import 'dart:convert';
 import 'dart:developer';
-
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/department_list_model.dart';
 import 'package:cssd/util/app_util.dart';
 import 'package:flutter/material.dart';
-import 'package:retrofit/retrofit.dart';
 
 class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
   SterilizationControllerCssdCussDeptUser() {
-    deparmentList();
+    fetchDepartments();
   }
+  List<String?> departmentNames = [];
 
-  List<DepartmentListData> departments = [];
-  List<DropdownMenuEntry<dynamic>> departmentDropDownEntries = [];
-  Future<void> deparmentList() async {
-    final client = await AppUtil.createAdminTokenApiClient();
-    HttpResponse<DepartmentListModel> response =
-        await client.getDepartementList();
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
 
-    if (response.response.statusCode == 200) {
-      if (response.response.data != null) {
-        departments = response.response.data;
-        log("API response data: ${response.response.data}");
+  Future<void> fetchDepartments() async {
+    try {
+      _isLoading = true;
+      notifyListeners();
 
-        printList(departments);
-        departmentDropDownEntries = departments.map((e) {
-          return DropdownMenuEntry<dynamic>(
-            value: e.subID,
-            label: e.subName!,
-          );
-        }).toList();
-        printList("department dropdown list $departmentDropDownEntries");
-      } else {
-        departments = [];
-        log("Department list received is empty");
-      }
-    } else {
-      log("response other than 200");
+      final client = await AppUtil.createAdminTokenApiClient();
+
+      DepartmentListModel response = await client.getDepartementList();
+      departmentNames =
+          response.data!.map((department) => department.subName).toList();
+
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      _isLoading = false;
+      notifyListeners();
+      print("Error fetching departments: $e");
     }
-
-    notifyListeners();
   }
+//   List<String?> departmentNames = [];
+//   // List<DropdownMenuEntry<dynamic>> departmentDropDownEntries = [];
+//   Future<void> deparmentList() async {
+//     final client = await AppUtil.createAdminTokenApiClient();
+//     try {
+//   DepartmentListModel response = await client.getDepartementList();
+
+//   if (response.status == 200) {
+//     if (response.data != null) {
+//       departmentNames =
+//           response.data!.map((department) => department.subName).toList();
+//       log("API response data: ${response.data}");
+
+//     } else {
+//       departmentNames = [];
+//       log("Department list received is empty");
+//     }
+//   } else {
+//     log("response other than 200");
+//   }
+// } on Exception catch (e) {
+//   log(e.toString());
+// }
+
+//     notifyListeners();
+//   }
 
   void callDepartmentList() {
     //if you need to refresh department list
-    deparmentList();
+    fetchDepartments();
     notifyListeners();
   }
 
   void printList(var list) {
     log("List is : $list");
   }
-
-  // List<DropdownMenuEntry<dynamic>> departmentDropDownEntries = [];
-  // List<DepartementsData> deparmentsDataList = [];
-  // void getDepartmentsDropdown () async{
-  //   final client = await AppUtil.createAdminTokenApiClient();
-  //   String result = await client.getDepartementList();
-  //   Map<String, dynamic> fullDataList = jsonDecode(result);
-  //   Map<String, dynamic> departmentList  = {
-  //     "data" : fullDataList
-  //   };
-  //   DepartmentListModel departmentListModel =  DepartmentListModel.fromJson(departmentList);
-
-  //   deparmentsDataList.clear();
-  //   if (((departmentListModel.data) ?? []).isNotEmpty) {
-  //     deparmentsDataList.addAll(departmentListModel.data);
-  //      departmentDropDownEntries = deparmentsDataList.map((e) {
-  //           return DropdownMenuEntry<dynamic>(
-  //             value: e.subId,
-  //             label: e.subName,
-  //           );
-  //         }).toList();
-  //   }
-  // notifyListeners();
-  // }
 }

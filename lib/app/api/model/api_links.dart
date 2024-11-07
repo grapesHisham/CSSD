@@ -7,6 +7,7 @@ class ApiLinks{
   static const String login = "Home/Login";
 
   //department user
-  static const String departementList = 'Department/DepartmentList';
-
+  static const String departementList = 'Department/DepartmentList'; 
 }
+
+

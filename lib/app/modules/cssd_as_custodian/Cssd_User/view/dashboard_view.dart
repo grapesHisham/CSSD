@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/doctorProfileImage.dart';
-import 'package:cssd/Widgets/endDrawer.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/endDrawer.dart';
 import 'package:cssd/Widgets/notification_icon.dart';
 import 'package:cssd/Widgets/pie_indicator.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/dashboard_controller.dart';
@@ -25,11 +25,13 @@ class DashboardViewCssdCssCssdLogin extends StatefulWidget {
 class _DashboardViewCssdCssCssdLoginState
     extends State<DashboardViewCssdCssCssdLogin> {
   bool? hasPrivileges;
+   String? userName;
 
   @override
   void initState() {
     hasPrivileges =
         LocalStorageManager.getBool(StorageKeys.privilegeFlagCssdAndDept);
+    userName = LocalStorageManager.getString(StorageKeys.loggedinUser);
     super.initState();
   }
 
@@ -54,7 +56,7 @@ class _DashboardViewCssdCssCssdLoginState
                 title: Padding(
                   padding: const EdgeInsets.only(left: 111.0),
                   child: Text(
-                    "Hey, Rahul",
+                    "Hey, $userName",
                     style: FontStyles.appBarTitleStyle,
                   ),
                 ),
@@ -192,7 +194,7 @@ class _DashboardViewCssdCssCssdLoginState
           const Positioned(
             top: -20,
             left: 0,
-            child: doctorProfile(),
+            child: DoctorProfile(imageUrl: "assets/images/alosious edited1.png"),
           ),
         ],
       ),
@@ -227,16 +229,12 @@ class _DashboardViewCssdCssCssdLoginState
 
   
   Widget _buildFloatingActionButton(hasPrivileges) {
-    
-
-   
     log("Privilege Status: $hasPrivileges");
 
     // Check if the user does not have the required privilege
     if (!hasPrivileges) {
       return const SizedBox.shrink(); // Return an empty widget if no privileges
     }
-
     // Return the floating action button if the privilege flag is true
     return FloatingActionButton.extended(
       backgroundColor: StaticColors.scaffoldBackgroundcolor,

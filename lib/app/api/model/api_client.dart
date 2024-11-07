@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cssd/app/api/model/api_links.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/department_list_data.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/department_list_model.dart';
 import 'package:cssd/app/modules/login_module/model/login_model.dart';
 import 'package:cssd/app/modules/login_module/model/pre_login_authentication_model.dart';
@@ -23,5 +24,5 @@ abstract class ApiClient {
 
   //department user
   @GET(ApiLinks.departementList)
-  Future<HttpResponse<DepartmentListModel>> getDepartementList();
+  Future<DepartmentListModel> getDepartementList();
 }

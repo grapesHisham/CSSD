@@ -10,21 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:slide_to_act/slide_to_act.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   final loginProvider = Provider.of<LoginController>(context, listen: false);
-  //   loginProvider.loginPhoneNumberController.addListener(() {
-  //     if (loginProvider.loginPhoneNumberController.text.length == 10) {
-  //       loginProvider.submitPhoneForHospitalIds(
-  //           loginProvider.loginPhoneNumberController.text);
-  //     }
-  //   });
-  // }
+
   @override
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<LoginController>(context, listen: false);
@@ -154,7 +143,7 @@ class LoginScreen extends StatelessWidget {
                               }).toList(),
                               onChanged: (data) {
                                 if (data != null) {
-                                  log("$data");
+                                  log(data);
                                   loginController.updateSelectedHospital(data);
                                   loginController
                                       .loginHospitalNameController.text = data;
@@ -177,53 +166,32 @@ class LoginScreen extends StatelessWidget {
                             label: const Text("Password"),
                           ),
                           SizedBox(height: 30.h),
-                          //login button
-                          // ButtonWidget(
-                          //   borderRadius: 10,
-                          //   buttonColor: StaticColors.defaultButton,
-                          //   buttonLabel: "Login",
-                          //   onPressed: () {
-                          //     loginProvider.login(context);
-                          //   },
-                          // ),
-
-                          //slide to login
-                          // Padding(
-                          //   padding: const EdgeInsets.all(8.0),
-                          //   child: SlideAction(
-                          //     height: 60,
-                          //     sliderButtonIconPadding: 12,
-                          //     text: " Slide to Login",
-                          //     textStyle: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),
-                          //     textColor: Colors.white,
-                          //     outerColor: StaticColors.defaultButton,
-                          //     innerColor: Colors.white,
-                          //     sliderButtonIcon: Icon(Icons.arrow_forward,
-                          //         color: Colors.black,size: 20,),
-                          //     onSubmit: () {
-                          //       loginProvider.login(context);
-                          //     },
-                          //   ),
-                          // ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: SlideAction(
-                              text: "Slide to login",
-                              textColor: Colors.white,
-                              innerColor: Colors.white,
-                              outerColor:StaticColors.defaultButton,
-                              sliderButtonIcon: const Icon(
-                                Icons.arrow_forward,
-                                color: Colors.black,
-                              ),
-                              
-                              onSubmit: () {
-                                loginProvider.login(context);
-                              },
-                              height: 60,
-                              
-                            ),
+                          // login button
+                          ButtonWidget(
+                            borderRadius: 10,
+                            buttonColor: StaticColors.defaultButton,
+                            buttonLabel: "Login",
+                            onPressed: () {
+                              loginProvider.login(context);
+                            },
                           ),
+
+                          /*
+                          SlideAction(
+                            text: "Slide to login",
+                            textColor: Colors.white,
+                            innerColor: Colors.white,
+                            outerColor: StaticColors.defaultButton,
+                            sliderButtonIcon: const Icon(
+                              Icons.arrow_forward,
+                              color: Colors.black,
+                            ),
+                            onSubmit: () {
+                              loginProvider.login(context);
+                            },
+                            height: 60,
+                          ),
+                           */
                         ],
                       );
                     }),
