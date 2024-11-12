@@ -6,6 +6,14 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
+   /*  
+   
+   Size mediaQuery = MediaQuery.of(context).size; 
+   
+   */
+
+
+
 class AppUtil {
   //api client
   static Future<ApiClient> createApiClient() async {
@@ -26,7 +34,7 @@ class AppUtil {
     return client;
   }
 
-  static Future<ApiClient> createAdminTokenApiClient() async {
+  /* static Future<ApiClient> createAdminTokenApiClient() async {
     String baseUrl = ApiLinks.baseIp;
 
     Dio dioclient = Dio(BaseOptions(contentType: "application/json"));
@@ -45,7 +53,7 @@ class AppUtil {
     ]);
     final client = ApiClient(dioclient, baseUrl: baseUrl);
     return client;
-  }
+  } */
 }
 
 showSnackBar(BuildContext c, String type, String msg) {

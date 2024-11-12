@@ -90,19 +90,19 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<DepartmentListModel> getDepartementList() async {
+  Future<GetDepartmentListModel> getDepartementListData() async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<DepartmentListModel>(Options(
+    final _options = _setStreamType<GetDepartmentListModel>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          'Department/DepartmentList',
+          'DepartmentList',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -112,9 +112,48 @@ class _ApiClient implements ApiClient {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late DepartmentListModel _value;
+    late GetDepartmentListModel _value;
     try {
-      _value = DepartmentListModel.fromJson(_result.data!);
+      _value = GetDepartmentListModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<GetItemNameModel> getItemName(
+    String department,
+    String itemname,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'department': department,
+      r'itemname': itemname,
+    };
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<GetItemNameModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'GetItemName',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late GetItemNameModel _value;
+    try {
+      _value = GetItemNameModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-class dropDownWithSearchFiltering extends StatelessWidget {
+class DropDownWithSearchFiltering extends StatelessWidget {
   final GlobalKey textFieldKey = GlobalKey();
-  dropDownWithSearchFiltering({
+  DropDownWithSearchFiltering({
     super.key,
     required this.mediaQuery,
     required this.requestControler,

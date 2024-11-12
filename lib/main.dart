@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
               color: StaticColors.scaffoldBackgroundcolor,
             ),
           ),
-          initialRoute: Routes.loginScreen,
+          initialRoute: Routes.splashScreen,
           routes: Routes.routes,
         ),
       ),

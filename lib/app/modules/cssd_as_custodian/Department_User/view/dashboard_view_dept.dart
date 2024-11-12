@@ -108,7 +108,7 @@ class _DashboardViewCssdCussDeptUserState
                   ),
                 ],
               )),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               Wrap(
                 runAlignment: WrapAlignment.start,
                 crossAxisAlignment: WrapCrossAlignment.start,

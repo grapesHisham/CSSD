@@ -16,6 +16,7 @@ class CustomDropDownMenuWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownMenu(
+      menuHeight: 230 ,
         width: dropDownWidth,
         label: Text(label),
         inputDecorationTheme: InputDecorationTheme(

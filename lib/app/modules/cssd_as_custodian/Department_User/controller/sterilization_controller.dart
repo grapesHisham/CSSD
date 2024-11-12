@@ -1,70 +1,72 @@
 import 'dart:developer';
-import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/department_list_model.dart';
-import 'package:cssd/util/app_util.dart';
+import 'package:cssd/app/api/dio_interceptors/dio_interceptor.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/department_list_model.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/items_list_model.dart';
 import 'package:flutter/material.dart';
 
 class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
-  SterilizationControllerCssdCussDeptUser() {
-    fetchDepartments();
-  }
-  List<String?> departmentNames = [];
+  SterilizationControllerCssdCussDeptUser();
+
+  TextEditingController remarksController = TextEditingController();
+  TextEditingController quantityController = TextEditingController();
+  TextEditingController itemNameController = TextEditingController();
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
-
-  Future<void> fetchDepartments() async {
+  //department dropdown fetch
+  List<GetDepartmentListModelData> _departmentDropdownItems = [];
+  List<GetDepartmentListModelData> get departmentDropdownItems =>
+      _departmentDropdownItems;
+  Future<void> departmentDropdownFunction() async {
+    _departmentDropdownItems.clear();
+    final client = await DioUtilAuthorized.createApiClient();
     try {
       _isLoading = true;
       notifyListeners();
+      final resposne = await client.getDepartementListData();
+      if (resposne.status == 200) {
+        _departmentDropdownItems = resposne.data ?? [];
+        _isLoading = false;
 
-      final client = await AppUtil.createAdminTokenApiClient();
+        notifyListeners();
+      } else {
+        _isLoading = false;
+        log("status code !200  :  ${resposne.message}");
+      }
+    } catch (e) {
+      log("exception : $e");
+    }
+  }
 
-      DepartmentListModel response = await client.getDepartementList();
-      departmentNames =
-          response.data!.map((department) => department.subName).toList();
+  // current selected department
+  String _selectedDepartment = '';
+  String get selectedDepartment => _selectedDepartment;
+  set setSelectedDepartment(String value) {
+    log("Currently selected department : $value");
+    if (_selectedDepartment != value) {
+      _selectedDepartment = value;
+    }
+  }
 
+  //fetch items list for department
+  final List<GetItemNameModelData> _itemsList = [];
+  List<GetItemNameModelData> get itemsList => _itemsList;
+   List<String> _itemsNames = [];
+  List<String> get itemsNames => _itemsNames;
+
+  Future<void> fetchItems(String itemname) async {
+    _itemsList.clear();
+    final client = await DioUtilAuthorized.createApiClient();
+    try {
+      _isLoading = true;
+      notifyListeners();
+      final response = await client.getItemName(_selectedDepartment, itemname);
+      _itemsList.addAll(response.data ?? []);
+      _itemsNames = _itemsList.map((item) => item.productName ?? '').toList();
       _isLoading = false;
       notifyListeners();
     } catch (e) {
-      _isLoading = false;
-      notifyListeners();
-      print("Error fetching departments: $e");
+      log("exception : $e");
     }
-  }
-//   List<String?> departmentNames = [];
-//   // List<DropdownMenuEntry<dynamic>> departmentDropDownEntries = [];
-//   Future<void> deparmentList() async {
-//     final client = await AppUtil.createAdminTokenApiClient();
-//     try {
-//   DepartmentListModel response = await client.getDepartementList();
-
-//   if (response.status == 200) {
-//     if (response.data != null) {
-//       departmentNames =
-//           response.data!.map((department) => department.subName).toList();
-//       log("API response data: ${response.data}");
-
-//     } else {
-//       departmentNames = [];
-//       log("Department list received is empty");
-//     }
-//   } else {
-//     log("response other than 200");
-//   }
-// } on Exception catch (e) {
-//   log(e.toString());
-// }
-
-//     notifyListeners();
-//   }
-
-  void callDepartmentList() {
-    //if you need to refresh department list
-    fetchDepartments();
-    notifyListeners();
-  }
-
-  void printList(var list) {
-    log("List is : $list");
   }
 }

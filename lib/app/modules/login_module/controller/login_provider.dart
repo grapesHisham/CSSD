@@ -124,8 +124,7 @@ class LoginController extends ChangeNotifier {
         LocalStorageManager.setString(
             StorageKeys.loggedinUser, response.username!);
         _privileges.clear();
-        // _privileges.addAll(response.previlages.map((privilege)=> privilege['PRIVILEGES']));
-        // LocalStorageManager.setStringList(StorageKeys.loggedinUser, response.previlages);
+
         _privileges.addAll(response.getPrivileges());
         LocalStorageManager.setStringList(
             StorageKeys.loggedinUserPrivilegesList, _privileges);
@@ -146,7 +145,7 @@ class LoginController extends ChangeNotifier {
               StorageKeys.privilegeFlagCssdAndDept, true);
           Navigator.pushNamedAndRemoveUntil(
               context,
-              Routes.bottomNavBarDashboardCssdUser,
+              Routes.switchBetweenCssdAndDepartment,
               (Route<dynamic> route) => false);
         } else if (_privileges.contains("312")) {
           await LocalStorageManager.setBool(
@@ -167,14 +166,15 @@ class LoginController extends ChangeNotifier {
       } else if (response.status == 300) {
         log(response.message.toString());
         showSnackBar(context, "Error", "${response.message}");
-      } 
+      }
     } catch (e) {
       log(e.toString());
     }
   }
 
-  void logoutFunction(){
-    LocalStorageManager.clear();  // clears all values inside the local storage manager
+  void logoutFunction() {
+    LocalStorageManager
+        .clear(); // clears all values inside the local storage manager
     log("Clearing local storage manager");
     log(LocalStorageManager.getString(StorageKeys.loggedinUser) ?? "data null");
     loginPasswordController.clear();
