@@ -6,7 +6,6 @@ import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/hex_to_color_with_opacity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:pushable_button/pushable_button.dart';
 
 class SwitchBetweenCssdAndDepartment extends StatelessWidget {
   const SwitchBetweenCssdAndDepartment({super.key});
@@ -32,60 +31,117 @@ class SwitchBetweenCssdAndDepartment extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                PushableButton(
-                  elevation: 8,
-                  hslColor: HSLColor.fromColor(
-                      hexToColorWithOpacity(hexColor: "#38D582")),
-                  height: 140,
-                  onPressed: () {
-                    Timer(const Duration(milliseconds: 200), () {
-                      Navigator.pushNamedAndRemoveUntil(
+                // PushableButton(
+                //   elevation: 8,
+                //   hslColor: HSLColor.fromColor(
+                //       hexToColorWithOpacity(hexColor: "#38D582")),
+                //   height: 140,
+                //   onPressed: () {
+                //     Timer(const Duration(milliseconds: 200), () {
+                //       Navigator.pushNamedAndRemoveUntil(
+                //           context,
+                //           Routes.bottomNavBarDashboardCssdUser,
+                //           (Route route) => false);
+                //     });
+                //   },
+                //   child: const Text(
+                //     "CSSD User",
+                //     style: TextStyle(
+                //         color: Colors.white,
+                //         fontSize: 22,
+                //         fontWeight: FontWeight.bold),
+                //   ),
+                // ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    AnimatedHoverButton(
+                      ontap: () {
+                        /*  Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            Routes.bottomNavBarDashboardCssdUser,
+                            (Route route) => false); */
+                        Navigator.pushNamed(
                           context,
                           Routes.bottomNavBarDashboardCssdUser,
-                          (Route route) => false);
-                    });
-                  },
-                  child: const Text(
-                    "CSSD User",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-                AnimatedHoverButton(
-                  backgroundColor: hexToColorWithOpacity(hexColor: "356745"),
-                  hoverColor: Colors.grey,
-                  borderRadius: BorderRadius.circular(10),
-                  buttonContent: Container(
-                    color: Colors.amber,
-                  ),
-                  containerHeight: 140,
-                ),
-                SizedBox(
-                  height: 20.h,
-                ),
-                PushableButton(
-                  elevation: 8,
-                  hslColor: HSLColor.fromColor(
-                      hexToColorWithOpacity(hexColor: "#38D582")),
-                  height: 140,
-                  onPressed: () {
-                    Timer(const Duration(milliseconds: 200), () {
-                      Navigator.pushNamedAndRemoveUntil(
+                        );
+                      },
+                      backgroundColor:
+                          hexToColorWithOpacity(hexColor: "356745"),
+                      hoverColor: Colors.grey,
+                      borderRadius: BorderRadius.circular(10),
+                      buttonContent: Container(
+                        color: Colors.transparent,
+                        child: const Center(
+                          child: Text(
+                            "CSSD User",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      containerHeight: 100,
+                      containerWidth: 130,
+                    ),
+                    SizedBox(
+                      width: 20.w,
+                    ),
+                    AnimatedHoverButton(
+                      ontap: () {
+                        /* Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            Routes.dashboardViewCssdCussDeptUser,
+                            (Route route) => false); */
+                        Navigator.pushNamed(
                           context,
                           Routes.dashboardViewCssdCussDeptUser,
-                          (Route route) => false);
-                    });
-                  },
-                  child: const Text(
-                    "Department User",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold),
-                  ),
-                )
+                        );
+                      },
+                      backgroundColor:
+                          hexToColorWithOpacity(hexColor: "356745"),
+                      hoverColor: Colors.grey,
+                      borderRadius: BorderRadius.circular(10),
+                      buttonContent: Container(
+                        color: Colors.transparent,
+                        child: const Center(
+                          child: Text(
+                            "Department User",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      containerHeight: 100,
+                      containerWidth: 130,
+                    )
+                  ],
+                ),
+
+                // PushableButton(
+                //   elevation: 8,
+                //   hslColor: HSLColor.fromColor(
+                //       hexToColorWithOpacity(hexColor: "#38D582")),
+                //   height: 140,
+                //   onPressed: () {
+                //     Timer(const Duration(milliseconds: 200), () {
+                //       Navigator.pushNamedAndRemoveUntil(
+                //           context,
+                //           Routes.dashboardViewCssdCussDeptUser,
+                //           (Route route) => false);
+                //     });
+                //   },
+                //   child: const Text(
+                //     "Department User",
+                //     style: TextStyle(
+                //         color: Colors.white,
+                //         fontSize: 22,
+                //         fontWeight: FontWeight.bold),
+                //   ),
+                // )
                 // PromoCard(
                 //   cssdNetworkImage: true,
                 //   deptNetworkImage: false,

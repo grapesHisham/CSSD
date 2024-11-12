@@ -200,7 +200,7 @@ class LoginScreen extends StatelessWidget {
                                 showSnackBarNoContext(
                                     isError: true,
                                     msg: "Enter details to login");
-                              }
+                              } 
                               loginProvider.login(context);
                             },
                           ),
