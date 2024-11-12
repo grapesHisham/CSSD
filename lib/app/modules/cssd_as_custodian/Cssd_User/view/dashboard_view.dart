@@ -243,7 +243,7 @@ class _DashboardViewCssdCssCssdLoginState
         style: TextStyle(color: Colors.white),
       ),
       onPressed: () {
-        Navigator.pushNamed(context, Routes.dashboardViewCssdCussDeptUser);
+        Navigator.pushNamedAndRemoveUntil(context, Routes.dashboardViewCssdCussDeptUser, (Route route)=> false);
       },
     );
   }

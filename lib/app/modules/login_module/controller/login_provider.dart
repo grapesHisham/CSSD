@@ -51,13 +51,22 @@ class LoginController extends ChangeNotifier {
   TextEditingController loginPasswordController = TextEditingController();
   TextEditingController loginPhoneNumberController = TextEditingController();
   TextEditingController loginHospitalNameController =
-      TextEditingController(); //stores the hospital name , stores  entered id only if admin phone number
+  TextEditingController(); //stores the hospital name , stores entered id only if admin phone number
+
+  //focus node 
+  final FocusNode focusNodePhone = FocusNode();
+  final FocusNode focusNodeHospitalName = FocusNode();
+  final FocusNode focusNodePassword = FocusNode();
+
   @override
   void dispose() {
     // this is not working check
     loginPasswordController.dispose();
     loginPhoneNumberController.dispose();
     loginHospitalNameController.dispose();
+    focusNodePhone.dispose();
+    focusNodeHospitalName.dispose();
+    focusNodePassword.dispose();
     super.dispose();
   }
 
@@ -90,6 +99,13 @@ class LoginController extends ChangeNotifier {
         _isAdmin = false;
         notifyListeners();
         log("Status 300 : ${response.message}");
+      } else if (response.status == 404) {
+        //invalid user
+        _preLoginResponseDataReceived = false;
+        _isAdmin = false;
+        notifyListeners();
+        log("Status 300 : ${response.message}");
+        showSnackBarNoContext(isError: true, msg: "${response.message}");
       }
 
       _isLoading = false;
@@ -99,11 +115,11 @@ class LoginController extends ChangeNotifier {
 
       _preLoginResponseDataReceived = false;
 
-      log("$e");
+      log("exception : $e");
     }
   }
 
-  List<String> _privileges = [];
+  final List<String> _privileges = [];
 
   List<String> get privileges => _privileges;
   // function to login
@@ -139,7 +155,7 @@ class LoginController extends ChangeNotifier {
           318 - dept cssd report 
           */
 
-          showSnackBar(context, "Error", "You dont have CSSD privilege");
+          showSnackBarNoContext(isError: true, msg: "You dont have Privilege");
         } else if (_privileges.contains("312") && _privileges.contains("316")) {
           await LocalStorageManager.setBool(
               StorageKeys.privilegeFlagCssdAndDept, true);
@@ -164,8 +180,28 @@ class LoginController extends ChangeNotifier {
         }
         log("prefs - login token : ${LocalStorageManager.getString(StorageKeys.loginToken)}");
       } else if (response.status == 300) {
+        // check password
         log(response.message.toString());
-        showSnackBar(context, "Error", "${response.message}");
+        showSnackBar(
+            context: context,
+            errorHead: "${response.message}",
+            isError: true,
+            msg: "Check credentials");
+      } else if (response.status == 500) {
+        log(response.message.toString());
+        showSnackBar(
+            context: context,
+            errorHead: "Network Error",
+            isError: true,
+            msg: "${response.message}");
+      } else if (response.status == 404) {
+        // invalid user
+        log(response.message.toString());
+        showSnackBar(
+            context: context,
+            errorHead: "User Not Found",
+            isError: true,
+            msg: "${response.message}");
       }
     } catch (e) {
       log(e.toString());

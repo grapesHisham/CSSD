@@ -17,7 +17,9 @@ class CustomTextFormField extends StatelessWidget {
   final Size? textFieldSize;
   final BorderRadius borderRadius;
   final int? maxLendgth;
+  final FocusNode? focusNode;
   final Function(String)? onChanged;
+  final void Function(String)? onFieldSubmitted;
 
   const CustomTextFormField(
       {super.key,
@@ -36,7 +38,8 @@ class CustomTextFormField extends StatelessWidget {
       this.borderRadius = const BorderRadius.all(Radius.circular(10)),
       this.maxLendgth,
       this.onChanged,
-      this.isReadOnly});
+      this.isReadOnly,
+      this.focusNode, this.onFieldSubmitted});
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +49,8 @@ class CustomTextFormField extends StatelessWidget {
         maxWidth: textFieldSize?.width ?? double.infinity,
       ),
       child: TextFormField(
+        onFieldSubmitted: onFieldSubmitted,
+        focusNode: focusNode,
         readOnly: isReadOnly ?? false,
         onChanged: onChanged,
         maxLength: maxLendgth,
@@ -56,6 +61,7 @@ class CustomTextFormField extends StatelessWidget {
         decoration: InputDecoration(
           counterText: '', //shows the count of maxlength , disbling it 4 now
           suffixIcon: suffix,
+
           label: label,
           labelText: labelText,
           hintText: hintText,
@@ -68,6 +74,7 @@ class CustomTextFormField extends StatelessWidget {
                   ),
                 )
               : null,
+
           border: textfieldBorder == false
               ? InputBorder.none
               : OutlineInputBorder(

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cssd/app/api/model/api_client.dart';
 import 'package:cssd/app/api/model/api_links.dart';
+import 'package:cssd/util/app_util.dart';
 import 'package:cssd/util/local_storage_manager.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:dio/dio.dart';
@@ -37,7 +38,8 @@ class DioUtilAuthorized {
         InterceptorsWrapper(
           onRequest: (options, handler) async {
             options.headers['accept'] = "*/*";
-            String? token = LocalStorageManager.getString(StorageKeys.loginToken);
+            String? token =
+                LocalStorageManager.getString(StorageKeys.loginToken);
             if (token != null) {
               options.headers['Authorization'] = 'Bearer $token';
             } else {
@@ -48,8 +50,14 @@ class DioUtilAuthorized {
           onError: (error, handler) async {
             if (error.response?.statusCode == 401) {
               log('Authorization failed: ${error.response?.statusCode}');
-            } else if (error.type == DioExceptionType.connectionTimeout) {
-              log('Connection timed out');
+            }
+            if (error.type == DioExceptionType.connectionError ||
+                error.type == DioExceptionType.connectionTimeout) {
+              log('Connection error or timeout');
+              // Show Snackbar with connection error message
+              showSnackBarNoContext(
+                  isError: true,
+                  msg: "No internet connection or connection timeout");
             } else if (error.error == 'No internet connection') {
               log('No internet connection');
             } else {

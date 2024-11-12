@@ -1,10 +1,10 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageKeys {
-  static const String loginToken = "loginToken";
-  static const String loggedinUser = "loggedinUser";
-  static const String loggedinUserPrivilegesList= "loggedinUserPrivileges";
-  static const String privilegeFlagCssdAndDept= "privilegeFlagCssdAndDept";
+  static const String loginToken = "loginToken"; //store token string
+  static const String loggedinUser = "loggedinUser"; //store user name string
+  static const String loggedinUserPrivilegesList= "loggedinUserPrivileges"; //store user privileges list string
+  static const String privilegeFlagCssdAndDept= "privilegeFlagCssdAndDept"; //store user privileges flag bool 
 }
  
 class LocalStorageManager {

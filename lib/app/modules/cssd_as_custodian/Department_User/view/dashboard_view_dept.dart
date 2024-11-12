@@ -164,7 +164,7 @@ class _DashboardViewCssdCussDeptUserState
         style: TextStyle(color: Colors.white),
       ),
       onPressed: () {
-        Navigator.pushNamed(context, Routes.dashboardViewCssdCssCssdLogin);
+        Navigator.pushNamedAndRemoveUntil(context, Routes.bottomNavBarDashboardCssdUser ,(Route route)=> false);
       },
     );
   }

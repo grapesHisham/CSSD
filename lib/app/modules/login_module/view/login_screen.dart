@@ -5,6 +5,7 @@ import 'package:cssd/Widgets/custom_textfield.dart';
 import 'package:cssd/Widgets/login_widgets/cssd_transparent_title_card.dart';
 import 'package:cssd/Widgets/transparent_blur_conatiner.dart';
 import 'package:cssd/app/modules/login_module/controller/login_provider.dart';
+import 'package:cssd/util/app_util.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,11 +58,16 @@ class LoginScreen extends StatelessWidget {
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
+                          // Phone number
                           CustomTextFormField(
+                            focusNode: loginController.focusNodePhone,
                             onChanged: (value) {
                               if (value.length == 10) {
                                 loginProvider.submitPhoneForHospitalIds(
                                     value, context);
+                                FocusScope.of(context).requestFocus(
+                                    loginController.focusNodeHospitalName);
+                                /* FocusManager.instance.primaryFocus?.unfocus(); */
                               }
                             },
                             maxLendgth: 10,
@@ -72,9 +78,15 @@ class LoginScreen extends StatelessWidget {
                             keyboardType: TextInputType.number,
                           ),
                           SizedBox(height: 20.h),
+                          //drop down for hospital lists
                           Visibility(
                             visible: loginController.isAdmin ? false : true,
                             replacement: CustomTextFormField(
+                              onFieldSubmitted: (value) {
+                                FocusScope.of(context).requestFocus(
+                                    loginController.focusNodePassword);
+                              },
+                              focusNode: loginController.focusNodeHospitalName,
                               controller:
                                   loginController.loginHospitalNameController,
                               hintText: loginController
@@ -147,21 +159,28 @@ class LoginScreen extends StatelessWidget {
                                   loginController.updateSelectedHospital(data);
                                   loginController
                                       .loginHospitalNameController.text = data;
-                                  loginProvider.submitPhoneForHospitalIds(
-                                      data, context);
                                   log(data);
                                 }
                               },
                             ),
                           ),
                           SizedBox(height: 20.h),
+                          //password field
                           CustomTextFormField(
+                            focusNode: loginController.focusNodePassword,
+                            suffix: IconButton(
+                                onPressed: () {
+                                  loginController.toggleObscureText(
+                                      !loginController.obscureText);
+                                },
+                                icon: loginController.obscureText
+                                    ? Icon(
+                                        Icons.visibility_off,
+                                        color: Colors.grey.shade300,
+                                      )
+                                    : Icon(Icons.visibility)),
                             controller: loginController.loginPasswordController,
                             prefixIcon: Icons.password,
-                            prefixIconOnTap: () {
-                              loginController.toggleObscureText(
-                                  !loginController.obscureText);
-                            },
                             obscureText: loginController.obscureText,
                             label: const Text("Password"),
                           ),
@@ -172,6 +191,16 @@ class LoginScreen extends StatelessWidget {
                             buttonColor: StaticColors.defaultButton,
                             buttonLabel: "Login",
                             onPressed: () {
+                              if (loginController.loginPhoneNumberController
+                                      .text.isEmpty ||
+                                  loginController.loginHospitalNameController
+                                      .text.isEmpty ||
+                                  loginController
+                                      .loginPasswordController.text.isEmpty) {
+                                showSnackBarNoContext(
+                                    isError: true,
+                                    msg: "Enter details to login");
+                              }
                               loginProvider.login(context);
                             },
                           ),

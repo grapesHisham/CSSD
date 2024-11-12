@@ -19,10 +19,13 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocalStorageManager.init();
   runApp(DevicePreview(
-    enabled: !kReleaseMode,
+    // enabled: !kReleaseMode,
+    enabled: false,
     builder: (context) => MyApp(),
   ));
 }
+
+final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -46,6 +49,7 @@ class MyApp extends StatelessWidget {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) => MaterialApp(
+          scaffoldMessengerKey: scaffoldMessengerKey,
           debugShowCheckedModeBanner: false,
           useInheritedMediaQuery: true,
           locale: DevicePreview.locale(context),

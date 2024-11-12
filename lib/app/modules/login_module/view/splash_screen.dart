@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/colors.dart';
+import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -15,14 +17,51 @@ class Splash extends StatefulWidget {
 class _SplashState extends State<Splash> {
   @override
   void initState() {
-    Timer(
-        const Duration(milliseconds: 600),
-        () => Navigator.pushNamedAndRemoveUntil(
-              context,
-              Routes.loginScreen,
-              (route) => false,
-            ));
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await checkIfAlreadyLoggedin();
+    });
+
     super.initState();
+  }
+
+  Future<void> checkIfAlreadyLoggedin() async {
+    final bool? hasPrivileges =
+        LocalStorageManager.getBool(StorageKeys.privilegeFlagCssdAndDept);
+    final String? currentToken =
+        LocalStorageManager.getString(StorageKeys.loginToken);
+    final List<String> privilegesList = LocalStorageManager.getStringList(
+            StorageKeys.loggedinUserPrivilegesList) ??
+        [];
+    if (currentToken != null) {
+      log("Token exists $currentToken");
+      log("Previleges for the user : $hasPrivileges");
+      if (privilegesList.contains("312") && privilegesList.contains("316")) {
+        Navigator.pushNamedAndRemoveUntil(context,Routes.switchBetweenCssdAndDepartment,(Route<dynamic> route) => false);
+        /* Navigator.pushNamedAndRemoveUntil(context,Routes.bottomNavBarDashboardCssdUser,(Route<dynamic> route) => false); */
+      } else if (privilegesList.contains("312")) {
+        LocalStorageManager.setBool(
+            StorageKeys.privilegeFlagCssdAndDept, false);
+        Navigator.pushNamedAndRemoveUntil(
+            context,
+            Routes.bottomNavBarDashboardCssdUser,
+            (Route<dynamic> route) => false);
+      } else if (privilegesList.contains("316")) {
+        LocalStorageManager.setBool(
+            StorageKeys.privilegeFlagCssdAndDept, false);
+        Navigator.pushNamedAndRemoveUntil(
+            context,
+            Routes.dashboardViewCssdCussDeptUser,
+            (Route<dynamic> route) => false);
+      }
+    } else if (currentToken == null) {
+      Timer(
+          const Duration(seconds: 1),
+          () => Navigator.pushNamedAndRemoveUntil(
+                context,
+                Routes.loginScreen,
+                (route) => false,
+              ));
+    }
   }
 
   @override

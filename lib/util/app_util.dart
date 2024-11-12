@@ -1,18 +1,19 @@
+import 'dart:developer';
+
 import 'package:cssd/app/api/dio_interceptors/dio_interceptor.dart';
 import 'package:cssd/app/api/model/api_client.dart';
 import 'package:cssd/app/api/model/api_links.dart';
+import 'package:cssd/main.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
-   /*  
+/*  
    
    Size mediaQuery = MediaQuery.of(context).size; 
    
    */
-
-
 
 class AppUtil {
   //api client
@@ -56,10 +57,14 @@ class AppUtil {
   } */
 }
 
-showSnackBar(BuildContext c, String type, String msg) {
-  return ScaffoldMessenger.of(c).showSnackBar(SnackBar(
+showSnackBar(
+    {required BuildContext context,
+    required bool isError,
+    required String msg,
+    String? errorHead}) {
+  return ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       duration: const Duration(milliseconds: 1250),
-      backgroundColor: type == "Error"
+      backgroundColor: isError == true
           ? StaticColors.requestContainerNumberBackground
           : const Color.fromARGB(255, 38, 80, 39),
       content: Column(
@@ -76,21 +81,37 @@ showSnackBar(BuildContext c, String type, String msg) {
               const SizedBox(
                 width: 10,
               ),
-              Text(type == "Error" ? "Error" : type,
-                  style: TextStyle(
+              Text(isError == true ? errorHead ?? "" : "Error" ,
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Colors.white,
                   )),
             ],
           ),
-          Text("$msg",
-              style: TextStyle(
+          Text(msg,
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
                 color: Colors.white,
               ))
         ],
       )));
+}
+
+void showSnackBarNoContext({
+  required bool isError,
+  required String msg,
+}) {
+  final scaffoldMessenger = scaffoldMessengerKey.currentState;
+  if (scaffoldMessenger != null) {
+    scaffoldMessenger.showSnackBar(SnackBar(
+      content: Text(msg),
+      backgroundColor: isError == true ? Colors.red : Colors.green,
+      duration: const Duration(seconds: 3),
+    ));
+  } else {
+    log("ScaffoldMessenger is not available.");
+  }
 }
 
 void showToast(BuildContext context, String message) {
