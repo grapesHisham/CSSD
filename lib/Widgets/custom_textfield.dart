@@ -17,6 +17,9 @@ class CustomTextFormField extends StatelessWidget {
   final Size? textFieldSize;
   final BorderRadius borderRadius;
   final int? maxLendgth;
+  final int? minLines;
+  final int? maxLines;
+
   final FocusNode? focusNode;
   final Function(String)? onChanged;
   final void Function(String)? onFieldSubmitted;
@@ -39,7 +42,10 @@ class CustomTextFormField extends StatelessWidget {
       this.maxLendgth,
       this.onChanged,
       this.isReadOnly,
-      this.focusNode, this.onFieldSubmitted});
+      this.focusNode,
+      this.onFieldSubmitted,
+      this.minLines,
+      this.maxLines});
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +55,8 @@ class CustomTextFormField extends StatelessWidget {
         maxWidth: textFieldSize?.width ?? double.infinity,
       ),
       child: TextFormField(
+        minLines: minLines,
+        maxLines: maxLines,
         onFieldSubmitted: onFieldSubmitted,
         focusNode: focusNode,
         readOnly: isReadOnly ?? false,

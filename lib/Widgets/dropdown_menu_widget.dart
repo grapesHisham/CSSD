@@ -16,13 +16,19 @@ class CustomDropDownMenuWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownMenu(
-      menuHeight: 230 ,
+        menuHeight: 230,
         width: dropDownWidth,
         label: Text(label),
         inputDecorationTheme: InputDecorationTheme(
-            border:
-                OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        ),
         dropdownMenuEntries: dropdownMenuEntries,
+        trailingIcon: const Padding(
+          padding: EdgeInsets.only(right: 0),
+          child: Icon(Icons.arrow_drop_down),
+        ),
         onSelected: onSelected);
   }
 }

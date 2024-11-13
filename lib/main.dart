@@ -19,13 +19,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocalStorageManager.init();
   runApp(DevicePreview(
-    // enabled: !kReleaseMode,
+    /* enabled: !kReleaseMode, */
     enabled: false,
     builder: (context) => MyApp(),
   ));
 }
 
-final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -35,14 +36,15 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         // cssd user providers
-          ChangeNotifierProvider(create: (context) => LoginController()),
-          ChangeNotifierProvider(create: (context) => DashboardController()),
-          ChangeNotifierProvider(create: (context) => RequestControler()),
-          ChangeNotifierProvider(create: (context) => SterilizationProvider()),
-          ChangeNotifierProvider(create: (context) => PickupProvider()),
-          ChangeNotifierProvider(create: (context) => TimelineController()), 
-          // department user providers
-          ChangeNotifierProvider(create: (context) => SterilizationControllerCssdCussDeptUser()),
+        ChangeNotifierProvider(create: (context) => LoginController()),
+        ChangeNotifierProvider(create: (context) => DashboardController()),
+        ChangeNotifierProvider(create: (context) => RequestControler()),
+        ChangeNotifierProvider(create: (context) => SterilizationProvider()),
+        ChangeNotifierProvider(create: (context) => PickupProvider()),
+        ChangeNotifierProvider(create: (context) => TimelineController()),
+        // department user providers
+        ChangeNotifierProvider(
+            create: (context) => SterilizationControllerCssdCussDeptUser()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(390, 844),
@@ -64,7 +66,8 @@ class MyApp extends StatelessWidget {
               color: StaticColors.scaffoldBackgroundcolor,
             ),
           ),
-          initialRoute: Routes.splashScreen,
+          initialRoute: Routes
+              .sterilizationRequestViewCssdCussDeptUser, //change the init function inside splash screen view when changing back to splash screen as initial route
           routes: Routes.routes,
         ),
       ),

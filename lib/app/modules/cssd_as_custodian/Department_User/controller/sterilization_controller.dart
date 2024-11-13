@@ -9,10 +9,24 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
 
   TextEditingController remarksController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
-  TextEditingController itemNameController = TextEditingController();
-
+  // TextEditingController itemNameController = TextEditingController();
   bool _isLoading = false;
   bool get isLoading => _isLoading;
+
+  //list of map for items and its quantity to display on gridview builder while adding items
+  final List<Map<String, dynamic>> _selectedItemsQuantity = [];
+  List<Map<String, dynamic>> get getSelectedItemsQuantity =>
+      _selectedItemsQuantity;
+
+  // when selecting item from items dropdown
+  String _selectedItemDropdown = "";
+  String get getSelectedItemDropdown => _selectedItemDropdown;
+
+  set setSelectedItemDropdown(String value) {
+    _selectedItemDropdown = value;
+    log("Selected dropdown value changed: $_selectedItemDropdown");
+  }
+
   //department dropdown fetch
   List<GetDepartmentListModelData> _departmentDropdownItems = [];
   List<GetDepartmentListModelData> get departmentDropdownItems =>
@@ -51,7 +65,7 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
   //fetch items list for department
   final List<GetItemNameModelData> _itemsList = [];
   List<GetItemNameModelData> get itemsList => _itemsList;
-   List<String> _itemsNames = [];
+  List<String> _itemsNames = [];
   List<String> get itemsNames => _itemsNames;
 
   Future<void> fetchItems(String itemname) async {
@@ -68,5 +82,18 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
     } catch (e) {
       log("exception : $e");
     }
+  }
+
+  void clearInputs() {
+    //to clear the values inside the text fields - items and quantity , after adding it to gridview builder
+   /*  // setSelectedItemDropdown = "";  clearing selected item creates a bug of not able to add the same item again to the list consecutively */
+    quantityController.clear();
+  }
+
+  void addItemsToGrid(String itemName, String quantity) {
+    // adding items to list of map
+    _selectedItemsQuantity.add({"itemName": itemName, "quantity": quantity});
+    log(_selectedItemsQuantity.toString());
+    notifyListeners();
   }
 }
