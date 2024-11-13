@@ -205,6 +205,7 @@ class LoginController extends ChangeNotifier {
       }
     } catch (e) {
       log(e.toString());
+      
     }
   }
 

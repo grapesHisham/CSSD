@@ -167,6 +167,7 @@ class LoginScreen extends StatelessWidget {
                           SizedBox(height: 20.h),
                           //password field
                           CustomTextFormField(
+                            maxLines: 1,
                             focusNode: loginController.focusNodePassword,
                             suffix: IconButton(
                                 onPressed: () {
@@ -200,7 +201,7 @@ class LoginScreen extends StatelessWidget {
                                 showSnackBarNoContext(
                                     isError: true,
                                     msg: "Enter details to login");
-                              } 
+                              }
                               loginProvider.login(context);
                             },
                           ),

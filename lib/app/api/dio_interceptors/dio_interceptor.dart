@@ -50,6 +50,7 @@ class DioUtilAuthorized {
           onError: (error, handler) async {
             if (error.response?.statusCode == 401) {
               log('Authorization failed: ${error.response?.statusCode}');
+              showSnackBarNoContext(isError: true, msg: "Please RELOGIN, authorization failed.");
             }
             if (error.type == DioExceptionType.connectionError ||
                 error.type == DioExceptionType.connectionTimeout) {

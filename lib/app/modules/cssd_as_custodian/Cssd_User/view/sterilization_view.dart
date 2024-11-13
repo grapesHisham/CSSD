@@ -5,7 +5,6 @@ import 'package:cssd/Widgets/custom_textfield.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/endDrawer.dart';
 import 'package:cssd/Widgets/rounded_container.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/sterilization_provider.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/widgets/pickup_widgets/items_list_card_container_widget.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/widgets/sterilization_widgets/sterilization_item_card_widget.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/widgets/sterilization_widgets/sterilization_package_items_popup_widget.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/widgets/sterilization_widgets/sterilization_single_items_popup_widget%20.dart';

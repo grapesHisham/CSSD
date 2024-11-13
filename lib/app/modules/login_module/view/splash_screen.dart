@@ -18,7 +18,7 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // await checkIfAlreadyLoggedin(); //turn on later check
+      await checkIfAlreadyLoggedin(); //turn on later check
     });
 
     super.initState();

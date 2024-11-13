@@ -19,9 +19,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocalStorageManager.init();
   runApp(DevicePreview(
-    /* enabled: !kReleaseMode, */
-    enabled: false,
-    builder: (context) => MyApp(),
+    enabled: !kReleaseMode,
+   /*  enabled: false, */
+    builder: (context) => const MyApp(),
   ));
 }
 
@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
           initialRoute: Routes
-              .sterilizationRequestViewCssdCussDeptUser, //change the init function inside splash screen view when changing back to splash screen as initial route
+              .splashScreen, //change the init function inside splash screen view when changing back to splash screen as initial route
           routes: Routes.routes,
         ),
       ),

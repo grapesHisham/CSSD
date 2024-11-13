@@ -5,11 +5,7 @@ import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/custom_textfield.dart';
 import 'package:cssd/Widgets/dropdown_menu_widget.dart';
 import 'package:cssd/Widgets/rounded_container.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/request_controler.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/widgets/requests_widgets/dropdown_search.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/sterilization_controller.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/items_list_model.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/sterilization_widgets/overlay_widget.dart';
 import 'package:cssd/util/app_util.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/fonts.dart';
@@ -121,7 +117,6 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                         builder: (context, sterilizationConsumer, child) {
                       return CustomDropdown.searchRequest(
                         onChanged: (selectedValue) {
-                          showToast(context, "Value changed $selectedValue");
                           if (selectedValue != null) {
                             sterilizationConsumer.setSelectedItemDropdown =
                                 selectedValue;
@@ -162,38 +157,32 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                         sterilizationController.addItemsToGrid(item, quantity);
                         sterilizationController.clearInputs();
                       } else {
-                        showToast(context,
-                            "Enter Details , item : $item, quantity: $quantity");
+                        // showToast(context,"Empty String , selected item : $item, quantity: $quantity");
+                        showSnackBarNoContext(
+                            isError: true,
+                            msg:
+                                "Empty String , selected item : $item, quantity: $quantity");
                       }
+                      showToast(context, "Item added  $item : $quantity");
                     },
                   )
                 ],
               ),
               SizedBox(
-                height: 12,
+                height: 12.h,
               ),
               SizedBox(
-                  height: 190,
-                  // child: GridView.builder(
-                  //   itemCount: sterilizationController.getSelectedItemsQuantity.length,
-                  //   gridDelegate:
-                  //       const SliverGridDelegateWithMaxCrossAxisExtent(
-                  //           maxCrossAxisExtent: 120),
-                  //   itemBuilder: (context, index) {
-                  //     final list = sterilizationController.getSelectedItemsQuantity;
-                  //     return ListTile(
-                  //       leading: Text(
-                  //          list.),
-                  //     );
-                  child: Consumer<SterilizationControllerCssdCussDeptUser>(
-                      builder: (context, sterilizationConsumer, child) {
-                    return GridView.builder(
+                height: 190,
+                child: Consumer<SterilizationControllerCssdCussDeptUser>(
+                    builder: (context, sterilizationConsumer, child) {
+                  return Scrollbar(
+                    child: GridView.builder(
                       gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 200,
                         crossAxisSpacing: 8.0,
                         mainAxisSpacing: 8.0,
-                        childAspectRatio: 2.5,
+                        childAspectRatio: 1.7,
                       ),
                       itemCount:
                           sterilizationConsumer.getSelectedItemsQuantity.length,
@@ -205,24 +194,48 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Column(
+                                  mainAxisSize: MainAxisSize.min,
                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      'Item: ${item['itemName']}',overflow: TextOverflow.visible,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                    Row(
+                                      children: [
+                                        const Text(
+                                          'Item:',
+                                          overflow: TextOverflow.visible,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          width: 4.w,
+                                        ),
+                                        SizedBox(
+                                            width: 60,
+                                            // child: Text(" ${item['itemName']}"))
+                                            child: Text("${item['itemName']}"))
+                                      ],
                                     ),
-                                    Text('Quantity: ${item['quantity']}'),
+                                    Row(
+                                      children: [
+                                        const Text(
+                                          'Quantity:',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(' ${item['quantity']}'),
+                                      ],
+                                    ),
                                   ],
                                 ),
                                 IconButton(
                                     onPressed: () {
                                       sterilizationConsumer
                                           .deleteCurrentItemFromList(item);
-
                                       log("deleted item ${sterilizationConsumer.getSelectedItemsQuantity}");
                                     },
                                     icon: const Icon(Icons.delete))
@@ -231,8 +244,16 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                           ),
                         );
                       },
-                    );
-                  }))
+                    ),
+                  );
+                }),
+              ),
+              ButtonWidget(
+                buttonLabel: "Send for Sterilization",
+                onPressed: () {
+                  //add methode to sent for sterilization
+                },
+              )
             ]),
           ),
         ),
