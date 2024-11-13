@@ -121,14 +121,12 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                         builder: (context, sterilizationConsumer, child) {
                       return CustomDropdown.searchRequest(
                         onChanged: (selectedValue) {
-                          showToast( context, "Value changed $selectedValue" );
+                          showToast(context, "Value changed $selectedValue");
                           if (selectedValue != null) {
                             sterilizationConsumer.setSelectedItemDropdown =
                                 selectedValue;
-                            
                           }
                         },
-                        
                         futureRequestDelay: Duration(milliseconds: 0),
                         futureRequest: (StringItem) async {
                           await sterilizationConsumer.fetchItems(StringItem);
@@ -163,14 +161,17 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                         log("add button clicked");
                         sterilizationController.addItemsToGrid(item, quantity);
                         sterilizationController.clearInputs();
-                      }else{
-                        showToast(context, "Enter Details , item : $item, quantity: $quantity");
+                      } else {
+                        showToast(context,
+                            "Enter Details , item : $item, quantity: $quantity");
                       }
                     },
                   )
                 ],
               ),
-
+              SizedBox(
+                height: 12,
+              ),
               SizedBox(
                   height: 190,
                   // child: GridView.builder(
@@ -185,39 +186,53 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                   //          list.),
                   //     );
                   child: Consumer<SterilizationControllerCssdCussDeptUser>(
-                    builder: (context, sterilizationConsumer,child) {
-                      return GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 8.0,
-                          mainAxisSpacing: 8.0,
-                          childAspectRatio: 2.5,
-                        ),
-                        itemCount: sterilizationConsumer.getSelectedItemsQuantity.length,
-                        itemBuilder: (context, index) {
-                          final item = sterilizationConsumer.getSelectedItemsQuantity[index];
-                          return Card(
-                            elevation: 2,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Item: ${item['itemName']}',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text('Quantity: ${item['quantity']}'),
-                                ],
-                              ),
+                      builder: (context, sterilizationConsumer, child) {
+                    return GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 8.0,
+                        mainAxisSpacing: 8.0,
+                        childAspectRatio: 2.5,
+                      ),
+                      itemCount:
+                          sterilizationConsumer.getSelectedItemsQuantity.length,
+                      itemBuilder: (context, index) {
+                        final item = sterilizationConsumer
+                            .getSelectedItemsQuantity[index];
+                        return Card(
+                          elevation: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Item: ${item['itemName']}',overflow: TextOverflow.visible,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text('Quantity: ${item['quantity']}'),
+                                  ],
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      sterilizationConsumer
+                                          .deleteCurrentItemFromList(item);
+
+                                      log("deleted item ${sterilizationConsumer.getSelectedItemsQuantity}");
+                                    },
+                                    icon: const Icon(Icons.delete))
+                              ],
                             ),
-                          );
-                        },
-                      );
-                    }
-                  ))
+                          ),
+                        );
+                      },
+                    );
+                  }))
             ]),
           ),
         ),

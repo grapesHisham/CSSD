@@ -96,4 +96,9 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
     log(_selectedItemsQuantity.toString());
     notifyListeners();
   }
+
+  void deleteCurrentItemFromList(Map<String,dynamic> item){
+    _selectedItemsQuantity.remove(item);
+    notifyListeners();
+  }
 }
