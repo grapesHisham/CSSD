@@ -28,17 +28,24 @@ class _DashboardViewCssdCussDeptUserState
     extends State<DashboardViewCssdCussDeptUser> {
   late bool hasPrivileges;
   late String userName;
+  late String? selectedDepartment;
   @override
   void initState() {
-    
     hasPrivileges =
         LocalStorageManager.getBool(StorageKeys.privilegeFlagCssdAndDept)!;
     userName = LocalStorageManager.getString(StorageKeys.loggedinUser) ??
         "Department user";
-        LocalStorageManager.setString(StorageKeys.lastOpenedIsCssd, "dept"); 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      showAlertDialog();
-    });
+    LocalStorageManager.setString(StorageKeys.lastOpenedIsCssd, "dept");
+    selectedDepartment =
+        LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter);
+    if (selectedDepartment == null) { 
+      log("already selected department is : $selectedDepartment");  
+      // if department is not already selected the show the popup
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showAlertDialog();
+      });
+    }
+
     super.initState();
   }
 

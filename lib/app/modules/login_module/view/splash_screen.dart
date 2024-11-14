@@ -37,7 +37,7 @@ class _SplashState extends State<Splash> {
       if (privilegesList.contains("312") && privilegesList.contains("316")) {
         final String? lastOpenedCssd =
             LocalStorageManager.getString(StorageKeys.lastOpenedIsCssd);
-        log("last opened is cssd: $lastOpenedCssd");
+        log("last opened page is: $lastOpenedCssd");
         if (lastOpenedCssd == "cssd") {
           Navigator.pushReplacementNamed(
               context, Routes.bottomNavBarDashboardCssdUser);
@@ -119,8 +119,7 @@ class _SplashState extends State<Splash> {
                   ],
                 ),
               ),
-              Lottie.asset("assets/lottie/loading_lottie.json",
-                  width: 80, frameRate: const FrameRate(90)),
+              Lottie.asset("assets/lottie/loading_lottie.json",width: 80, frameRate: const FrameRate(90)),
             ],
           ),
         ),

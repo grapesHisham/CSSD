@@ -221,7 +221,7 @@ class LoginController extends ChangeNotifier {
   void logoutFunction() {
     LocalStorageManager
         .clear(); // clears all values inside the local storage manager
-    log("Clearing local storage manager");
+    log("Clearing all values in local storage manager");
     log(LocalStorageManager.getString(StorageKeys.loggedinUser) ?? "data null");
     loginPasswordController.clear();
     loginPhoneNumberController.clear();
