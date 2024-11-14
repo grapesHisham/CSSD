@@ -11,13 +11,13 @@ import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/dashboar
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/sterilization_request_view.dart';
 import 'package:cssd/app/modules/login_module/view/login_screen.dart';
 import 'package:cssd/app/modules/login_module/view/splash_screen.dart';
-import 'package:cssd/app/modules/login_module/view/dashboard_switch_cssd_dept.dart';
+// import 'package:cssd/app/modules/login_module/view/dashboard_switch_cssd_dept.dart';
 import 'package:flutter/material.dart';
 
 class Routes {
   static const String splashScreen = '/';
   static const String loginScreen = '/loginScreen';
-  static const String switchBetweenCssdAndDepartment = '/SwitchBetweenCssdAndDepartment';
+  // static const String switchBetweenCssdAndDepartment = '/SwitchBetweenCssdAndDepartment';  
 
   /*cssd pages  -- cssd custodian ------------------------------------------------------------------------*/
   static const String bottomNavBarDashboardCssdUser =
@@ -43,18 +43,18 @@ class Routes {
       '/DashboardViewCssdCussDeptUser';
   static const String sterilizationRequestViewCssdCussDeptUser =
       '/SterilizationRequestViewCssdCussDeptUser';
-  // static const String sterilizationViewCssdCussCssdLogin = '/SterilizationViewCssdCussCssdLogin';
+
 
  /* ################################################################################################################# */
 
   static final Map<String, WidgetBuilder> routes = {
     splashScreen: (context) => const Splash(),
     loginScreen: (context) => const LoginScreen(),
-    switchBetweenCssdAndDepartment: (context) => const SwitchBetweenCssdAndDepartment(),
+    // switchBetweenCssdAndDepartment: (context) => const SwitchBetweenCssdAndDepartment(), //removed 
 
     /*cssd pages -- cssd custodian-----------------------------------------------------------------------*/
     bottomNavBarDashboardCssdUser: (context) =>
-        const BottomNavigationBarDashboardCssdUser(), //home page of cssd user -bottomnav 
+        const BottomNavigationBarDashboardCssdUser(), //home page of cssd 
     dashboardViewCssdCssCssdLogin: (context) =>
         const DashboardViewCssdCssCssdLogin(),
     alertViewCssdCusCssdLogin: (context) => const AlertViewCssdCusCssdLogin(),
@@ -75,7 +75,7 @@ class Routes {
         const DashboardViewCssdCussDeptUser(), //home
     sterilizationRequestViewCssdCussDeptUser: (context) =>
         const SterilizationRequestViewCssdCussDeptUser(),
-    // issueViewCssdCussCssdLogin: (context) => const IssueViewCssdCussCssdLogin(),
+ 
   };
 }
 

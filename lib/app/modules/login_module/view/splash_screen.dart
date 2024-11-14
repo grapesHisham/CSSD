@@ -1,6 +1,5 @@
 import 'dart:async';
-import 'dart:developer';
-
+import 'dart:developer'; 
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/local_storage_manager.dart';
@@ -47,7 +46,7 @@ class _SplashState extends State<Splash> {
               context, Routes.dashboardViewCssdCussDeptUser);
         } else {
           Navigator.pushReplacementNamed(
-              context, Routes.switchBetweenCssdAndDepartment);
+              context, Routes.loginScreen);
         }
         /* Navigator.pushNamedAndRemoveUntil(context,Routes.bottomNavBarDashboardCssdUser,(Route<dynamic> route) => false); */
       } else if (privilegesList.contains("312")) {
