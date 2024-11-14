@@ -51,9 +51,9 @@ class LoginController extends ChangeNotifier {
   TextEditingController loginPasswordController = TextEditingController();
   TextEditingController loginPhoneNumberController = TextEditingController();
   TextEditingController loginHospitalNameController =
-  TextEditingController(); //stores the hospital name , stores entered id only if admin phone number
+      TextEditingController(); //stores the hospital name , stores entered id only if admin phone number
 
-  //focus node 
+  //focus node
   final FocusNode focusNodePhone = FocusNode();
   final FocusNode focusNodeHospitalName = FocusNode();
   final FocusNode focusNodePassword = FocusNode();
@@ -123,7 +123,10 @@ class LoginController extends ChangeNotifier {
 
   List<String> get privileges => _privileges;
   // function to login
-  Future<void> login(BuildContext context) async {
+  Future<bool> login(BuildContext context) async {
+    // returns true when both privileges are present
+    await LocalStorageManager.setBool(StorageKeys.privilegeFlagCssdAndDept,
+        false); //initially set it to false
     Map<String, dynamic> body = {
       "PhoneNumber": loginPhoneNumberController.text,
       "Password": loginPasswordController.text,
@@ -131,6 +134,7 @@ class LoginController extends ChangeNotifier {
           loginHospitalNameController
               .text //when selecting dropdown its _selected hospital has value otherwise its the entered value in the hospital id text field
     };
+
     try {
       final client = await AppUtil.createApiClient();
       LoginModel response = await client.login(body);
@@ -154,15 +158,14 @@ class LoginController extends ChangeNotifier {
           317 - cssd admin
           318 - dept cssd report 
           */
-
           showSnackBarNoContext(isError: true, msg: "You dont have Privilege");
+          return false;
         } else if (_privileges.contains("312") && _privileges.contains("316")) {
           await LocalStorageManager.setBool(
               StorageKeys.privilegeFlagCssdAndDept, true);
-          Navigator.pushNamedAndRemoveUntil(
-              context,
-              Routes.switchBetweenCssdAndDepartment,
-              (Route<dynamic> route) => false);
+          /* insted of navigating show bottom sheet by returning true */
+          
+          return true;
         } else if (_privileges.contains("312")) {
           await LocalStorageManager.setBool(
               StorageKeys.privilegeFlagCssdAndDept, false);
@@ -170,6 +173,7 @@ class LoginController extends ChangeNotifier {
               context,
               Routes.bottomNavBarDashboardCssdUser,
               (Route<dynamic> route) => false);
+          return false;
         } else if (_privileges.contains("316")) {
           await LocalStorageManager.setBool(
               StorageKeys.privilegeFlagCssdAndDept, false);
@@ -177,6 +181,7 @@ class LoginController extends ChangeNotifier {
               context,
               Routes.dashboardViewCssdCussDeptUser,
               (Route<dynamic> route) => false);
+          return false;
         }
         log("prefs - login token : ${LocalStorageManager.getString(StorageKeys.loginToken)}");
       } else if (response.status == 300) {
@@ -187,6 +192,7 @@ class LoginController extends ChangeNotifier {
             errorHead: "${response.message}",
             isError: true,
             msg: "Check credentials");
+        return false;
       } else if (response.status == 500) {
         log(response.message.toString());
         showSnackBar(
@@ -194,6 +200,7 @@ class LoginController extends ChangeNotifier {
             errorHead: "Network Error",
             isError: true,
             msg: "${response.message}");
+        return false;
       } else if (response.status == 404) {
         // invalid user
         log(response.message.toString());
@@ -202,11 +209,13 @@ class LoginController extends ChangeNotifier {
             errorHead: "User Not Found",
             isError: true,
             msg: "${response.message}");
+        return false;
       }
     } catch (e) {
       log(e.toString());
-      
+      return false;
     }
+    return false;
   }
 
   void logoutFunction() {

@@ -19,8 +19,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LocalStorageManager.init();
   runApp(DevicePreview(
-    enabled: !kReleaseMode,
-   /*  enabled: false, */
+/*     enabled: !kReleaseMode,
+ */    enabled: false,
     builder: (context) => const MyApp(),
   ));
 }

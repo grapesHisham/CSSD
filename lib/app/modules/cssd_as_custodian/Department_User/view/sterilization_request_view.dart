@@ -25,7 +25,7 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
             listen: false);
 
     Future.microtask(() async {
-      // await sterilizationController.departmentDropdownFunction(); //add later check
+      await sterilizationController.departmentDropdownFunction(); //add later check
     });
 
     return Scaffold(

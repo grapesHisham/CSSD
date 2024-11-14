@@ -5,8 +5,12 @@ import 'package:cssd/Widgets/custom_textfield.dart';
 import 'package:cssd/Widgets/login_widgets/cssd_transparent_title_card.dart';
 import 'package:cssd/Widgets/transparent_blur_conatiner.dart';
 import 'package:cssd/app/modules/login_module/controller/login_provider.dart';
+import 'package:cssd/app/modules/login_module/view/widgets/clickable_button_widget.dart';
+import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/app_util.dart';
 import 'package:cssd/util/colors.dart';
+import 'package:cssd/util/hex_to_color_with_opacity.dart';
+import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -20,6 +24,7 @@ class LoginScreen extends StatelessWidget {
     final loginProvider = Provider.of<LoginController>(context, listen: false);
     final mediaQuery = MediaQuery.of(context).size;
     return Scaffold(
+      
       body: SingleChildScrollView(
         child: Container(
           height: mediaQuery.height,
@@ -98,6 +103,8 @@ class LoginScreen extends StatelessWidget {
                                   : "Enter 10 digits",
                             ),
                             child: DropdownButtonFormField<String>(
+                              focusNode:
+                                  loginController.focusNodeHospitalName, //check
                               decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
@@ -160,6 +167,8 @@ class LoginScreen extends StatelessWidget {
                                   loginController
                                       .loginHospitalNameController.text = data;
                                   log(data);
+                                  FocusScope.of(context).requestFocus(
+                                      loginController.focusNodePassword); //check
                                 }
                               },
                             ),
@@ -191,7 +200,7 @@ class LoginScreen extends StatelessWidget {
                             borderRadius: 10,
                             buttonColor: StaticColors.defaultButton,
                             buttonLabel: "Login",
-                            onPressed: () {
+                            onPressed: () async {
                               if (loginController.loginPhoneNumberController
                                       .text.isEmpty ||
                                   loginController.loginHospitalNameController
@@ -202,26 +211,15 @@ class LoginScreen extends StatelessWidget {
                                     isError: true,
                                     msg: "Enter details to login");
                               }
-                              loginProvider.login(context);
-                            },
-                          ),
 
-                          /*
-                          SlideAction(
-                            text: "Slide to login",
-                            textColor: Colors.white,
-                            innerColor: Colors.white,
-                            outerColor: StaticColors.defaultButton,
-                            sliderButtonIcon: const Icon(
-                              Icons.arrow_forward,
-                              color: Colors.black,
-                            ),
-                            onSubmit: () {
-                              loginProvider.login(context);
+                              bool hasBothPrivileges =
+                                  await loginProvider.login(context);
+                              log("showing bottom sheet : $hasBothPrivileges");
+                              if (hasBothPrivileges) {
+                                showOptionsBottomSheet(context, mediaQuery);
+                              }
                             },
-                            height: 60,
                           ),
-                           */
                         ],
                       );
                     }),
@@ -235,6 +233,103 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Future<dynamic> showOptionsBottomSheet(
+      BuildContext context, Size mediaQuery) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return SizedBox(
+          height: 200,
+          width: mediaQuery.width,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  "Choose Your Department",
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 40.h,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    AnimatedHoverButton(
+                      ontap: () {
+                        /*  Navigator.pushNamedAndRemoveUntil(
+                                                      context,
+                                                      Routes.bottomNavBarDashboardCssdUser,
+                                                      (Route route) => false); */
+                        Navigator.pushNamed(
+                          context,
+                          Routes.bottomNavBarDashboardCssdUser,
+                        );
+                      },
+                      backgroundColor:
+                          hexToColorWithOpacity(hexColor: "356745"),
+                      hoverColor: Colors.grey,
+                      borderRadius: BorderRadius.circular(10),
+                      buttonContent: Container(
+                        color: Colors.transparent,
+                        child: const Center(
+                          child: Text(
+                            "CSSD User",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      containerHeight: 60,
+                      containerWidth: 130,
+                    ),
+                    SizedBox(
+                      width: 20.w,
+                    ),
+                    AnimatedHoverButton(
+                      ontap: () {
+                        /* Navigator.pushNamedAndRemoveUntil(
+                                                    context,
+                                                    Routes.dashboardViewCssdCussDeptUser,
+                                                    (Route route) => false); */
+
+                        Navigator.pushNamed(
+                          context,
+                          Routes.dashboardViewCssdCussDeptUser,
+                        );
+                      },
+                      backgroundColor:
+                          hexToColorWithOpacity(hexColor: "356745"),
+                      hoverColor: Colors.grey,
+                      borderRadius: BorderRadius.circular(10),
+                      buttonContent: Container(
+                        color: Colors.transparent,
+                        child: const Center(
+                          child: Text(
+                            "Department User",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                      containerHeight: 60,
+                      containerWidth: 140,
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
