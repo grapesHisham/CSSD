@@ -25,7 +25,7 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
             listen: false);
 
     Future.microtask(() async {
-      await sterilizationController.departmentDropdownFunction(); //add later check
+      await sterilizationController.departmentDropdownFunction(); 
     });
 
     return Scaffold(
@@ -90,7 +90,7 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
               ),
               //remarks container
               ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: 600, maxHeight: 400),
+                constraints: const BoxConstraints(maxWidth: 600, maxHeight: 400),
                 child: RoundedContainer(
                   containerHeight: mediaQuery.height / 7,
                   containerBody: CustomTextFormField(

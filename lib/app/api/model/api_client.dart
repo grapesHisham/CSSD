@@ -28,7 +28,7 @@ abstract class ApiClient {
   @GET(ApiLinks.departementList)
   Future<GetDepartmentListModel> getDepartementListData();
 
-  @GET(ApiLinks.GetItemName)
+  @GET(ApiLinks.getItemName)
   Future<GetItemNameModel> getItemName(
       @Query("department") String department ,@Query("itemname") String itemname );
 }

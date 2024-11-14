@@ -7,6 +7,7 @@ import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/sterilization_
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/timeline_view.dart';
 import 'package:cssd/app/modules/login_module/view/widgets/logout_popup.dart';
 import 'package:cssd/util/colors.dart';
+import 'package:cssd/util/local_storage_manager.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class BottomNavigationBarDashboardCssdUser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    LocalStorageManager.setString(StorageKeys.lastOpenedIsCssd, "cssd");
     final mediaQuery = MediaQuery.of(context).size;
     final isMobile = mediaQuery.width <= 500;
     final dashboardProvider =

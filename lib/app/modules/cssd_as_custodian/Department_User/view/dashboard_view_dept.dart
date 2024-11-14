@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/clickable_card.dart';
 import 'package:cssd/Widgets/notification_icon.dart';
 import 'package:cssd/Widgets/rounded_container.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/model/sampleRequestList.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
 import 'package:cssd/app/modules/login_module/view/widgets/logout_popup.dart';
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/colors.dart';
@@ -12,6 +14,7 @@ import 'package:cssd/util/fonts.dart';
 import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class DashboardViewCssdCussDeptUser extends StatefulWidget {
   const DashboardViewCssdCussDeptUser({super.key});
@@ -27,9 +30,15 @@ class _DashboardViewCssdCussDeptUserState
   late String userName;
   @override
   void initState() {
+    
     hasPrivileges =
         LocalStorageManager.getBool(StorageKeys.privilegeFlagCssdAndDept)!;
-    userName = LocalStorageManager.getString(StorageKeys.loggedinUser)?? "Department user";
+    userName = LocalStorageManager.getString(StorageKeys.loggedinUser) ??
+        "Department user";
+        LocalStorageManager.setString(StorageKeys.lastOpenedIsCssd, "dept"); 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showAlertDialog();
+    });
     super.initState();
   }
 
@@ -164,7 +173,60 @@ class _DashboardViewCssdCussDeptUserState
         style: TextStyle(color: Colors.white),
       ),
       onPressed: () {
-        Navigator.pushNamedAndRemoveUntil(context, Routes.bottomNavBarDashboardCssdUser ,(Route route)=> false);
+        Navigator.pushNamedAndRemoveUntil(context,
+            Routes.bottomNavBarDashboardCssdUser, (Route route) => false);
+      },
+    );
+  }
+
+  Future showAlertDialog() async {
+    final dashboardController =
+        context.read<DashboardControllerCssdCussDeptUser>();
+    dashboardController.departmentDropdownFunction();
+    return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.white,
+          actions: [
+            // ButtonWidget(
+            //   buttonColor: const Color.fromARGB(255, 184, 0, 0),
+            //   buttonLabel: "Cancel",
+            //   onPressed: () {},
+            // ),
+            ButtonWidget(
+              buttonColor: const Color.fromARGB(255, 48, 160, 85),
+              buttonLabel: "ok",
+              onPressed: () {
+                final String? selectedDepartment =
+                    dashboardController.getSelectedDepartment;
+                if (selectedDepartment != null) {
+                  LocalStorageManager.setString(
+                      StorageKeys.selectedDepartmentCounter,
+                      selectedDepartment);
+                  log("Stored department to selectedDepartmentCounter: $selectedDepartment");
+                  Navigator.pop(context);
+                }
+              },
+            ),
+          ],
+          title: const Text("Select department"),
+          content: Consumer<DashboardControllerCssdCussDeptUser>(
+              builder: (context, dashboardConsumer, child) {
+            return CustomDropdown.search(
+              decoration: CustomDropdownDecoration(
+                  closedBorder: Border.all(color: Colors.grey.shade100)),
+              hintText: "Department name",
+              items: dashboardConsumer.departmentDropdownItems
+                  .map((item) => item.subName.toString())
+                  .toList(),
+              onChanged: (selectedDepartment) {
+                dashboardConsumer.selectedDepartment = selectedDepartment;
+              },
+            );
+          }),
+        );
       },
     );
   }

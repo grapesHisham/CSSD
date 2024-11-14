@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/custom_textfield.dart';
 import 'package:cssd/Widgets/login_widgets/cssd_transparent_title_card.dart';
@@ -10,7 +9,6 @@ import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/app_util.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/hex_to_color_with_opacity.dart';
-import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -24,7 +22,6 @@ class LoginScreen extends StatelessWidget {
     final loginProvider = Provider.of<LoginController>(context, listen: false);
     final mediaQuery = MediaQuery.of(context).size;
     return Scaffold(
-      
       body: SingleChildScrollView(
         child: Container(
           height: mediaQuery.height,
@@ -65,6 +62,7 @@ class LoginScreen extends StatelessWidget {
                         children: [
                           // Phone number
                           CustomTextFormField(
+                            scrollPadding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom+60*4),
                             focusNode: loginController.focusNodePhone,
                             onChanged: (value) {
                               if (value.length == 10) {
@@ -103,8 +101,7 @@ class LoginScreen extends StatelessWidget {
                                   : "Enter 10 digits",
                             ),
                             child: DropdownButtonFormField<String>(
-                              focusNode:
-                                  loginController.focusNodeHospitalName, //check
+                              // focusNode:loginController.focusNodeHospitalName, //check
                               decoration: InputDecoration(
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
@@ -188,7 +185,7 @@ class LoginScreen extends StatelessWidget {
                                         Icons.visibility_off,
                                         color: Colors.grey.shade300,
                                       )
-                                    : Icon(Icons.visibility)),
+                                    : const Icon(Icons.visibility)),
                             controller: loginController.loginPasswordController,
                             prefixIcon: Icons.password,
                             obscureText: loginController.obscureText,
@@ -261,10 +258,7 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     AnimatedHoverButton(
                       ontap: () {
-                        /*  Navigator.pushNamedAndRemoveUntil(
-                                                      context,
-                                                      Routes.bottomNavBarDashboardCssdUser,
-                                                      (Route route) => false); */
+                        /*  Navigator.pushNamedAndRemoveUntil(context,Routes.bottomNavBarDashboardCssdUser,(Route route) => false); */
                         Navigator.pushNamed(
                           context,
                           Routes.bottomNavBarDashboardCssdUser,

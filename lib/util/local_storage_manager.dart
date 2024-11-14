@@ -1,12 +1,19 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+//make sure to name each string / differently else there will be miss match
 class StorageKeys {
   static const String loginToken = "loginToken"; //store token string
   static const String loggedinUser = "loggedinUser"; //store user name string
-  static const String loggedinUserPrivilegesList= "loggedinUserPrivileges"; //store user privileges list string
-  static const String privilegeFlagCssdAndDept= "privilegeFlagCssdAndDept"; //store user privileges flag bool 
+  static const String loggedinUserPrivilegesList =
+      "loggedinUserPrivileges"; //store user privileges list string
+  static const String privilegeFlagCssdAndDept =
+      "privilegeFlagCssdAndDept"; //store user privileges flag bool
+  static const String selectedDepartmentCounter =
+      "selectedDepartmentCounter"; //selected department while department login -- string
+  static const String lastOpenedIsCssd =
+      "lastOpenedIsCssd"; //to store the last opened screen is cssd or dept after app is closed and opened -- string
 }
- 
+
 class LocalStorageManager {
   static late SharedPreferences _preferences;
 

@@ -45,7 +45,7 @@ class Routes {
       '/SterilizationRequestViewCssdCussDeptUser';
   // static const String sterilizationViewCssdCussCssdLogin = '/SterilizationViewCssdCussCssdLogin';
 
-//  #################################################################################################################
+ /* ################################################################################################################# */
 
   static final Map<String, WidgetBuilder> routes = {
     splashScreen: (context) => const Splash(),
@@ -54,7 +54,7 @@ class Routes {
 
     /*cssd pages -- cssd custodian-----------------------------------------------------------------------*/
     bottomNavBarDashboardCssdUser: (context) =>
-        const BottomNavigationBarDashboardCssdUser(),
+        const BottomNavigationBarDashboardCssdUser(), //home page of cssd user -bottomnav 
     dashboardViewCssdCssCssdLogin: (context) =>
         const DashboardViewCssdCssCssdLogin(),
     alertViewCssdCusCssdLogin: (context) => const AlertViewCssdCusCssdLogin(),
@@ -72,7 +72,7 @@ class Routes {
 
     /*Department pages  -- cssd custodian-------------------------------------------------------------------*/
     dashboardViewCssdCussDeptUser: (context) =>
-        const DashboardViewCssdCussDeptUser(),
+        const DashboardViewCssdCussDeptUser(), //home
     sterilizationRequestViewCssdCussDeptUser: (context) =>
         const SterilizationRequestViewCssdCussDeptUser(),
     // issueViewCssdCussCssdLogin: (context) => const IssueViewCssdCussCssdLogin(),
@@ -85,8 +85,7 @@ class Routes {
 
 
 
-//  #################################################################################################################
-
+ /*  ################################################################################################################# */
 
 /*  Navigations 
 

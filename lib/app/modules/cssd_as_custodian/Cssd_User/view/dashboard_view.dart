@@ -29,6 +29,8 @@ class _DashboardViewCssdCssCssdLoginState
 
   @override
   void initState() {
+        LocalStorageManager.setString(StorageKeys.lastOpenedIsCssd, "cssd");
+ //check if you need to define it in bottomnav and dashboard also
     hasPrivileges =
         LocalStorageManager.getBool(StorageKeys.privilegeFlagCssdAndDept);
     userName = LocalStorageManager.getString(StorageKeys.loggedinUser);

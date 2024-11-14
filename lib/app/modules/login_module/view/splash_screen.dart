@@ -36,7 +36,19 @@ class _SplashState extends State<Splash> {
       log("Token exists $currentToken");
       log("Previleges for the user : $hasPrivileges");
       if (privilegesList.contains("312") && privilegesList.contains("316")) {
-        Navigator.pushNamedAndRemoveUntil(context,Routes.switchBetweenCssdAndDepartment,(Route<dynamic> route) => false);
+        final String? lastOpenedCssd =
+            LocalStorageManager.getString(StorageKeys.lastOpenedIsCssd);
+        log("last opened is cssd: $lastOpenedCssd");
+        if (lastOpenedCssd == "cssd") {
+          Navigator.pushReplacementNamed(
+              context, Routes.bottomNavBarDashboardCssdUser);
+        } else if (lastOpenedCssd == "dept") {
+          Navigator.pushReplacementNamed(
+              context, Routes.dashboardViewCssdCussDeptUser);
+        } else {
+          Navigator.pushReplacementNamed(
+              context, Routes.switchBetweenCssdAndDepartment);
+        }
         /* Navigator.pushNamedAndRemoveUntil(context,Routes.bottomNavBarDashboardCssdUser,(Route<dynamic> route) => false); */
       } else if (privilegesList.contains("312")) {
         LocalStorageManager.setBool(
