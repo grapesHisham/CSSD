@@ -34,16 +34,17 @@ class _DashboardViewCssdCussDeptUserState
   late String? selectedDepartment;
   @override
   void initState() {
-    // final controller = Provider.of<DashboardControllerCssdCussDeptUser>(context,
-    //     listen: false);
+    selectedDepartment =
+        LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter);
+    final dashboardController = Provider.of<DashboardControllerCssdCussDeptUser>(context,listen: false);
+    dashboardController.getPieChartData(selectedDepartment!);
+    dashboardController.departmentDropdownFunction();
     // controller.selectedDepartment = null;
     hasPrivileges =
         LocalStorageManager.getBool(StorageKeys.privilegeFlagCssdAndDept)!;
     userName = LocalStorageManager.getString(StorageKeys.loggedinUser) ??
         "Department user";
     LocalStorageManager.setString(StorageKeys.lastOpenedIsCssd, "dept");
-    selectedDepartment =
-        LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter);
     if (selectedDepartment == null) {
       log("already selected department is : $selectedDepartment so showing popup");
       // if department is not already selected the show the popup
@@ -51,6 +52,7 @@ class _DashboardViewCssdCussDeptUserState
         showAlertDialog();
       });
     }
+
     super.initState();
   }
 
@@ -101,6 +103,7 @@ class _DashboardViewCssdCussDeptUserState
                         .toList(),
                     onChanged: (selectedDepartment) {
                       if (selectedDepartment != null) {
+                        dashboardConsumer.getPieChartData(selectedDepartment);
                         dashboardConsumer.selectedDepartment =
                             selectedDepartment;
                         LocalStorageManager.setString(
@@ -139,35 +142,40 @@ class _DashboardViewCssdCussDeptUserState
                     children: [
                       Row(
                         children: [
-                          SfCircularChart(
-                            palette: [
-                              hexToColorWithOpacity(hexColor: "#ff6361"),
-                              hexToColorWithOpacity(hexColor: "#58508d"),
-                              hexToColorWithOpacity(hexColor: "#bc5090"),
-                              hexToColorWithOpacity(hexColor: "#003f5c"),
-                              hexToColorWithOpacity(hexColor: "#ffa600"),
-                            ],
-                            title: const ChartTitle(
-                                text: 'Request Details',
-                                textStyle: TextStyle(color: Colors.black)),
-                            legend: const Legend(
-                                isVisible: true,
-                                textStyle: TextStyle(color: Colors.black),
-                                position: LegendPosition.left),
-                            series: <PieSeries<Map<String, int>, String>>[
-                              PieSeries<Map<String, int>, String>(
-                                dataSource: samplePieChartValues,
-                                explode: true,
-                                explodeIndex: 0,
-                                xValueMapper: (Map<String, int> data, _) =>
-                                    data.keys.first,
-                                yValueMapper: (Map<String, int> data, _) =>
-                                    data.values.first,
-                                dataLabelSettings: const DataLabelSettings(
-                                  isVisible: true,
-                                ),
-                              ),
-                            ],
+                          Consumer<DashboardControllerCssdCussDeptUser>(
+                            builder: (context, dashboardConsumer,child) {
+                              
+                              return SfCircularChart(
+                                palette: [
+                                  hexToColorWithOpacity(hexColor: "#ff6361"),
+                                  hexToColorWithOpacity(hexColor: "#58508d"),
+                                  hexToColorWithOpacity(hexColor: "#bc5090"),
+                                  hexToColorWithOpacity(hexColor: "#003f5c"),
+                                  hexToColorWithOpacity(hexColor: "#ffa600"),
+                                ],
+                                title: const ChartTitle(
+                                    text: 'Request Details',
+                                    textStyle: TextStyle(color: Colors.black)),
+                                legend: const Legend(
+                                    isVisible: true,
+                                    textStyle: TextStyle(color: Colors.black),
+                                    position: LegendPosition.left),
+                                series: <PieSeries<Map<String, dynamic>, String>>[
+                                  PieSeries<Map<String, dynamic>, String>(
+                                    dataSource: dashboardConsumer.pieChartData,
+                                    explode: true,
+                                    explodeIndex: 0,
+                                    xValueMapper: (Map<String, dynamic> data, _) =>
+                                        data.keys.first,
+                                    yValueMapper: (Map<String, dynamic> data, _) =>
+                                        data.values.first,
+                                    dataLabelSettings: const DataLabelSettings(
+                                      isVisible: true,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
                           ),
                         ],
                       )
