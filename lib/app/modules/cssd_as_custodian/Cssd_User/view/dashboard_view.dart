@@ -114,6 +114,8 @@ class _DashboardViewCssdCssCssdLoginState
                                 height: isMobile ? 120 : 150,
                                 width: isMobile ? 120 : 150,
                                 child: PieChart(
+                                  swapAnimationDuration: const Duration(microseconds: 900),
+                                  swapAnimationCurve: Curves.easeIn,
                                   PieChartData(sections: [
                                     PieChartSectionData(
                                       titleStyle: FontStyles

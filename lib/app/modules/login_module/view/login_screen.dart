@@ -22,6 +22,7 @@ class LoginScreen extends StatelessWidget {
     final loginProvider = Provider.of<LoginController>(context, listen: false);
     final mediaQuery = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         child: Container(
           height: mediaQuery.height,

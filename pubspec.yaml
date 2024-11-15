@@ -38,6 +38,7 @@ dependencies:
   lottie: ^3.1.2
   provider: ^6.1.2
   fl_chart: ^0.69.0
+  syncfusion_flutter_charts: ^27.2.2 # USE ONE OF THE ABOVE CHARTS
   device_preview: ^1.2.0
   flutter_screenutil: ^5.9.3
   text_marquee: ^0.0.2
@@ -53,7 +54,8 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   #slide_to_act: ^2.0.2 #replaced with login button remove if unnecessary
   animated_custom_dropdown: ^3.1.1
-  pushable_button: ^0.0.4 
+  
+
 
 dev_dependencies:
   flutter_test:

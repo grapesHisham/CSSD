@@ -9,6 +9,8 @@ class ApiLinks{
   //department user
   static const String departementList = 'DepartmentList'; 
   static const String getItemName = 'GetItemName';
+  static const String getRequestedCount = 'GetRequestedCount';
+  
 }
 
 

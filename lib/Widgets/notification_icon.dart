@@ -11,7 +11,7 @@ class NotificationIcon extends StatelessWidget {
       children: [
         const Icon(
           Icons.notifications,
-          size: 30,
+          size: 23,
           color: Colors.white,
         ),
         Positioned(
@@ -19,9 +19,9 @@ class NotificationIcon extends StatelessWidget {
             top: -8,
             child: Container(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 7.0, vertical: 1.0),
+                  const EdgeInsets.all( 3.0),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
+                shape: BoxShape.circle,
                 color: StaticColors.notificationAlertsNumber,
               ),
               child: const Text(

@@ -1,10 +1,12 @@
 import 'dart:developer';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
 import 'package:cssd/app/modules/login_module/model/login_model.dart';
 import 'package:cssd/app/modules/login_module/model/pre_login_authentication_model.dart';
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/app_util.dart';
 import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginController extends ChangeNotifier {
   LoginController() {
@@ -22,7 +24,29 @@ class LoginController extends ChangeNotifier {
       }
     });
   }
+
+  //text controllers
+  TextEditingController loginPasswordController = TextEditingController();
+  TextEditingController loginPhoneNumberController = TextEditingController();
+  TextEditingController loginHospitalNameController = TextEditingController(); //stores the hospital name , stores entered id only if admin phone number
+
+  //focus node
+  final FocusNode focusNodePhone = FocusNode();
+  final FocusNode focusNodeHospitalName = FocusNode();
+  final FocusNode focusNodePassword = FocusNode();
   // show or hide password
+  @override
+  void dispose() {
+    log("login dispose invoked ");
+    loginPasswordController.dispose();
+    loginPhoneNumberController.dispose();
+    loginHospitalNameController.dispose();
+    focusNodePhone.dispose();
+    focusNodeHospitalName.dispose();
+    focusNodePassword.dispose();
+    super.dispose();
+  }
+
   bool _obscureText = true;
   bool get obscureText => _obscureText;
 
@@ -47,28 +71,6 @@ class LoginController extends ChangeNotifier {
     notifyListeners();
   }
 
-  //text controllers
-  TextEditingController loginPasswordController = TextEditingController();
-  TextEditingController loginPhoneNumberController = TextEditingController();
-  TextEditingController loginHospitalNameController =
-      TextEditingController(); //stores the hospital name , stores entered id only if admin phone number
-
-  //focus node
-  final FocusNode focusNodePhone = FocusNode();
-  final FocusNode focusNodeHospitalName = FocusNode();
-  final FocusNode focusNodePassword = FocusNode();
-
-  @override
-  void dispose() {
-    // this is not working check
-    loginPasswordController.dispose();
-    loginPhoneNumberController.dispose();
-    loginHospitalNameController.dispose();
-    focusNodePhone.dispose();
-    focusNodeHospitalName.dispose();
-    focusNodePassword.dispose();
-    super.dispose();
-  }
 
   //function to call for receiving hospitals lists
   List<Data> preLoginResponse = [];
@@ -164,7 +166,7 @@ class LoginController extends ChangeNotifier {
           await LocalStorageManager.setBool(
               StorageKeys.privilegeFlagCssdAndDept, true);
           /* insted of navigating show bottom sheet by returning true */
-          
+
           return true;
         } else if (_privileges.contains("312")) {
           await LocalStorageManager.setBool(
@@ -218,11 +220,13 @@ class LoginController extends ChangeNotifier {
     return false;
   }
 
-  void logoutFunction() {
-    LocalStorageManager
-        .clear(); // clears all values inside the local storage manager
+  void logoutFunction() async {
+    await LocalStorageManager.clear();
     log("Clearing all values in local storage manager");
-    log(LocalStorageManager.getString(StorageKeys.loggedinUser) ?? "data null");
+    // clears all values inside the local storage manager
+    LocalStorageManager.printAllValues();
+    // controller.selectedDepartment = null;
+    // log(controller.selectedDepartment.toString());
     loginPasswordController.clear();
     loginPhoneNumberController.clear();
     loginHospitalNameController.clear();

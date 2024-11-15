@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 //make sure to name each string / differently else there will be miss match
@@ -70,5 +72,20 @@ class LocalStorageManager {
   // Clear all values
   static Future<void> clear() async {
     await _preferences.clear();
+  }
+
+  //to log all save values
+  static void printAllValues() {
+    final keys = _preferences.getKeys();
+    if (keys.isEmpty) {
+      log("No values found in local storage.");
+      return;
+    }
+    
+    log("Printing all values in local storage:");
+    for (String key in keys) {
+      final value = _preferences.get(key);
+      log("Key: $key, Value: $value");
+    }
   }
 }

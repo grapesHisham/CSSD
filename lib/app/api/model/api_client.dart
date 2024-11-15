@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cssd/app/api/model/api_links.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/pie_chart_request_count_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/department_list_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/items_list_model.dart';
 import 'package:cssd/app/modules/login_module/model/login_model.dart';
@@ -22,13 +23,15 @@ abstract class ApiClient {
   @POST(ApiLinks.login)
   Future<LoginModel> login(@Body() Map<String, dynamic> body);
 
-  
-
   //department user
   @GET(ApiLinks.departementList)
   Future<GetDepartmentListModel> getDepartementListData();
 
   @GET(ApiLinks.getItemName)
-  Future<GetItemNameModel> getItemName(
-      @Query("department") String department ,@Query("itemname") String itemname );
+  Future<GetItemNameModel> getItemName(@Query("department") String department,
+      @Query("itemname") String itemname);
+
+  @GET(ApiLinks.getRequestedCount) //piechart
+  Future<GetRequestedCountModel> getRequestedCount(
+      @Query("department") String department);
 }
