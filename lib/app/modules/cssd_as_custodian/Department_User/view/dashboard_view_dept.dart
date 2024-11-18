@@ -6,8 +6,6 @@ import 'package:cssd/Widgets/notification_icon.dart';
 import 'package:cssd/Widgets/rounded_container.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/model/sampleRequestList.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/samplePieChart_model.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/department_list_model.dart';
 import 'package:cssd/app/modules/login_module/view/widgets/logout_popup.dart';
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/app_util.dart';
@@ -15,6 +13,7 @@ import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/fonts.dart';
 import 'package:cssd/util/hex_to_color_with_opacity.dart';
 import 'package:cssd/util/local_storage_manager.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
@@ -42,6 +41,7 @@ class _DashboardViewCssdCussDeptUserState
         Provider.of<DashboardControllerCssdCussDeptUser>(context,
             listen: false);
     dashboardController.departmentDropdownFunction();
+    dashboardController.fetchRequestDetails();
     if (selectedDepartment != null) {
       dashboardController.getPieChartData(selectedDepartment!);
     }
@@ -148,6 +148,7 @@ class _DashboardViewCssdCussDeptUserState
               color: Colors.white),
           child: SingleChildScrollView(
             child: Column(
+              mainAxisSize: MainAxisSize.max,
               children: [
                 Container(
                   decoration: BoxDecoration(
@@ -162,80 +163,188 @@ class _DashboardViewCssdCussDeptUserState
                               builder: (context, dashboardConsumer, child) {
                             final isDataAvailable =
                                 dashboardConsumer.hasValidData;
-                            return SizedBox(
-                                height: 180,
-                                child: isDataAvailable
-                                    ? SfCircularChart(
-                                        palette: [
-                                          hexToColorWithOpacity(
-                                              hexColor: "#ff6361"),
-                                          hexToColorWithOpacity(
-                                              hexColor: "#58508d"),
-                                          hexToColorWithOpacity(
-                                              hexColor: "#bc5090"),
-                                          hexToColorWithOpacity(
-                                              hexColor: "#003f5c"),
-                                          hexToColorWithOpacity(
-                                              hexColor: "#ffa600"),
-                                        ],
-                                        title: const ChartTitle(
-                                            alignment: ChartAlignment.near,
-                                            text: 'Request Details',
-                                            textStyle:
-                                                TextStyle(color: Colors.black)),
-                                        legend: const Legend(
-                                            isVisible: true,
-                                            textStyle:
-                                                TextStyle(color: Colors.black),
-                                            position: LegendPosition.left),
-                                        series: <PieSeries<Map<String, dynamic>,
-                                            String>>[
-                                          PieSeries<Map<String, dynamic>,
-                                              String>(
-                                            dataSource:
-                                                dashboardConsumer.pieChartData,
-                                            explode: true,
-                                            explodeIndex: 0,
-                                            xValueMapper:
-                                                (Map<String, dynamic> data,
-                                                        _) =>
-                                                    data.keys.first,
-                                            yValueMapper:
-                                                (Map<String, dynamic> data,
-                                                        _) =>
-                                                    data.values.first,
-                                            dataLabelSettings:
-                                                const DataLabelSettings(
-                                              isVisible: true,
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    : SizedBox(
-                                      width: mediaQuery.width - 10.0.h*2,
-                                      
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          const Text(
-                                              "No Requests found"),
-                                          SizedBox(
-                                            width: 140,
-                                            child: Lottie.asset(
-                                                'assets/lottie/PieAnimation - 1731912508343.json'),
-                                          ),
-                                          
-                                        ],
+                            return Visibility(
+                                visible: isDataAvailable ? true : false,
+                                replacement: SizedBox(
+                                  width: mediaQuery.width - 10.0.h * 2,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      const Text("Send Requests to load Stats"),
+                                      SizedBox(
+                                        width: 140,
+                                        child: Lottie.asset(
+                                            'assets/lottie/PieAnimation - 1731912508343.json'),
                                       ),
-                                    ));
+                                    ],
+                                  ),
+                                ),
+                                //syncfusion pie chart
+                                child: SizedBox(
+                                    height: 180,
+                                    child: SfCircularChart(
+                                      onChartTouchInteractionDown:
+                                          (ChartTouchInteractionArgs args) {
+                                        log("${args.position.dy} : ${args.position.dy}");
+                                        Navigator.pushNamed(
+                                            context,
+                                            Routes
+                                                .requestDetailsViewCssdCussDeptUser);
+                                      },
+                                      palette: [
+                                        //colors of the pie chart in order
+                                        hexToColorWithOpacity(
+                                            hexColor: "#ff6361"),
+                                        hexToColorWithOpacity(
+                                            hexColor: "#58508d"),
+                                        hexToColorWithOpacity(
+                                            hexColor: "#bc5090"),
+                                        hexToColorWithOpacity(
+                                            hexColor: "#003f5c"),
+                                        hexToColorWithOpacity(
+                                            hexColor: "#ffa600"),
+                                      ],
+                                      title: const ChartTitle(
+                                          alignment: ChartAlignment.near,
+                                          text: 'Request Details',
+                                          textStyle:
+                                              TextStyle(color: Colors.black)),
+                                      legend: const Legend(
+                                          //its the indications of the chart
+                                          isVisible: true,
+                                          textStyle:
+                                              TextStyle(color: Colors.black),
+                                          position: LegendPosition.left),
+                                      onTooltipRender: (TooltipArgs args) {},
+                                      series: <PieSeries<Map<String, dynamic>,
+                                          String>>[
+                                        PieSeries<Map<String, dynamic>, String>(
+                                          dataSource:
+                                              dashboardConsumer.pieChartData,
+                                          explode: true,
+                                          explodeIndex: 0,
+                                          xValueMapper:
+                                              (Map<String, dynamic> data, _) =>
+                                                  data.keys.first,
+                                          yValueMapper:
+                                              (Map<String, dynamic> data, _) =>
+                                                  data.values.first,
+                                          dataLabelSettings:
+                                              const DataLabelSettings(
+                                            isVisible: true,
+                                          ),
+                                        ),
+                                      ],
+                                    )));
                           }),
                         ],
                       )
                     ],
                   ),
                 ),
+                //navigation buttons
+                Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  runAlignment: WrapAlignment.start,
+                  crossAxisAlignment: WrapCrossAlignment.start,
+                  runSpacing: 10.0,
+                  spacing: 10.0,
+                  direction: Axis.horizontal,
+                  children: [
+                    ButtonWidget(
+                      childWidget: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            FluentIcons.tray_item_add_20_filled,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            "Used Item Entry",
+                            style: TextStyle(color: Colors.white),
+                          )
+                        ],
+                      ),
+                      buttonTextSize: 14,
+                      onPressed: () {},
+                    ),
+                    ButtonWidget(
+                      childWidget: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            FluentIcons.news_16_filled,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            "Reports",
+                            style: TextStyle(color: Colors.white),
+                          )
+                        ],
+                      ),
+                      buttonTextSize: 14,
+                      onPressed: () {},
+                    ),
+                    ButtonWidget(
+                      childWidget: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            FluentIcons.timeline_20_filled,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            "Timeline",
+                            style: TextStyle(color: Colors.white),
+                          )
+                        ],
+                      ),
+                      buttonTextSize: 14,
+                      onPressed: () {},
+                    ),
+                    ButtonWidget(
+                      childWidget: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            FluentIcons.send_16_filled,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            "Send To Cssd",
+                            style: TextStyle(color: Colors.white),
+                          )
+                        ],
+                      ),
+                      buttonTextSize: 14,
+                      onPressed: () {
+                        Navigator.pushNamed(context,
+                            Routes.sterilizationRequestViewCssdCussDeptUser);
+                      },
+                    ),
+                  ],
+                ),
+                //request listing
                 RoundedContainer(
                     containerBody: Column(
                   children: [
@@ -276,38 +385,6 @@ class _DashboardViewCssdCussDeptUserState
                   ],
                 )),
                 const SizedBox(height: 20.0),
-                Wrap(
-                  runAlignment: WrapAlignment.start,
-                  crossAxisAlignment: WrapCrossAlignment.start,
-                  runSpacing: 10.0,
-                  spacing: 10.0,
-                  direction: Axis.horizontal,
-                  children: [
-                    ButtonWidget(
-                      buttonLabel: "Used Item Entry",
-                      buttonTextSize: 14,
-                      onPressed: () {},
-                    ),
-                    ButtonWidget(
-                      buttonTextSize: 14,
-                      buttonLabel: "Reports",
-                      onPressed: () {},
-                    ),
-                    ButtonWidget(
-                      buttonTextSize: 14,
-                      buttonLabel: "Timeline",
-                      onPressed: () {},
-                    ),
-                    ButtonWidget(
-                      buttonTextSize: 14,
-                      buttonLabel: "Sterilization request",
-                      onPressed: () {
-                        Navigator.pushNamed(context,
-                            Routes.sterilizationRequestViewCssdCussDeptUser);
-                      },
-                    ),
-                  ],
-                ),
               ],
             ),
           ),

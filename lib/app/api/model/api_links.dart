@@ -10,6 +10,7 @@ class ApiLinks{
   static const String departementList = 'DepartmentList'; 
   static const String getItemName = 'GetItemName';
   static const String getRequestedCount = 'GetRequestedCount';
+  static const String getRequestDetails = 'GetRequested_Details';
   static const String getPendingRequestCount = 'GetPendingRequestCount';
   
 }

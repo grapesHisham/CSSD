@@ -1,5 +1,5 @@
-
 import 'package:cssd/app/api/model/api_links.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/get_request_details_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/pie_chart_pending_request_count_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/pie_chart_request_count_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/department_list_model.dart';
@@ -38,5 +38,9 @@ abstract class ApiClient {
   @GET(ApiLinks.getPendingRequestCount) //piechart
   Future<GetPendingRequestModel> getPendingRequestCount(
       //just because there is a conflict in the item name -message which is messgae in getRequestCount
+      @Query("department") String department);
+
+  @GET(ApiLinks.getRequestDetails)
+  Future<GetRequestDetailsModel> getRequestDetails(
       @Query("department") String department);
 }

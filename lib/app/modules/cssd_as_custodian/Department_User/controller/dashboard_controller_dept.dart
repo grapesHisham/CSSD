@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:cssd/app/api/dio_interceptors/dio_interceptor.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/get_request_details_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/department_list_model.dart';
+import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
 
 class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
@@ -10,7 +12,9 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  String? _selectedDepartment;
+  String _selectedDepartment =
+      LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter) ??
+          "";
   String? get getSelectedDepartment => _selectedDepartment;
   set selectedDepartment(String? value) {
     if (value != null) {
@@ -64,8 +68,7 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
   late String _pendingString;
   bool hasValidData =
       false; // if  request count = 0 & pending count is 0 4 the dept , set false to false to show lottie
-  // String storedDepartment =
-  //     LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter)!;
+
   Future<void> getPieChartData(String selectedDepartment) async {
     _pieChartData.clear();
     final client = await DioUtilAuthorized.createApiClient();
@@ -93,6 +96,27 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       log("Error fetching pie chart data: $e");
+    }
+  }
+    
+
+  // to fetch the details of the requests in pie chart on tap
+  List<RequestDetailsData> _requestDetailsList = [];
+  List<RequestDetailsData> get requestDetailsList => _requestDetailsList;
+  Future<void> fetchRequestDetails() async {
+    requestDetailsList.clear();
+    final client = await DioUtilAuthorized.createApiClient();
+    try {
+      final response = await client.getRequestDetails(getSelectedDepartment!);
+      if (response.status == 200) {
+        _requestDetailsList = response.data;
+        for (var detail in _requestDetailsList) {
+          log(detail.toString());
+        }
+      }
+      notifyListeners();
+    } catch (e) {
+      log("Exception caught : $e");
     }
   }
 }
