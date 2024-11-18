@@ -1,23 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'pie_chart_request_count_model copy.dart';
+part of 'pie_chart_pending_request_count_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-GetRequestedCountModelCopy _$GetRequestedCountModelCopyFromJson(
+GetPendingRequestModel _$GetPendingRequestModelFromJson(
         Map<String, dynamic> json) =>
-    GetRequestedCountModelCopy(
+    GetPendingRequestModel(
       status: (json['status'] as num).toInt(),
-      messgae: json['messgae'] as String,
+      message: json['message'] as String,
       data: (json['data'] as num).toInt(),
     );
 
-Map<String, dynamic> _$GetRequestedCountModelCopyToJson(
-        GetRequestedCountModelCopy instance) =>
+Map<String, dynamic> _$GetPendingRequestModelToJson(
+        GetPendingRequestModel instance) =>
     <String, dynamic>{
       'status': instance.status,
-      'messgae': instance.messgae,
+      'message': instance.message,
       'data': instance.data,
     };

@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:cssd/app/api/dio_interceptors/dio_interceptor.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/department_list_model.dart';
-import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
 
 class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
@@ -26,7 +25,7 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
   List<GetDepartmentListModelData> get departmentDropdownItems =>
       _departmentDropdownItems;
 
-  Future<void> departmentDropdownFunction() async {
+  Future<List<GetDepartmentListModelData>> departmentDropdownFunction() async {
     _departmentDropdownItems.clear();
     final client = await DioUtilAuthorized.createApiClient();
     try {
@@ -36,14 +35,16 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
       if (resposne.status == 200) {
         _departmentDropdownItems = resposne.data ?? [];
         _isLoading = false;
-
         notifyListeners();
+        return _departmentDropdownItems;
       } else {
         _isLoading = false;
         log("status code !200  :  ${resposne.message}");
+        return [];
       }
     } catch (e) {
       log("exception : $e");
+      return [];
     }
   }
 
@@ -57,10 +58,12 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
   }
 
   // fetching data for pie chart
-  late int _pendingCount;
   late int _requestCount;
-  late String _pendingString;
   late String _requestString;
+  late int _pendingCount;
+  late String _pendingString;
+  bool hasValidData =
+      false; // if  request count = 0 & pending count is 0 4 the dept , set false to false to show lottie
   // String storedDepartment =
   //     LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter)!;
   Future<void> getPieChartData(String selectedDepartment) async {
@@ -78,11 +81,18 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
         log("Piechart request data is label: $_requestString, value: $_requestCount");
         addToList(_requestString, _requestCount);
         _pendingCount = pendingRequestCountResponse.data;
-        _pendingString = pendingRequestCountResponse.messgae;
+        _pendingString = pendingRequestCountResponse.message;
         log("Piechart pending data is label: $_pendingString, value: $_pendingCount");
         addToList(_pendingString, _pendingCount);
+        if (_requestCount == 0 && _pendingCount == 0) {
+          hasValidData = false;
+        } else {
+          hasValidData = true;
+        }
       }
       notifyListeners();
-    } catch (e) {}
+    } catch (e) {
+      log("Error fetching pie chart data: $e");
+    }
   }
 }

@@ -7,6 +7,7 @@ import 'package:cssd/Widgets/rounded_container.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/model/sampleRequestList.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/samplePieChart_model.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/department_list_model.dart';
 import 'package:cssd/app/modules/login_module/view/widgets/logout_popup.dart';
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/app_util.dart';
@@ -16,6 +17,7 @@ import 'package:cssd/util/hex_to_color_with_opacity.dart';
 import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -36,9 +38,13 @@ class _DashboardViewCssdCussDeptUserState
   void initState() {
     selectedDepartment =
         LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter);
-    final dashboardController = Provider.of<DashboardControllerCssdCussDeptUser>(context,listen: false);
-    dashboardController.getPieChartData(selectedDepartment!);
+    final dashboardController =
+        Provider.of<DashboardControllerCssdCussDeptUser>(context,
+            listen: false);
     dashboardController.departmentDropdownFunction();
+    if (selectedDepartment != null) {
+      dashboardController.getPieChartData(selectedDepartment!);
+    }
     // controller.selectedDepartment = null;
     hasPrivileges =
         LocalStorageManager.getBool(StorageKeys.privilegeFlagCssdAndDept)!;
@@ -58,6 +64,9 @@ class _DashboardViewCssdCussDeptUserState
 
   @override
   Widget build(BuildContext context) {
+    final dashboardController =
+        Provider.of<DashboardControllerCssdCussDeptUser>(context,
+            listen: false);
     final mediaQuery = MediaQuery.of(context).size;
     return PopScope(
       canPop: false,
@@ -92,19 +101,26 @@ class _DashboardViewCssdCussDeptUserState
                 height: 50,
                 child: Consumer<DashboardControllerCssdCussDeptUser>(
                     builder: (context, dashboardConsumer, child) {
+                  if (dashboardConsumer.departmentDropdownItems.isEmpty) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  final departmentNames = dashboardConsumer
+                      .departmentDropdownItems
+                      .map((dept) => dept.subName)
+                      .toList();
+
                   return CustomDropdown.search(
                     decoration: CustomDropdownDecoration(
                         closedBorder: Border.all(color: Colors.grey.shade100)),
                     initialItem: LocalStorageManager.getString(
                         StorageKeys.selectedDepartmentCounter),
                     hintText: "Department name",
-                    items: dashboardConsumer.departmentDropdownItems
-                        .map((item) => item.subName.toString())
-                        .toList(),
+                    items: departmentNames,
                     onChanged: (selectedDepartment) {
                       if (selectedDepartment != null) {
-                        dashboardConsumer.getPieChartData(selectedDepartment);
-                        dashboardConsumer.selectedDepartment =
+                        dashboardController.getPieChartData(selectedDepartment);
+                        dashboardController.selectedDepartment =
                             selectedDepartment;
                         LocalStorageManager.setString(
                             StorageKeys.selectedDepartmentCounter,
@@ -143,40 +159,78 @@ class _DashboardViewCssdCussDeptUserState
                       Row(
                         children: [
                           Consumer<DashboardControllerCssdCussDeptUser>(
-                            builder: (context, dashboardConsumer,child) {
-                              
-                              return SfCircularChart(
-                                palette: [
-                                  hexToColorWithOpacity(hexColor: "#ff6361"),
-                                  hexToColorWithOpacity(hexColor: "#58508d"),
-                                  hexToColorWithOpacity(hexColor: "#bc5090"),
-                                  hexToColorWithOpacity(hexColor: "#003f5c"),
-                                  hexToColorWithOpacity(hexColor: "#ffa600"),
-                                ],
-                                title: const ChartTitle(
-                                    text: 'Request Details',
-                                    textStyle: TextStyle(color: Colors.black)),
-                                legend: const Legend(
-                                    isVisible: true,
-                                    textStyle: TextStyle(color: Colors.black),
-                                    position: LegendPosition.left),
-                                series: <PieSeries<Map<String, dynamic>, String>>[
-                                  PieSeries<Map<String, dynamic>, String>(
-                                    dataSource: dashboardConsumer.pieChartData,
-                                    explode: true,
-                                    explodeIndex: 0,
-                                    xValueMapper: (Map<String, dynamic> data, _) =>
-                                        data.keys.first,
-                                    yValueMapper: (Map<String, dynamic> data, _) =>
-                                        data.values.first,
-                                    dataLabelSettings: const DataLabelSettings(
-                                      isVisible: true,
-                                    ),
-                                  ),
-                                ],
-                              );
-                            }
-                          ),
+                              builder: (context, dashboardConsumer, child) {
+                            final isDataAvailable =
+                                dashboardConsumer.hasValidData;
+                            return SizedBox(
+                                height: 180,
+                                child: isDataAvailable
+                                    ? SfCircularChart(
+                                        palette: [
+                                          hexToColorWithOpacity(
+                                              hexColor: "#ff6361"),
+                                          hexToColorWithOpacity(
+                                              hexColor: "#58508d"),
+                                          hexToColorWithOpacity(
+                                              hexColor: "#bc5090"),
+                                          hexToColorWithOpacity(
+                                              hexColor: "#003f5c"),
+                                          hexToColorWithOpacity(
+                                              hexColor: "#ffa600"),
+                                        ],
+                                        title: const ChartTitle(
+                                            alignment: ChartAlignment.near,
+                                            text: 'Request Details',
+                                            textStyle:
+                                                TextStyle(color: Colors.black)),
+                                        legend: const Legend(
+                                            isVisible: true,
+                                            textStyle:
+                                                TextStyle(color: Colors.black),
+                                            position: LegendPosition.left),
+                                        series: <PieSeries<Map<String, dynamic>,
+                                            String>>[
+                                          PieSeries<Map<String, dynamic>,
+                                              String>(
+                                            dataSource:
+                                                dashboardConsumer.pieChartData,
+                                            explode: true,
+                                            explodeIndex: 0,
+                                            xValueMapper:
+                                                (Map<String, dynamic> data,
+                                                        _) =>
+                                                    data.keys.first,
+                                            yValueMapper:
+                                                (Map<String, dynamic> data,
+                                                        _) =>
+                                                    data.values.first,
+                                            dataLabelSettings:
+                                                const DataLabelSettings(
+                                              isVisible: true,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : SizedBox(
+                                      width: mediaQuery.width - 10.0.h*2,
+                                      
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          const Text(
+                                              "No Requests found"),
+                                          SizedBox(
+                                            width: 140,
+                                            child: Lottie.asset(
+                                                'assets/lottie/PieAnimation - 1731912508343.json'),
+                                          ),
+                                          
+                                        ],
+                                      ),
+                                    ));
+                          }),
                         ],
                       )
                     ],

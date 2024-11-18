@@ -195,20 +195,20 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<GetRequestedCountModelCopy> getPendingRequestCount(
+  Future<GetPendingRequestModel> getPendingRequestCount(
       String department) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'department': department};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<GetRequestedCountModelCopy>(Options(
+    final _options = _setStreamType<GetPendingRequestModel>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
     )
         .compose(
           _dio.options,
-          'GetRequestedCount',
+          'GetPendingRequestCount',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -218,9 +218,9 @@ class _ApiClient implements ApiClient {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late GetRequestedCountModelCopy _value;
+    late GetPendingRequestModel _value;
     try {
-      _value = GetRequestedCountModelCopy.fromJson(_result.data!);
+      _value = GetPendingRequestModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
