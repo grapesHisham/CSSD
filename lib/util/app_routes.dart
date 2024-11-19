@@ -8,8 +8,9 @@ import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/sterilization_
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/bottom_navigation_bar_cssd_user.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/timeline_view.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/dashboard_view_dept.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/department_stock_details_view.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/sterilization_request_view.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/request_details_view.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/pie_request_details_view.dart';
 import 'package:cssd/app/modules/login_module/view/login_screen.dart';
 import 'package:cssd/app/modules/login_module/view/splash_screen.dart';
 // import 'package:cssd/app/modules/login_module/view/dashboard_switch_cssd_dept.dart';
@@ -47,6 +48,8 @@ class Routes {
   static const String requestDetailsViewCssdCussDeptUser =
       '/RequestDetailsViewCssdCussDeptUser';
 
+  static const String departmentStockDetailsView =
+      "/DepartmentStockDetailsView";
   /* ################################################################################################################# */
 
   static final Map<String, WidgetBuilder> routes = {
@@ -77,7 +80,10 @@ class Routes {
         const DashboardViewCssdCussDeptUser(), //home
     sterilizationRequestViewCssdCussDeptUser: (context) =>
         const SterilizationRequestViewCssdCussDeptUser(),
-    requestDetailsViewCssdCussDeptUser : (context) =>  RequestDetailsViewCssdCussDeptUser(),
+    requestDetailsViewCssdCussDeptUser: (context) =>
+        RequestDetailsViewCssdCussDeptUser(),
+
+    departmentStockDetailsView: (context) => DepartmentStockDetailsView()
   };
 }
 

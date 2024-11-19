@@ -12,6 +12,8 @@ class ApiLinks{
   static const String getRequestedCount = 'GetRequestedCount';
   static const String getRequestDetails = 'GetRequested_Details';
   static const String getPendingRequestCount = 'GetPendingRequestCount';
+  static const String getPendingRequestdetails = 'GetPendingRequestdetails';
+  static const String getDepartmentwiseStockDetails = 'GetDepartmentwiseStock_Details';
   
 }
 

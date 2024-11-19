@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-
+//request details or pending request details
 part 'get_request_details_model.g.dart';
 @JsonSerializable()
 class GetRequestDetailsModel {

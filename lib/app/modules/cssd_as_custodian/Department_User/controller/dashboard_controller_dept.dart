@@ -2,12 +2,22 @@ import 'dart:developer';
 
 import 'package:cssd/app/api/dio_interceptors/dio_interceptor.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/get_request_details_model.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/pie_dept_stock_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/department_list_model.dart';
+import 'package:cssd/util/app_util.dart';
 import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
 
 class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
   DashboardControllerCssdCussDeptUser() {}
+
+  final TextEditingController searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -80,7 +90,7 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
       if (requestCountResponse.status == 200 &&
           pendingRequestCountResponse.status == 200) {
         _requestCount = requestCountResponse.data;
-        _requestString = requestCountResponse.messgae;
+        _requestString = requestCountResponse.message;
         log("Piechart request data is label: $_requestString, value: $_requestCount");
         addToList(_requestString, _requestCount);
         _pendingCount = pendingRequestCountResponse.data;
@@ -98,7 +108,6 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
       log("Error fetching pie chart data: $e");
     }
   }
-    
 
   // to fetch the details of the requests in pie chart on tap
   List<RequestDetailsData> _requestDetailsList = [];
@@ -110,13 +119,118 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
       final response = await client.getRequestDetails(getSelectedDepartment!);
       if (response.status == 200) {
         _requestDetailsList = response.data;
-        for (var detail in _requestDetailsList) {
-          log(detail.toString());
-        }
       }
       notifyListeners();
     } catch (e) {
       log("Exception caught : $e");
     }
+  }
+
+  //fetch pending request details
+  // List<RequestDetailsData> _pendingRequestDetailsList = [];
+  // List<RequestDetailsData> get pendingRequestDetailsList =>
+  //     _pendingRequestDetailsList;
+  Future<void> fetchPendingRequestDetails() async {
+    requestDetailsList.clear();
+    final client = await DioUtilAuthorized.createApiClient();
+    try {
+      final response =
+          await client.getPendingRequestdetails(getSelectedDepartment!);
+      if (response.status == 200) {
+        _requestDetailsList = response.data;
+      }
+      notifyListeners();
+    } catch (e) {
+      log("Exception caught : $e");
+      showSnackBarNoContext(
+          isError: true, msg: "Caught Exception pending request");
+    }
+  }
+
+/*   // fetching department stock details
+  List<DepartmentStockData> _deptStockList = [];
+  List<DepartmentStockData> get deptStockList => _deptStockList;
+
+  
+
+  Future<List<DepartmentStockData>> fetchDepartmentwiseStockDetails() async {
+    final client = await DioUtilAuthorized.createApiClient();
+    try {
+      final deprtStockResponse =
+          await client.getDepartmentwiseStockDetails(getSelectedDepartment!);
+
+      if (deprtStockResponse.status == 200) {
+        _deptStockList = deprtStockResponse.data;
+        _filtereddeptStockList = List.from(_deptStockList);
+        
+        return _deptStockList;
+      } 
+      notifyListeners();
+      return [];
+    } catch (e) {
+      log("Error fetching pie chart data: $e");
+      return [];
+    }
+  }
+
+  //to search items inside the deptstocklist
+  Future<List<DepartmentStockData>> _filtereddeptStockList ;
+  Future<List<DepartmentStockData>> get filtereddeptStockList => _filtereddeptStockList;
+
+  Future<List<DepartmentStockData>> filterFutureList(String? query) {
+    if (query == null) {
+      _filtereddeptStockList = List.from(deptStockList);
+    return _filtereddeptStockList;
+    } else {
+      _filtereddeptStockList = deptStockList
+          .where((item) =>
+              item.productName.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    }
+    
+    notifyListeners();
+    return _filtereddeptStockList;
+  
+  } */
+  List<DepartmentStockData> _deptStockList = [];
+  List<DepartmentStockData> get deptStockList => _deptStockList;
+  List<DepartmentStockData> _filteredDeptStockList = [];
+
+  List<DepartmentStockData> get filteredDeptStockList => _filteredDeptStockList;
+
+  Future<List<DepartmentStockData>> fetchDepartmentwiseStockDetails() async {
+    final client = await DioUtilAuthorized.createApiClient();
+    try {
+      final deptStockResponse =
+          await client.getDepartmentwiseStockDetails(getSelectedDepartment!);
+
+      if (deptStockResponse.status == 200) {
+        _deptStockList = deptStockResponse.data;
+        _filteredDeptStockList = List.from(_deptStockList);
+        
+        notifyListeners();
+        return _deptStockList;
+      }
+      return [];
+    } catch (e) {
+      log("Error fetching department stock data: $e");
+      return [];
+    }
+  }
+
+  Future<List<DepartmentStockData>> filterFutureList(String? query) async {
+    if (query == null || query.isEmpty) {
+      await fetchDepartmentwiseStockDetails();
+      _filteredDeptStockList = List.from(deptStockList);
+    } else {
+      _filteredDeptStockList = deptStockList
+          .where((item) =>
+              item.productName.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+
+      log(_filteredDeptStockList.length.toString());
+    }
+    notifyListeners();
+    return _filteredDeptStockList;
   }
 }

@@ -6,6 +6,13 @@ class GradientColors {
     Color(0xff1e6a9f),
     Color(0xff6c9dc0),
   ];
+
+  static List<Color> backgroundGradient = const [
+    StaticColors.scaffoldBackgroundcolor, // Dark Blue
+    Color(0xFFbbdefb), // Medium Blue
+    Color(0xFFe3f2fd), // Light Blue
+    Colors.white,
+  ];
 }
 
 class StaticColors {
@@ -41,6 +48,6 @@ class StaticColors {
   static const requestContainerNumberBackground = Color(0xFFFF4906);
   static const pickupRequestContainerBackground = Color(0xFFFEF7FF);
 
-  // doctor image background 
+  // doctor image background
   static const doctorImageBackgroundColor = Color(0xff22549B);
 }

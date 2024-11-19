@@ -6,18 +6,18 @@ part of 'pie_chart_request_count_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-GetRequestedCountModel _$GetRequestedCountModelFromJson(
+GetRequestCountModel _$GetRequestCountModelFromJson(
         Map<String, dynamic> json) =>
-    GetRequestedCountModel(
+    GetRequestCountModel(
       status: (json['status'] as num).toInt(),
-      messgae: json['messgae'] as String,
+      message: json['message'] as String,
       data: (json['data'] as num).toInt(),
     );
 
-Map<String, dynamic> _$GetRequestedCountModelToJson(
-        GetRequestedCountModel instance) =>
+Map<String, dynamic> _$GetRequestCountModelToJson(
+        GetRequestCountModel instance) =>
     <String, dynamic>{
       'status': instance.status,
-      'messgae': instance.messgae,
+      'message': instance.message,
       'data': instance.data,
     };

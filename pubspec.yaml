@@ -55,6 +55,7 @@ dependencies:
   #slide_to_act: ^2.0.2 #replaced with login button remove if unnecessary
   animated_custom_dropdown: ^3.1.1
   #flutter_expandable_fab: ^2.3.0 #replaced with inbuild fab remove if unnecessary
+  google_fonts: ^6.2.1 
   
 
 

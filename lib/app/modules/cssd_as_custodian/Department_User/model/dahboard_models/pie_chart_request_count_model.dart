@@ -2,21 +2,21 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'pie_chart_request_count_model.g.dart';
 @JsonSerializable()
-class GetRequestedCountModel {
+class GetRequestCountModel {
     @JsonKey(name: "status")
     int status;
-    @JsonKey(name: "messgae")
-    String messgae;
+    @JsonKey(name: "message")
+    String message;
     @JsonKey(name: "data")
     int data;
 
-    GetRequestedCountModel({
+    GetRequestCountModel({
         required this.status,
-        required this.messgae,
+        required this.message,
         required this.data,
     });
 
-    factory GetRequestedCountModel.fromJson(Map<String, dynamic> json) => _$GetRequestedCountModelFromJson(json);
+    factory GetRequestCountModel.fromJson(Map<String, dynamic> json) => _$GetRequestCountModelFromJson(json);
 
-    Map<String, dynamic> toJson() => _$GetRequestedCountModelToJson(this);
+    Map<String, dynamic> toJson() => _$GetRequestCountModelToJson(this);
 }

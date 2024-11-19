@@ -342,6 +342,30 @@ class _DashboardViewCssdCussDeptUserState
                             Routes.sterilizationRequestViewCssdCussDeptUser);
                       },
                     ),
+                    ButtonWidget(
+                      childWidget: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Icon(
+                            FluentIcons.stack_16_filled,
+                            color: Colors.white,
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          Text(
+                            "Stock",
+                            style: TextStyle(color: Colors.white),
+                          )
+                        ],
+                      ),
+                      buttonTextSize: 14,
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context, Routes.departmentStockDetailsView);
+                      },
+                    ),
                   ],
                 ),
                 //request listing

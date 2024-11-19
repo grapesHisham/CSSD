@@ -162,12 +162,12 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<GetRequestedCountModel> getRequestedCount(String department) async {
+  Future<GetRequestCountModel> getRequestedCount(String department) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'department': department};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<GetRequestedCountModel>(Options(
+    final _options = _setStreamType<GetRequestCountModel>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -184,9 +184,9 @@ class _ApiClient implements ApiClient {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late GetRequestedCountModel _value;
+    late GetRequestCountModel _value;
     try {
-      _value = GetRequestedCountModel.fromJson(_result.data!);
+      _value = GetRequestCountModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -195,13 +195,12 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<GetPendingRequestModel> getPendingRequestCount(
-      String department) async {
+  Future<GetRequestCountModel> getPendingRequestCount(String department) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'department': department};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<GetPendingRequestModel>(Options(
+    final _options = _setStreamType<GetRequestCountModel>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -218,9 +217,9 @@ class _ApiClient implements ApiClient {
           baseUrl,
         )));
     final _result = await _dio.fetch<Map<String, dynamic>>(_options);
-    late GetPendingRequestModel _value;
+    late GetRequestCountModel _value;
     try {
-      _value = GetPendingRequestModel.fromJson(_result.data!);
+      _value = GetRequestCountModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
@@ -254,6 +253,74 @@ class _ApiClient implements ApiClient {
     late GetRequestDetailsModel _value;
     try {
       _value = GetRequestDetailsModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<GetRequestDetailsModel> getPendingRequestdetails(
+      String department) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'department': department};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<GetRequestDetailsModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'GetPendingRequestdetails',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late GetRequestDetailsModel _value;
+    try {
+      _value = GetRequestDetailsModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<GetDepartmentwiseStockDetailsModel> getDepartmentwiseStockDetails(
+      String department) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'department': department};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<GetDepartmentwiseStockDetailsModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'GetDepartmentwiseStock_Details',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late GetDepartmentwiseStockDetailsModel _value;
+    try {
+      _value = GetDepartmentwiseStockDetailsModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
