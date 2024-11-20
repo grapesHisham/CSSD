@@ -1,6 +1,4 @@
 import 'dart:developer';
-
-import 'package:cssd/app/api/dio_interceptors/dio_interceptor.dart';
 import 'package:cssd/app/api/model/api_client.dart';
 import 'package:cssd/app/api/model/api_links.dart';
 import 'package:cssd/main.dart';
@@ -12,10 +10,33 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 /*  
    
    Size mediaQuery = MediaQuery.of(context).size; 
+
+   Scaffold(
+        backgroundColor: StaticColors.scaffoldBackgroundcolor,
+        appBar: AppBar(
+          title:
+              Text('Sterilization Request', style: FontStyles.appBarTitleStyle),
+        ),
+        body: Container(
+            width: double.infinity,
+            height: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 10.0.h, vertical: 10.0.h),
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(25),
+                  topRight: Radius.circular(25),
+                ),
+                color: Colors.white),
+            child: Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: SingleChildScrollView(
+                    child: Column(
+                        mainAxisSize: MainAxisSize.max, children: [])))));
    
    */
 
 class AppUtil {
+  
   //api client
   static Future<ApiClient> createApiClient() async {
     String baseUrl = ApiLinks.baseIp;

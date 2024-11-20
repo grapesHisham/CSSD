@@ -259,6 +259,7 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     AnimatedHoverButton(
                       ontap: () {
+                        log("button clicked");
                         /*  Navigator.pushNamedAndRemoveUntil(context,Routes.bottomNavBarDashboardCssdUser,(Route route) => false); */
                         Navigator.pushNamed(
                           context,
@@ -289,11 +290,8 @@ class LoginScreen extends StatelessWidget {
                     ),
                     AnimatedHoverButton(
                       ontap: () {
-                        /* Navigator.pushNamedAndRemoveUntil(
-                                                    context,
-                                                    Routes.dashboardViewCssdCussDeptUser,
-                                                    (Route route) => false); */
-
+                        log("button clicked");
+                    
                         Navigator.pushNamed(
                           context,
                           Routes.dashboardViewCssdCussDeptUser,

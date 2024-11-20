@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:cssd/app/api/dio_interceptors/dio_interceptor.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/department_list_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/items_list_model.dart';
+import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
 
 class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
@@ -52,41 +53,43 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
     }
   }
 
-  // current selected department
-  String _selectedDepartment = '';
-  String get selectedDepartment => _selectedDepartment;
-  set setSelectedDepartment(String value) {
-    log("Currently selected department : $value");
-    if (_selectedDepartment != value) {
-      _selectedDepartment = value;
-    }
-  }
+  // // current selected department
+  // String _selectedDepartment =
+  //     LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter) ??
+  //         "";
+  // String get selectedDepartment => _selectedDepartment;
+  // set setSelectedDepartment(String value) {
+  //   log("Currently selected department : $value");
+  //   if (_selectedDepartment != value) {
+  //     _selectedDepartment = value;
+  //   }
+  // }
 
-  //fetch items list for department
-  final List<GetItemNameModelData> _itemsList = [];
-  List<GetItemNameModelData> get itemsList => _itemsList;
-  List<String> _itemsNames = [];
-  List<String> get itemsNames => _itemsNames;
-
-  Future<void> fetchItems(String itemname) async {
-    _itemsList.clear();
-    final client = await DioUtilAuthorized.createApiClient();
-    try {
-      _isLoading = true;
-      notifyListeners();
-      final response = await client.getItemName(_selectedDepartment, itemname);
-      _itemsList.addAll(response.data ?? []);
-      _itemsNames = _itemsList.map((item) => item.productName ?? '').toList();
-      _isLoading = false;
-      notifyListeners();
-    } catch (e) {
-      log("exception : $e");
-    }
-  }
+  // //fetch items list for selected department
+  // final List<GetItemNameModelData> _itemsList = [];
+  // List<GetItemNameModelData> get itemsList => _itemsList;
+  // List<String> _itemsNames = [];
+  // List<String> get itemsNames => _itemsNames;
+  // // final String selectedDepartment = LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter) ;
+  // Future<void> fetchItems({required String itemname,required String department}) async {
+  //   _itemsList.clear();
+  //   final client = await DioUtilAuthorized.createApiClient();
+  //   try {
+  //     _isLoading = true;
+  //     notifyListeners();
+  //     final response = await client.getItemName(department, itemname);
+  //     _itemsList.addAll(response.data ?? []);
+  //     _itemsNames = _itemsList.map((item) => item.productName ?? '').toList();
+  //     _isLoading = false;
+  //     notifyListeners();
+  //   } catch (e) {
+  //     log("exception : $e");
+  //   }
+  // }
 
   void clearInputs() {
     //to clear the values inside the text fields - items and quantity , after adding it to gridview builder
-   /*  // setSelectedItemDropdown = "";  clearing selected item creates a bug of not able to add the same item again to the list consecutively */
+    /*  // setSelectedItemDropdown = "";  clearing selected item creates a bug of not able to add the same item again to the list consecutively */
     quantityController.clear();
   }
 
@@ -97,7 +100,7 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteCurrentItemFromList(Map<String,dynamic> item){
+  void deleteCurrentItemFromList(Map<String, dynamic> item) {
     _selectedItemsQuantity.remove(item);
     notifyListeners();
   }

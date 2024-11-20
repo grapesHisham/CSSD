@@ -4,9 +4,11 @@ import 'package:cssd/app/api/dio_interceptors/dio_interceptor.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/get_request_details_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/pie_dept_stock_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/department_list_model.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/items_list_model.dart';
 import 'package:cssd/util/app_util.dart';
 import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
   DashboardControllerCssdCussDeptUser() {}
@@ -31,6 +33,8 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
       _selectedDepartment = value;
       log("selected department is : $getSelectedDepartment");
       notifyListeners();
+    } else {
+      showSnackBarNoContext(isError: true, msg: "Department selected is null");
     }
   }
 
@@ -147,55 +151,10 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
     }
   }
 
-/*   // fetching department stock details
-  List<DepartmentStockData> _deptStockList = [];
-  List<DepartmentStockData> get deptStockList => _deptStockList;
-
-  
-
-  Future<List<DepartmentStockData>> fetchDepartmentwiseStockDetails() async {
-    final client = await DioUtilAuthorized.createApiClient();
-    try {
-      final deprtStockResponse =
-          await client.getDepartmentwiseStockDetails(getSelectedDepartment!);
-
-      if (deprtStockResponse.status == 200) {
-        _deptStockList = deprtStockResponse.data;
-        _filtereddeptStockList = List.from(_deptStockList);
-        
-        return _deptStockList;
-      } 
-      notifyListeners();
-      return [];
-    } catch (e) {
-      log("Error fetching pie chart data: $e");
-      return [];
-    }
-  }
-
-  //to search items inside the deptstocklist
-  Future<List<DepartmentStockData>> _filtereddeptStockList ;
-  Future<List<DepartmentStockData>> get filtereddeptStockList => _filtereddeptStockList;
-
-  Future<List<DepartmentStockData>> filterFutureList(String? query) {
-    if (query == null) {
-      _filtereddeptStockList = List.from(deptStockList);
-    return _filtereddeptStockList;
-    } else {
-      _filtereddeptStockList = deptStockList
-          .where((item) =>
-              item.productName.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-    }
-    
-    notifyListeners();
-    return _filtereddeptStockList;
-  
-  } */
+  //fetching department stock details and adding search functionality by using filtered list
   List<DepartmentStockData> _deptStockList = [];
   List<DepartmentStockData> get deptStockList => _deptStockList;
   List<DepartmentStockData> _filteredDeptStockList = [];
-
   List<DepartmentStockData> get filteredDeptStockList => _filteredDeptStockList;
 
   Future<List<DepartmentStockData>> fetchDepartmentwiseStockDetails() async {
@@ -207,7 +166,7 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
       if (deptStockResponse.status == 200) {
         _deptStockList = deptStockResponse.data;
         _filteredDeptStockList = List.from(_deptStockList);
-        
+
         notifyListeners();
         return _deptStockList;
       }
@@ -232,5 +191,28 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
     }
     notifyListeners();
     return _filteredDeptStockList;
+  }
+
+  /* Common apis for department user */
+  //fetch items list for selected department
+  final List<GetItemNameModelData> _itemsList = [];
+  List<GetItemNameModelData> get itemsList => _itemsList;
+  List<String> _itemsNames = [];
+  List<String> get itemsNames => _itemsNames;
+  // final String selectedDepartment = LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter) ;
+  Future<void> fetchItems({required String itemname,required String department}) async {
+    _itemsList.clear();
+    final client = await DioUtilAuthorized.createApiClient();
+    try {
+      _isLoading = true;
+      notifyListeners();
+      final response = await client.getItemName(department, itemname);
+      _itemsList.addAll(response.data ?? []);
+      _itemsNames = _itemsList.map((item) => item.productName ?? '').toList();
+      _isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      log("exception : $e");
+    }
   }
 }

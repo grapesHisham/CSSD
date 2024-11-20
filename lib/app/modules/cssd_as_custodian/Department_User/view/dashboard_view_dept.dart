@@ -6,6 +6,7 @@ import 'package:cssd/Widgets/notification_icon.dart';
 import 'package:cssd/Widgets/rounded_container.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/model/sampleRequestList.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/department_selection_widget.dart';
 import 'package:cssd/app/modules/login_module/view/widgets/logout_popup.dart';
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/app_util.dart';
@@ -64,6 +65,7 @@ class _DashboardViewCssdCussDeptUserState
 
   @override
   Widget build(BuildContext context) {
+    log("dashboard page build");
     final dashboardController =
         Provider.of<DashboardControllerCssdCussDeptUser>(context,
             listen: false);
@@ -80,7 +82,7 @@ class _DashboardViewCssdCussDeptUserState
         floatingActionButton: _buildFloatingActionButton(hasPrivileges),
         backgroundColor: StaticColors.scaffoldBackgroundcolor,
         appBar: AppBar(
-          toolbarHeight: 140,
+          toolbarHeight: 123,
           centerTitle: false,
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,39 +101,8 @@ class _DashboardViewCssdCussDeptUserState
               SizedBox(
                 width: mediaQuery.width,
                 height: 50,
-                child: Consumer<DashboardControllerCssdCussDeptUser>(
-                    builder: (context, dashboardConsumer, child) {
-                  if (dashboardConsumer.departmentDropdownItems.isEmpty) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-
-                  final departmentNames = dashboardConsumer
-                      .departmentDropdownItems
-                      .map((dept) => dept.subName)
-                      .toList();
-
-                  return CustomDropdown.search(
-                    decoration: CustomDropdownDecoration(
-                        closedBorder: Border.all(color: Colors.grey.shade100)),
-                    initialItem: LocalStorageManager.getString(
-                        StorageKeys.selectedDepartmentCounter),
-                    hintText: "Department name",
-                    items: departmentNames,
-                    onChanged: (selectedDepartment) {
-                      if (selectedDepartment != null) {
-                        dashboardController.getPieChartData(selectedDepartment);
-                        dashboardController.selectedDepartment =
-                            selectedDepartment;
-                        LocalStorageManager.setString(
-                            StorageKeys.selectedDepartmentCounter,
-                            selectedDepartment);
-                        log("stored to selectedDepartmentCounter : ${LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter)}");
-                      } else {
-                        showToast(context, "Select department");
-                      }
-                    },
-                  );
-                }),
+                child: DepartmentSelectionWidget(
+                    dashboardController: dashboardController),
               )
             ],
           ),
@@ -159,215 +130,127 @@ class _DashboardViewCssdCussDeptUserState
                     children: [
                       Row(
                         children: [
+                          //pie chart
                           Consumer<DashboardControllerCssdCussDeptUser>(
                               builder: (context, dashboardConsumer, child) {
                             final isDataAvailable =
                                 dashboardConsumer.hasValidData;
                             return Visibility(
-                                visible: isDataAvailable ? true : false,
-                                replacement: SizedBox(
-                                  width: mediaQuery.width - 10.0.h * 2,
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      const Text("Send Requests to load Stats"),
-                                      SizedBox(
-                                        width: 140,
-                                        child: Lottie.asset(
-                                            'assets/lottie/PieAnimation - 1731912508343.json'),
-                                      ),
-                                    ],
-                                  ),
+                              visible: isDataAvailable ? true : false,
+                              replacement: SizedBox(
+                                width: mediaQuery.width - 10.0.h * 2,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    const Text("Send Requests to load Stats"),
+                                    SizedBox(
+                                      width: 140,
+                                      child: Lottie.asset(
+                                          'assets/lottie/PieAnimation - 1731912508343.json'),
+                                    ),
+                                  ],
                                 ),
-                                //syncfusion pie chart
-                                child: SizedBox(
-                                    height: 180,
-                                    child: SfCircularChart(
-                                      onChartTouchInteractionDown:
-                                          (ChartTouchInteractionArgs args) {
-                                        log("${args.position.dy} : ${args.position.dy}");
-                                        Navigator.pushNamed(
-                                            context,
-                                            Routes
-                                                .requestDetailsViewCssdCussDeptUser);
-                                      },
-                                      palette: [
-                                        //colors of the pie chart in order
-                                        hexToColorWithOpacity(
-                                            hexColor: "#ff6361"),
-                                        hexToColorWithOpacity(
-                                            hexColor: "#58508d"),
-                                        hexToColorWithOpacity(
-                                            hexColor: "#bc5090"),
-                                        hexToColorWithOpacity(
-                                            hexColor: "#003f5c"),
-                                        hexToColorWithOpacity(
-                                            hexColor: "#ffa600"),
-                                      ],
-                                      title: const ChartTitle(
-                                          alignment: ChartAlignment.near,
-                                          text: 'Request Details',
-                                          textStyle:
-                                              TextStyle(color: Colors.black)),
-                                      legend: const Legend(
-                                          //its the indications of the chart
-                                          isVisible: true,
-                                          textStyle:
-                                              TextStyle(color: Colors.black),
-                                          position: LegendPosition.left),
-                                      onTooltipRender: (TooltipArgs args) {},
-                                      series: <PieSeries<Map<String, dynamic>,
-                                          String>>[
-                                        PieSeries<Map<String, dynamic>, String>(
-                                          dataSource:
-                                              dashboardConsumer.pieChartData,
-                                          explode: true,
-                                          explodeIndex: 0,
-                                          xValueMapper:
-                                              (Map<String, dynamic> data, _) =>
-                                                  data.keys.first,
-                                          yValueMapper:
-                                              (Map<String, dynamic> data, _) =>
-                                                  data.values.first,
-                                          dataLabelSettings:
-                                              const DataLabelSettings(
-                                            isVisible: true,
-                                          ),
-                                        ),
-                                      ],
-                                    )));
+                              ),
+                              //syncfusion pie chart
+                              child: SizedBox(
+                                height: 180,
+                                child: SfCircularChart(
+                                  onChartTouchInteractionDown:
+                                      (ChartTouchInteractionArgs args) {
+                                    log("${args.position.dy} : ${args.position.dy}");
+                                    Navigator.pushNamed(
+                                        context,
+                                        Routes
+                                            .requestDetailsViewCssdCussDeptUser);
+                                  },
+                                  palette: [
+                                    //colors of the pie chart in order
+                                    hexToColorWithOpacity(hexColor: "#ff6361"),
+                                    hexToColorWithOpacity(hexColor: "#58508d"),
+                                    hexToColorWithOpacity(hexColor: "#bc5090"),
+                                    hexToColorWithOpacity(hexColor: "#003f5c"),
+                                    hexToColorWithOpacity(hexColor: "#ffa600"),
+                                  ],
+                                  title: const ChartTitle(
+                                      alignment: ChartAlignment.near,
+                                      text: 'Request Details',
+                                      textStyle:
+                                          TextStyle(color: Colors.black)),
+                                  legend: const Legend(
+                                      //its the indications of the chart
+                                      isVisible: true,
+                                      textStyle: TextStyle(color: Colors.black),
+                                      position: LegendPosition.left),
+                                  onTooltipRender: (TooltipArgs args) {},
+                                  series: <PieSeries<Map<String, dynamic>,
+                                      String>>[
+                                    PieSeries<Map<String, dynamic>, String>(
+                                      dataSource:
+                                          dashboardConsumer.pieChartData,
+                                      explode: true,
+                                      explodeIndex: 0,
+                                      xValueMapper:
+                                          (Map<String, dynamic> data, _) =>
+                                              data.keys.first,
+                                      yValueMapper:
+                                          (Map<String, dynamic> data, _) =>
+                                              data.values.first,
+                                      dataLabelSettings:
+                                          const DataLabelSettings(
+                                        isVisible: true,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
                           }),
                         ],
                       )
                     ],
                   ),
                 ),
+
                 //navigation buttons
-                Wrap(
-                  alignment: WrapAlignment.spaceBetween,
-                  runAlignment: WrapAlignment.start,
-                  crossAxisAlignment: WrapCrossAlignment.start,
-                  runSpacing: 10.0,
-                  spacing: 10.0,
-                  direction: Axis.horizontal,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ButtonWidget(
-                      childWidget: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Icon(
-                            FluentIcons.tray_item_add_20_filled,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            "Used Item Entry",
-                            style: TextStyle(color: Colors.white),
-                          )
-                        ],
-                      ),
-                      buttonTextSize: 14,
-                      onPressed: () {},
+                    DashboardButtons(
+                      icon: FluentIcons.tray_item_add_20_filled,
+                      iconName: "Used Item Entry",
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, Routes.usedItemEntryViewCssdCussDeptUser);
+                      },
                     ),
-                    ButtonWidget(
-                      childWidget: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Icon(
-                            FluentIcons.news_16_filled,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            "Reports",
-                            style: TextStyle(color: Colors.white),
-                          )
-                        ],
-                      ),
-                      buttonTextSize: 14,
-                      onPressed: () {},
-                    ),
-                    ButtonWidget(
-                      childWidget: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Icon(
-                            FluentIcons.timeline_20_filled,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            "Timeline",
-                            style: TextStyle(color: Colors.white),
-                          )
-                        ],
-                      ),
-                      buttonTextSize: 14,
-                      onPressed: () {},
-                    ),
-                    ButtonWidget(
-                      childWidget: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Icon(
-                            FluentIcons.send_16_filled,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            "Send To Cssd",
-                            style: TextStyle(color: Colors.white),
-                          )
-                        ],
-                      ),
-                      buttonTextSize: 14,
-                      onPressed: () {
+                    DashboardButtons(
+                      icon: FluentIcons.send_16_filled,
+                      iconName: "Send To Cssd",
+                      onTap: () {
                         Navigator.pushNamed(context,
                             Routes.sterilizationRequestViewCssdCussDeptUser);
                       },
                     ),
-                    ButtonWidget(
-                      childWidget: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Icon(
-                            FluentIcons.stack_16_filled,
-                            color: Colors.white,
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          Text(
-                            "Stock",
-                            style: TextStyle(color: Colors.white),
-                          )
-                        ],
-                      ),
-                      buttonTextSize: 14,
-                      onPressed: () {
-                        Navigator.pushNamed(
-                            context, Routes.departmentStockDetailsView);
-                      },
+                    DashboardButtons(
+                      icon: FluentIcons.news_16_filled,
+                      iconName: "Reports",
                     ),
+                    // DashboardButtons(
+                    //   icon: FluentIcons.timeline_20_filled,
+                    //   iconName: "Timeline",
+                    // ),
+                    DashboardButtons(icon: FluentIcons.stack_16_filled, iconName: "Stock in Dept",onTap: () {
+                      Navigator.pushNamed(
+                            context, Routes.departmentStockDetailsView);
+                    },)
                   ],
                 ),
+
+                
                 //request listing
                 RoundedContainer(
                     containerBody: Column(
@@ -492,6 +375,59 @@ class _DashboardViewCssdCussDeptUserState
           }),
         );
       },
+    );
+  }
+}
+
+class DashboardButtons extends StatelessWidget {
+  const DashboardButtons({
+    super.key,
+    required this.icon,
+    required this.iconName,
+    this.onTap,
+  });
+
+  final IconData icon;
+  final String iconName;
+  final void Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          //single item
+          children: [
+            SizedBox(
+              width: 60,
+              child: AspectRatio(
+                aspectRatio: 1 / 1,
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: StaticColors.scaffoldBackgroundcolor),
+                  child: Icon(
+                    icon,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+                width: 60,
+                child: Text(
+                  iconName,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontSize: 12, fontWeight: FontWeight.bold),
+                )),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -831,6 +831,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "27.2.2"
+  syncfusion_flutter_datagrid:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_datagrid
+      sha256: "6db8e5828dcc65f603a948cc28beb07c506654a4cf22a490924eb568c944d344"
+      url: "https://pub.dev"
+    source: hosted
+    version: "27.2.2"
   term_glyph:
     dependency: transitive
     description:

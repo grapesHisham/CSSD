@@ -11,6 +11,7 @@ import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/dashboar
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/department_stock_details_view.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/sterilization_request_view.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/pie_request_details_view.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/used_item_entry_view.dart';
 import 'package:cssd/app/modules/login_module/view/login_screen.dart';
 import 'package:cssd/app/modules/login_module/view/splash_screen.dart';
 // import 'package:cssd/app/modules/login_module/view/dashboard_switch_cssd_dept.dart';
@@ -50,6 +51,8 @@ class Routes {
 
   static const String departmentStockDetailsView =
       "/DepartmentStockDetailsView";
+  static const String usedItemEntryViewCssdCussDeptUser =
+      "/UsedItemEntryViewCssdCussDeptUser";
   /* ################################################################################################################# */
 
   static final Map<String, WidgetBuilder> routes = {
@@ -83,7 +86,9 @@ class Routes {
     requestDetailsViewCssdCussDeptUser: (context) =>
         RequestDetailsViewCssdCussDeptUser(),
 
-    departmentStockDetailsView: (context) => DepartmentStockDetailsView()
+    departmentStockDetailsView: (context) => const DepartmentStockDetailsView(),
+    usedItemEntryViewCssdCussDeptUser: (context) =>
+        const UsedItemEntryViewCssdCussDeptUser()
   };
 }
 

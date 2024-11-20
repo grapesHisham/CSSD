@@ -5,7 +5,10 @@ import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/custom_textfield.dart';
 import 'package:cssd/Widgets/dropdown_menu_widget.dart';
 import 'package:cssd/Widgets/rounded_container.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/sterilization_controller.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/department_selection_widget.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/items_for_selected_department_widget.dart';
 import 'package:cssd/util/app_util.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/fonts.dart';
@@ -19,14 +22,14 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size mediaQuery = MediaQuery.of(context).size;
-
+    final dashboardController =
+        Provider.of<DashboardControllerCssdCussDeptUser>(context,
+            listen: false);
     final sterilizationController =
         Provider.of<SterilizationControllerCssdCussDeptUser>(context,
             listen: false);
 
-    Future.microtask(() async {
-      await sterilizationController.departmentDropdownFunction(); 
-    });
+    
 
     return Scaffold(
       backgroundColor: StaticColors.scaffoldBackgroundcolor,
@@ -52,7 +55,10 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                 runSpacing: 10,
                 spacing: 10,
                 children: [
-                  Consumer<SterilizationControllerCssdCussDeptUser>(
+                  DepartmentSelectionWidget(
+                    dashboardController: dashboardController,
+                  ),
+                  /* Consumer<SterilizationControllerCssdCussDeptUser>(
                       builder: (context, sterilizationConsumer, child) {
                     /*  if (sterilizationConsumer.isLoading) {
                       return const Center(child: CircularProgressIndicator());
@@ -72,11 +78,11 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                           .toList(),
                       onSelected: (value) {
                         if (value != null) {
-                          sterilizationController.setSelectedDepartment = value;
+                          //implement
                         }
                       },
                     );
-                  }),
+                  }), */
                   SizedBox(height: 10.h),
                   CustomDropDownMenuWidget(dropdownMenuEntries: const [
                     DropdownMenuEntry(value: "High", label: "High"),
@@ -90,7 +96,8 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
               ),
               //remarks container
               ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 600, maxHeight: 400),
+                constraints:
+                    const BoxConstraints(maxWidth: 600, maxHeight: 400),
                 child: RoundedContainer(
                   containerHeight: mediaQuery.height / 7,
                   containerBody: CustomTextFormField(
@@ -112,30 +119,7 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                 children: [
                   SizedBox(
                     width: mediaQuery.width / 1.6,
-                    child: Consumer<SterilizationControllerCssdCussDeptUser>(
-                        // items search suggestions
-                        builder: (context, sterilizationConsumer, child) {
-                      return CustomDropdown.searchRequest(
-                        onChanged: (selectedValue) {
-                          if (selectedValue != null) {
-                            sterilizationConsumer.setSelectedItemDropdown =
-                                selectedValue;
-                          }
-                        },
-                        futureRequestDelay: Duration(milliseconds: 0),
-                        futureRequest: (StringItem) async {
-                          await sterilizationConsumer.fetchItems(StringItem);
-
-                          return sterilizationConsumer.itemsNames;
-                        },
-                        decoration: CustomDropdownDecoration(
-                          closedBorder: Border.all(color: Colors.grey),
-                        ),
-                        hintText: "Items",
-                        searchHintText: "Search items",
-                        hideSelectedFieldWhenExpanded: false,
-                      );
-                    }),
+                    child: FetchItemsForSelectedDepartment(dashboardController: dashboardController),
                   ),
                   CustomTextFormField(
                     // quantity dropdown
@@ -261,6 +245,8 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
     );
   }
 }
+
+
 
 
 /* Consumer<SterilizationControllerCssdCussDeptUser>(
