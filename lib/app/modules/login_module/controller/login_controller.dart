@@ -225,6 +225,7 @@ class LoginController extends ChangeNotifier {
     log("Clearing all values in local storage manager");
     // clears all values inside the local storage manager
     LocalStorageManager.printAllValues();
+    
     // controller.selectedDepartment = null;
     // log(controller.selectedDepartment.toString());
     loginPasswordController.clear();

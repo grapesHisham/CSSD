@@ -1,6 +1,8 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
+import 'package:cssd/util/app_util.dart';
 import 'package:cssd/util/hex_to_color_with_opacity.dart';
+import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -15,13 +17,23 @@ class RequestDetailsViewCssdCussDeptUser extends StatefulWidget {
 
 class _RequestDetailsViewCssdCussDeptUserState
     extends State<RequestDetailsViewCssdCussDeptUser> {
+  late String? selectedDepartment;
   @override
   void initState() {
     super.initState();
     final dashboardController =
         Provider.of<DashboardControllerCssdCussDeptUser>(context,
             listen: false);
-    dashboardController.fetchRequestDetails();
+    selectedDepartment =
+        LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter);
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      if (selectedDepartment != null) {
+        
+    dashboardController.fetchRequestDetails(selectedDepartment!);
+      }else{
+        showSnackBar(context: context, isError: true, msg: "Select Department");
+      }
+    });
   }
 
   static const List<String> _dropdownItemsDetails = [
@@ -45,7 +57,7 @@ class _RequestDetailsViewCssdCussDeptUserState
               items: _dropdownItemsDetails,
               onChanged: (value) {
                 if (value == _dropdownItemsDetails[0]) {
-                  dashboardController.fetchRequestDetails();
+                  dashboardController.fetchRequestDetails(selectedDepartment!);
                 } else if (value == _dropdownItemsDetails[1]) {
                   dashboardController.fetchPendingRequestDetails();
                 }

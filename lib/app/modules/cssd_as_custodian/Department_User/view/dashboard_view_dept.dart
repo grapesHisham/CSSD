@@ -42,9 +42,13 @@ class _DashboardViewCssdCussDeptUserState
         Provider.of<DashboardControllerCssdCussDeptUser>(context,
             listen: false);
     dashboardController.departmentDropdownFunction();
-    dashboardController.fetchRequestDetails();
     if (selectedDepartment != null) {
+      dashboardController.fetchRequestDetails(selectedDepartment!);
       dashboardController.getPieChartData(selectedDepartment!);
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showSnackBar(context: context, isError: true, msg: "Select department");
+      });
     }
     // controller.selectedDepartment = null;
     hasPrivileges =
@@ -243,14 +247,17 @@ class _DashboardViewCssdCussDeptUserState
                     //   icon: FluentIcons.timeline_20_filled,
                     //   iconName: "Timeline",
                     // ),
-                    DashboardButtons(icon: FluentIcons.stack_16_filled, iconName: "Stock in Dept",onTap: () {
-                      Navigator.pushNamed(
+                    DashboardButtons(
+                      icon: FluentIcons.stack_16_filled,
+                      iconName: "Stock in Dept",
+                      onTap: () {
+                        Navigator.pushNamed(
                             context, Routes.departmentStockDetailsView);
-                    },)
+                      },
+                    )
                   ],
                 ),
 
-                
                 //request listing
                 RoundedContainer(
                     containerBody: Column(
@@ -337,16 +344,14 @@ class _DashboardViewCssdCussDeptUserState
               buttonColor: const Color.fromARGB(255, 48, 160, 85),
               buttonLabel: "ok",
               onPressed: () {
-                final String? selectedDepartment =
-                    dashboardController.getSelectedDepartment;
-                if (selectedDepartment != null) {
-                  LocalStorageManager.setString(
-                      StorageKeys.selectedDepartmentCounter,
-                      selectedDepartment);
-                  log("Stored department to selectedDepartmentCounter: $selectedDepartment");
-                  Navigator.pop(context);
+                selectedDepartment = LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter);
+                if (selectedDepartment == null) {
+                  showSnackBar(
+                      context: context,
+                      isError: true,
+                      msg: "Select Department");
                 } else {
-                  showToast(context, "Selected Department is null");
+                  Navigator.pop(context);
                 }
               },
             ),
@@ -363,7 +368,6 @@ class _DashboardViewCssdCussDeptUserState
                   .toList(),
               onChanged: (selectedDepartment) {
                 if (selectedDepartment != null) {
-                  dashboardConsumer.selectedDepartment = selectedDepartment;
                   LocalStorageManager.setString(
                       StorageKeys.selectedDepartmentCounter,
                       selectedDepartment);

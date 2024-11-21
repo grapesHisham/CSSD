@@ -38,8 +38,8 @@ class DepartmentSelectionWidget extends StatelessWidget {
         onChanged: (selectedDepartment) {
           if (selectedDepartment != null) {
             dashboardController.getPieChartData(selectedDepartment);
-            dashboardController.selectedDepartment =
-                selectedDepartment;
+            // dashboardController.selectedDepartment =
+            //     selectedDepartment;
             LocalStorageManager.setString(
                 StorageKeys.selectedDepartmentCounter,
                 selectedDepartment);

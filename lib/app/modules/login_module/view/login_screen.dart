@@ -3,7 +3,7 @@ import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/custom_textfield.dart';
 import 'package:cssd/Widgets/login_widgets/cssd_transparent_title_card.dart';
 import 'package:cssd/Widgets/transparent_blur_conatiner.dart';
-import 'package:cssd/app/modules/login_module/controller/login_provider.dart';
+import 'package:cssd/app/modules/login_module/controller/login_controller.dart';
 import 'package:cssd/app/modules/login_module/view/widgets/clickable_button_widget.dart';
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/app_util.dart';

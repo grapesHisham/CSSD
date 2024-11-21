@@ -2,7 +2,7 @@ import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/dashboar
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/sterilization_controller.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/used_item_entry_controller.dart';
-import 'package:cssd/app/modules/login_module/controller/login_provider.dart';
+import 'package:cssd/app/modules/login_module/controller/login_controller.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/pickup_provider.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/request_controler.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/sterilization_provider.dart';

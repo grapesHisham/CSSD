@@ -2,9 +2,10 @@ import 'dart:developer';
 
 import 'package:cssd/Widgets/custom_textfield.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
+import 'package:cssd/util/app_util.dart';
 import 'package:cssd/util/colors.dart';
+import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class DepartmentStockDetailsView extends StatefulWidget {
@@ -15,15 +16,23 @@ class DepartmentStockDetailsView extends StatefulWidget {
       _DepartmentStockDetailsViewState();
 }
 
+late String? selectedDepartment;
+
 class _DepartmentStockDetailsViewState
     extends State<DepartmentStockDetailsView> {
   @override
   void initState() {
+    selectedDepartment =
+        LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter);
     final dashboardController =
         Provider.of<DashboardControllerCssdCussDeptUser>(context,
             listen: false);
     WidgetsBinding.instance.addPostFrameCallback((callback) async {
-      await dashboardController.filterFutureList("");
+      if (selectedDepartment != null) {
+        await dashboardController.filterFutureList("", selectedDepartment!);
+      } else {
+        showSnackBar(context: context, isError: true, msg: "Select Department");
+      }
     });
 
     super.initState();
@@ -60,12 +69,20 @@ class _DepartmentStockDetailsViewState
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: CustomTextFormField(
-                         hintText: "Search items",
+                    hintText: "Search items",
                     // textFieldSize: Size(mediaQuery.width - 20.w, 0.0),
                     controller: dashboardConsumer.searchController,
                     onChanged: (query) {
-                      log(query);
-                      dashboardConsumer.filterFutureList(query);
+                      if (selectedDepartment != null) {
+                        log(query);
+                        dashboardConsumer.filterFutureList(
+                            query, selectedDepartment!);
+                      } else {
+                        showSnackBar(
+                            context: context,
+                            isError: true,
+                            msg: "Select Department first");
+                      }
                     },
                   ),
                 );

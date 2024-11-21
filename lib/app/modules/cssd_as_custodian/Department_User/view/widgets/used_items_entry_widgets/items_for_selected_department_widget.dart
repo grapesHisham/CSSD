@@ -1,16 +1,35 @@
+import 'dart:developer';
+
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/used_item_entry_controller.dart';
+import 'package:cssd/util/app_util.dart';
+import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class FetchItemsForSelectedDepartment extends StatelessWidget {
+class FetchItemsForSelectedDepartment extends StatefulWidget {
   const FetchItemsForSelectedDepartment({
     super.key,
     required this.dashboardController,
   });
 
   final DashboardControllerCssdCussDeptUser dashboardController;
+
+  @override
+  State<FetchItemsForSelectedDepartment> createState() =>
+      _FetchItemsForSelectedDepartmentState();
+}
+
+class _FetchItemsForSelectedDepartmentState
+    extends State<FetchItemsForSelectedDepartment> {
+  late String? selectedDepartment;
+  @override
+  void initState() {
+    selectedDepartment =
+        LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,17 +39,27 @@ class FetchItemsForSelectedDepartment extends StatelessWidget {
       return CustomDropdown.searchRequest(
         onChanged: (selectedItemModel) {
           if (selectedItemModel != null) {
-            
-          usedItemEntryConsumer.setSelectedItemModel = selectedItemModel;
+            log('currently selected item : ${selectedItemModel.productName}');
+            usedItemEntryConsumer.setSelectedItemModel = selectedItemModel;
+            usedItemEntryConsumer.setSelectedItemName =
+                selectedItemModel.productName!;
+          } else {
+            showSnackBarNoContext(isError: true, msg: "selected item is null");
           }
         },
         futureRequestDelay: const Duration(milliseconds: 0),
         futureRequest: (stringItem) async {
-          await usedItemEntryConsumer.fetchItems(
+          if (selectedDepartment == null) {
+            showSnackBarNoContext(
+                isError: true, msg: "Select department to list items");
+          } else {
+            await usedItemEntryConsumer.fetchItems(
+                itemname: stringItem, department: selectedDepartment!);
+          }
+          /*  await usedItemEntryConsumer.fetchItems(
               itemname: stringItem,
-              department: dashboardController.getSelectedDepartment!);
+              department: dashboardController.getSelectedDepartment!); */
 
-          // return usedItemEntryConsumer.itemsList.map((item)=> item.productName).toList();
           return usedItemEntryConsumer.getItemsList;
         },
         headerBuilder: (context, selectedItem, enabled) =>
@@ -44,6 +73,12 @@ class FetchItemsForSelectedDepartment extends StatelessWidget {
         hintText: "Items",
         searchHintText: "Search items",
         hideSelectedFieldWhenExpanded: false,
+        validator: (item) {
+          if (item == null) {
+            return "Section required";
+          }
+          return null;
+        },
       );
     });
   }
