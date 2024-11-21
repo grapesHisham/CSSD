@@ -9,7 +9,7 @@ import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_it
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/used_items_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/datagrid_used_item_entry_table_widget.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/department_selection_widget.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/items_for_selected_department_widget.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/used_items_entry_widgets/items_for_selected_department_widget.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/fonts.dart';
 import 'package:flutter/material.dart';
@@ -39,8 +39,10 @@ class _UsedItemEntryViewCssdCussDeptUserState
 
   @override
   Widget build(BuildContext context) {
-    final dashboardController = Provider.of<DashboardControllerCssdCussDeptUser>(context,listen: false);
-        
+    final dashboardController =
+        Provider.of<DashboardControllerCssdCussDeptUser>(context,
+            listen: false);
+
     Size mediaQuery = MediaQuery.of(context).size;
     final usedItemsController =
         Provider.of<UsedItemEntryController>(context, listen: false);
@@ -82,7 +84,8 @@ class _UsedItemEntryViewCssdCussDeptUserState
                           dashboardController: dashBoardController,
                         ),
                       ),
-                     FetchItemsForSelectedDepartment(dashboardController: dashboardController),
+                      FetchItemsForSelectedDepartment(
+                          dashboardController: dashboardController),
                       CustomTextFormField(
                         // quantity dropdown
                         maxLines: 1,
@@ -92,7 +95,46 @@ class _UsedItemEntryViewCssdCussDeptUserState
                           "Quantity",
                           style: TextStyle(fontSize: 14),
                         ),
-
+                        onFieldSubmitted: (quantity) {
+                          usedItemsController.qtyValidation(
+                            isPckg: usedItemsController
+                                        .getSelectedItemModel!.pckg ==
+                                    1
+                                ? true
+                                : false,
+                            location:
+                                dashBoardController.getSelectedDepartment!,
+                            productid:
+                                usedItemsController.getSelectedItemModel!.pid!,
+                            qty: int.parse(
+                              quantity ,
+                            ),
+                          );
+                          log("isPckg: ${usedItemsController.getSelectedItemModel!.pckg == 1}");
+                          log("location: ${dashBoardController.getSelectedDepartment!}");
+                          log("productid: ${usedItemsController.getSelectedItemModel!.pid!}");
+                          log("qty: ${int.parse(quantity ?? "")}");
+                        },
+                        validator: (quantity) {
+                          usedItemsController.qtyValidation(
+                            isPckg: usedItemsController
+                                        .getSelectedItemModel!.pckg ==
+                                    1
+                                ? true
+                                : false,
+                            location:
+                                dashBoardController.getSelectedDepartment!,
+                            productid:
+                                usedItemsController.getSelectedItemModel!.pid!,
+                            qty: int.parse(
+                              quantity ?? "",
+                            ),
+                          );
+                          log("isPckg: ${usedItemsController.getSelectedItemModel!.pckg == 1}");
+                          log("location: ${dashBoardController.getSelectedDepartment!}");
+                          log("productid: ${usedItemsController.getSelectedItemModel!.pid!}");
+                          log("qty: ${int.parse(quantity ?? "")}");
+                        },
                         controller: usedItemsController.quantityController,
                       ),
                       ButtonWidget(

@@ -131,9 +131,6 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
   }
 
   //fetch pending request details
-  // List<RequestDetailsData> _pendingRequestDetailsList = [];
-  // List<RequestDetailsData> get pendingRequestDetailsList =>
-  //     _pendingRequestDetailsList;
   Future<void> fetchPendingRequestDetails() async {
     requestDetailsList.clear();
     final client = await DioUtilAuthorized.createApiClient();
@@ -176,7 +173,7 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
       return [];
     }
   }
-
+  //filtered list for search
   Future<List<DepartmentStockData>> filterFutureList(String? query) async {
     if (query == null || query.isEmpty) {
       await fetchDepartmentwiseStockDetails();
@@ -194,25 +191,5 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
   }
 
   /* Common apis for department user */
-  //fetch items list for selected department
-  final List<GetItemNameModelData> _itemsList = [];
-  List<GetItemNameModelData> get itemsList => _itemsList;
-  List<String> _itemsNames = [];
-  List<String> get itemsNames => _itemsNames;
-  // final String selectedDepartment = LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter) ;
-  Future<void> fetchItems({required String itemname,required String department}) async {
-    _itemsList.clear();
-    final client = await DioUtilAuthorized.createApiClient();
-    try {
-      _isLoading = true;
-      notifyListeners();
-      final response = await client.getItemName(department, itemname);
-      _itemsList.addAll(response.data ?? []);
-      _itemsNames = _itemsList.map((item) => item.productName ?? '').toList();
-      _isLoading = false;
-      notifyListeners();
-    } catch (e) {
-      log("exception : $e");
-    }
-  }
+
 }

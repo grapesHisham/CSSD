@@ -5,6 +5,7 @@ import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboar
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/pie_dept_stock_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/department_list_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/items_list_model.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/get_quantity_validation_model.dart';
 import 'package:cssd/app/modules/login_module/model/login_model.dart';
 import 'package:cssd/app/modules/login_module/model/pre_login_authentication_model.dart';
 import 'package:dio/dio.dart';
@@ -51,4 +52,11 @@ abstract class ApiClient {
   @GET(ApiLinks.getDepartmentwiseStockDetails)
   Future<GetDepartmentwiseStockDetailsModel> getDepartmentwiseStockDetails(
       @Query("department") String department);
+
+  @GET(ApiLinks.qtyValidation) //general response
+  Future<GetQtyValidationModel> getQtyValidation(
+      @Query("Qty") int qty,
+      @Query("Productid") int productid,
+      @Query("location") String location,
+      @Query("IsPckg") String isPckg);
 }

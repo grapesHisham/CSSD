@@ -7,13 +7,14 @@ class ApiLinks{
   static const String login = "Home/Login";
 
   //department user
-  static const String departementList = 'DepartmentList'; 
-  static const String getItemName = 'GetItemName';
-  static const String getRequestedCount = 'GetRequestedCount';
+  static const String departementList = 'DepartmentList';  //departments in the hospital
+  static const String getItemName = 'GetItemName'; //items under a particular department
+  static const String getRequestedCount = 'GetRequestedCount'; 
   static const String getRequestDetails = 'GetRequested_Details';
   static const String getPendingRequestCount = 'GetPendingRequestCount';
   static const String getPendingRequestdetails = 'GetPendingRequestdetails';
-  static const String getDepartmentwiseStockDetails = 'GetDepartmentwiseStock_Details';
+  static const String getDepartmentwiseStockDetails = 'GetDepartmentwiseStock_Details'; // stock for each department
+  static const String qtyValidation = 'QtyValidation'; // amount of valid quantity while doing used item entry
   
 }
 

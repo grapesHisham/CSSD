@@ -1,5 +1,6 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/used_item_entry_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,25 +14,30 @@ class FetchItemsForSelectedDepartment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<DashboardControllerCssdCussDeptUser>(
+    return Consumer<UsedItemEntryController>(
         // items search suggestions
-        builder: (context, dashboardConsumer, child) {
+        builder: (context, usedItemEntryConsumer, child) {
       return CustomDropdown.searchRequest(
-        onChanged: (selectedValue) {
-          if (selectedValue != null) {
-            dashboardConsumer.selectedDepartment =
-                selectedValue;
+        onChanged: (selectedItemModel) {
+          if (selectedItemModel != null) {
+            
+          usedItemEntryConsumer.setSelectedItemModel = selectedItemModel;
           }
         },
         futureRequestDelay: const Duration(milliseconds: 0),
         futureRequest: (stringItem) async {
-          await dashboardConsumer.fetchItems(
+          await usedItemEntryConsumer.fetchItems(
               itemname: stringItem,
-              department:
-                  dashboardController.getSelectedDepartment!);
-    
-          return dashboardConsumer.itemsNames;
+              department: dashboardController.getSelectedDepartment!);
+
+          // return usedItemEntryConsumer.itemsList.map((item)=> item.productName).toList();
+          return usedItemEntryConsumer.getItemsList;
         },
+        headerBuilder: (context, selectedItem, enabled) =>
+            Text(selectedItem.productName ?? ""),
+        listItemBuilder: (context, item, isSelected, onItemSelect) => ListTile(
+          title: Text(item.productName ?? ""),
+        ),
         decoration: CustomDropdownDecoration(
           closedBorder: Border.all(color: Colors.grey),
         ),
