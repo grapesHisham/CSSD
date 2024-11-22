@@ -3,7 +3,6 @@ import 'dart:developer';
 import 'package:cssd/app/api/dio_interceptors/dio_interceptor.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/items_list_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/used_items_model.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/datagrid_used_item_entry_table_widget.dart';
 import 'package:cssd/util/app_util.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +18,7 @@ class UsedItemEntryController extends ChangeNotifier {
   GetItemNameModelData? get getSelectedItemModel => _selectedItemModel;
   set setSelectedItemModel(GetItemNameModelData? value) {
     _selectedItemModel = value;
-    notifyListeners(); 
+    notifyListeners();
     log("selected item is null");
     notifyListeners();
   }
@@ -94,23 +93,99 @@ class UsedItemEntryController extends ChangeNotifier {
   }
 
   //adding items to the used items table before sending
-
   List<UsedItemsListModelData> _usedItemsTableBeforeSubmitList = [];
   List<UsedItemsListModelData> get getUsedItemsTableBeforeSubmitList =>
       _usedItemsTableBeforeSubmitList;
 
-  List<UsedItemsListModelData> addToUsedItemsTableBeforeSubmit({
-    required int productId,
-    required String productName,
-    required String location,
-    required int uQty,
-  }) {
-    _usedItemsTableBeforeSubmitList.add(UsedItemsListModelData(
-        productId: productId,
-        productName: productName,
-        location: location,
-        uQty: uQty));
+  //For clearing the table
+  void clearusedItemsTableBeforeSubmitList() {
+    _usedItemsTableBeforeSubmitList.clear();
+    _listMapAddedItem.clear();
+    notifyListeners();
+  }
+
+  Map<String, dynamic> mapAddedItems = {};
+  List<Map<String, dynamic>> _listMapAddedItem = [];
+  
+  List<UsedItemsListModelData> addToUsedItemsTableBeforeSubmit(
+      {required int productId,
+      required String productName,
+      required String location,
+      required int uQty,
+      required BuildContext context}) {
+    final existingItemIndex = _usedItemsTableBeforeSubmitList
+        .indexWhere((item) => item.productId == productId);
+    if (existingItemIndex == -1) {
+      // item does not exist when index returns -1
+      _usedItemsTableBeforeSubmitList.add(UsedItemsListModelData(
+          productId: productId,
+          productName: productName,
+          location: location,
+          uQty: uQty));
+      mapAddedItems = {
+        "productId": productId,
+        "location": location,
+        "quantity": uQty
+      };
+      log("added item $mapAddedItems");
+      _listMapAddedItem.add(mapAddedItems);
+      log("added list $_listMapAddedItem");
+    } else if (existingItemIndex != -1) {
+      //when item already exists in the list
+      final quantity = _usedItemsTableBeforeSubmitList[existingItemIndex].uQty;
+      final bool sameQnty =
+          int.parse(quantityController.text) == quantity ? true : false;
+      // dialog to update the quantity if needed
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Item Already Exists"),
+            content: sameQnty
+                ? const Text("Item already exist with same quantity")
+                : Text(
+                    "Item already exists with quantity: $quantity.\nDo you want to update the quantity to ${quantityController.text}?"),
+            actions: <Widget>[
+              TextButton(
+                child:
+                    sameQnty ? /*  */ const Text("cancel") : const Text("No"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: sameQnty
+                    ? const Text("ok")
+                    : /* need to update */ const Text("Yes"),
+                onPressed: () {
+                  _usedItemsTableBeforeSubmitList[existingItemIndex].uQty =
+                      uQty;
+                  if (!sameQnty) {
+                    showSnackBarNoContext(
+                        isError: false, msg: "Item quantity updated!");
+                  }
+
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
     notifyListeners();
     return _usedItemsTableBeforeSubmitList;
   }
+
+  // Future<void> submitUsedItemsEntries() async {
+  //   final client = await DioUtilAuthorized.createApiClient();
+
+  //   try {
+  //     log("list of map data for user items entry$_listMapAddedItem , last map $mapAddedItems" );
+  //     final response = await client.postUsedItemsEntry(_listMapAddedItem);
+      
+  //   } catch (e) {
+  //     log("Exception caught while posting used items $e");
+  //   }
+  // }
 }

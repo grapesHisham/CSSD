@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /*usage 
- CustomDialog(
+ customDialog(
    dialogContext: context,
     dialogShowDefaultActions: false,
      dialogTitle: const Text("data"),
@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
         buttonLabel: "hai",
         onPressed: () {},
       )
-    ]);
+    ], dialogContent: null);
 
 */
 

@@ -15,6 +15,7 @@ class ApiLinks{
   static const String getPendingRequestdetails = 'GetPendingRequestdetails';
   static const String getDepartmentwiseStockDetails = 'GetDepartmentwiseStock_Details'; // stock for each department
   static const String qtyValidation = 'QtyValidation'; // amount of valid quantity while doing used item entry
+  static const String usedItemEntry = 'UsedItemEntry'; // 
   
 }
 

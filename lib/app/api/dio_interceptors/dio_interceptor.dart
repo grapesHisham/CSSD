@@ -50,7 +50,11 @@ class DioUtilAuthorized {
           onError: (error, handler) async {
             if (error.response?.statusCode == 401) {
               log('Authorization failed: ${error.response?.statusCode}');
-              showSnackBarNoContext(isError: true, msg: "Please RELOGIN, authorization failed.");
+              showSnackBarNoContext(
+                  isError: true, msg: "Please RELOGIN, authorization failed.");
+            } else if (error.response?.statusCode == 206) {
+              showSnackBarNoContext(
+                  isError: true, msg: "Partial Data error, status 206");
             }
             if (error.type == DioExceptionType.connectionError ||
                 error.type == DioExceptionType.connectionTimeout) {
