@@ -17,15 +17,10 @@ class UsedItemEntryController extends ChangeNotifier {
 
   GetItemNameModelData? _selectedItemModel;
   GetItemNameModelData? get getSelectedItemModel => _selectedItemModel;
-  set setSelectedItemModel(GetItemNameModelData value) {
+  set setSelectedItemModel(GetItemNameModelData? value) {
     _selectedItemModel = value;
-    notifyListeners();
-  }
-
-  String? _selectedItemName;
-  String? get selectedItemName => _selectedItemName;
-  set setSelectedItemName(String itemName) {
-    _selectedItemName = itemName;
+    notifyListeners(); 
+    log("selected item is null");
     notifyListeners();
   }
 
@@ -101,7 +96,8 @@ class UsedItemEntryController extends ChangeNotifier {
   //adding items to the used items table before sending
 
   List<UsedItemsListModelData> _usedItemsTableBeforeSubmitList = [];
-  List<UsedItemsListModelData> get  getUsedItemsTableBeforeSubmitList => _usedItemsTableBeforeSubmitList;
+  List<UsedItemsListModelData> get getUsedItemsTableBeforeSubmitList =>
+      _usedItemsTableBeforeSubmitList;
 
   List<UsedItemsListModelData> addToUsedItemsTableBeforeSubmit({
     required int productId,

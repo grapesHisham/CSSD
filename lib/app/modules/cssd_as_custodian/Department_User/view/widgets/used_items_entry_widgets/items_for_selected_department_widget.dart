@@ -4,7 +4,6 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/used_item_entry_controller.dart';
 import 'package:cssd/util/app_util.dart';
-import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,8 +25,11 @@ class _FetchItemsForSelectedDepartmentState
   late String? selectedDepartment;
   @override
   void initState() {
-    selectedDepartment =
-        LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter);
+    final dashboardController =
+        Provider.of<DashboardControllerCssdCussDeptUser>(context,
+            listen: false);
+    selectedDepartment = dashboardController.getSelectedDepartment;
+
     super.initState();
   }
 
@@ -36,13 +38,16 @@ class _FetchItemsForSelectedDepartmentState
     return Consumer<UsedItemEntryController>(
         // items search suggestions
         builder: (context, usedItemEntryConsumer, child) {
+      final dashboardController =
+          Provider.of<DashboardControllerCssdCussDeptUser>(context,
+              listen: false);
+
+      selectedDepartment = dashboardController.getSelectedDepartment;
       return CustomDropdown.searchRequest(
         onChanged: (selectedItemModel) {
           if (selectedItemModel != null) {
             log('currently selected item : ${selectedItemModel.productName}');
             usedItemEntryConsumer.setSelectedItemModel = selectedItemModel;
-            usedItemEntryConsumer.setSelectedItemName =
-                selectedItemModel.productName!;
           } else {
             showSnackBarNoContext(isError: true, msg: "selected item is null");
           }
@@ -62,8 +67,14 @@ class _FetchItemsForSelectedDepartmentState
 
           return usedItemEntryConsumer.getItemsList;
         },
-        headerBuilder: (context, selectedItem, enabled) =>
-            Text(selectedItem.productName ?? ""),
+        headerBuilder: (context, selectedItem, enabled) {
+          if (usedItemEntryConsumer.getSelectedItemModel?.productName == null) {
+            log("item model is ${usedItemEntryConsumer.getSelectedItemModel}");
+            return const Text("");
+          }
+            log("item model is ${usedItemEntryConsumer.getSelectedItemModel?.productName}");
+          return Text(selectedItem.productName ?? "");
+        },
         listItemBuilder: (context, item, isSelected, onItemSelect) => ListTile(
           title: Text(item.productName ?? ""),
         ),

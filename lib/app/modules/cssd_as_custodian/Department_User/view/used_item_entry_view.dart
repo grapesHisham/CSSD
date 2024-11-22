@@ -1,12 +1,12 @@
 import 'dart:developer';
 
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/custom_textfield.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/used_item_entry_controller.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/used_items_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/datagrid_used_item_entry_table_widget.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/department_selection_widget.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/used_items_entry_widgets/items_for_selected_department_widget.dart';
 import 'package:cssd/util/app_util.dart';
 import 'package:cssd/util/colors.dart';
@@ -25,7 +25,7 @@ class UsedItemEntryViewCssdCussDeptUser extends StatefulWidget {
       _UsedItemEntryViewCssdCussDeptUserState();
 }
 
-late String? selectedDepartment;
+String? selectedDepartment;
 
 class _UsedItemEntryViewCssdCussDeptUserState
     extends State<UsedItemEntryViewCssdCussDeptUser> {
@@ -33,8 +33,10 @@ class _UsedItemEntryViewCssdCussDeptUserState
   late UsedItemsDataSource usedItemsDataSource;
   @override
   void initState() {
-    selectedDepartment =
-        LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter);
+    final dashboardController =
+        Provider.of<DashboardControllerCssdCussDeptUser>(context,
+            listen: false);
+    selectedDepartment = dashboardController.getSelectedDepartment;
 
     final usedItemsTable =
         Provider.of<UsedItemEntryController>(context, listen: false)
@@ -52,11 +54,9 @@ class _UsedItemEntryViewCssdCussDeptUserState
             listen: false);
     final usedItemsController =
         Provider.of<UsedItemEntryController>(context, listen: false);
-
+    selectedDepartment = dashboardController.getSelectedDepartment;
     Size mediaQuery = MediaQuery.of(context).size;
-    final dashBoardController =
-        Provider.of<DashboardControllerCssdCussDeptUser>(context,
-            listen: false);
+
     return Scaffold(
         backgroundColor: StaticColors.scaffoldBackgroundcolor,
         appBar: AppBar(
@@ -86,12 +86,46 @@ class _UsedItemEntryViewCssdCussDeptUserState
                     spacing: 10.0,
                     runSpacing: 10.0,
                     children: [
+                      //select department dropdown
                       SizedBox(
-                        width: mediaQuery.width,
-                        child: DepartmentSelectionWidget(
-                          dashboardController: dashBoardController,
-                        ),
-                      ),
+                          width: mediaQuery.width,
+                          child: Consumer<DashboardControllerCssdCussDeptUser>(
+                              builder: (context, dashboardConsumer, child) {
+                            if (dashboardConsumer
+                                .departmentDropdownItems.isEmpty) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            }
+
+                            final departmentNames = dashboardConsumer
+                                .departmentDropdownItems
+                                .map((dept) => dept.subName)
+                                .toList();
+
+                            return CustomDropdown.search(
+                              decoration: CustomDropdownDecoration(
+                                  closedBorder: Border.all(color: Colors.grey)),
+                              initialItem: LocalStorageManager.getString(
+                                  StorageKeys.selectedDepartmentCounter),
+                              hintText: "Department name",
+                              searchHintText: "Search department name",
+                              items: departmentNames,
+                              onChanged: (selectedDepartment) {
+                                //clear items and quantity
+                                usedItemsController.quantityController.clear();
+                                usedItemsController.setSelectedItemModel = null;
+                                log("cleared items model , now the item name is: ${usedItemsController.getSelectedItemModel?.productName}");
+
+                                if (selectedDepartment != null) {
+                                  dashboardConsumer.updateSelectedDepartment(
+                                      selectedDepartment);
+                                  log("stored to selectedDepartmentCounter : ${LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter)}");
+                                } else {
+                                  showToast(context, "Select department");
+                                }
+                              },
+                            );
+                          })),
                       FetchItemsForSelectedDepartment(
                           dashboardController: dashboardController),
                       CustomTextFormField(
@@ -105,7 +139,8 @@ class _UsedItemEntryViewCssdCussDeptUserState
                         ),
                         onFieldSubmitted: (quantity) {
                           if (usedItemsController.getSelectedItemModel ==
-                              null  && selectedDepartment == null) {
+                                  null &&
+                              selectedDepartment == null) {
                             showSnackBarNoContext(
                                 isError: true, msg: "Select Dept / item first");
                             log("No items selected");
@@ -142,7 +177,7 @@ class _UsedItemEntryViewCssdCussDeptUserState
                             }, */
                         controller: usedItemsController.quantityController,
                       ),
-                      //add item text field
+                      //add item button
                       ButtonWidget(
                         buttonSize: const Size(0.0, 55.0),
                         buttonLabel: "Add item",
@@ -151,13 +186,13 @@ class _UsedItemEntryViewCssdCussDeptUserState
                           final itemModel =
                               usedItemsController.getSelectedItemModel;
 
-                          if (usedItemsController.selectedItemName != null &&
-                              itemModel != null && selectedDepartment != null) {
-                            bool isQntValid =
+                          if (itemModel != null && selectedDepartment != null) {
+                            /* Quantity validation */
+                            /*  bool isQntValid =
                                 await usedItemsController.qtyValidation(
                               isPckg: itemModel.pckg == 1 ? true : false,
                               location: selectedDepartment!,
-                              productid: itemModel.pid!,
+                              productid: itemModel.iid!,
                               qty: int.parse(
                                 usedItemsController.quantityController.text ??
                                     "0",
@@ -167,15 +202,22 @@ class _UsedItemEntryViewCssdCussDeptUserState
                             if (isQntValid) {
                               usedItemsController
                                   .addToUsedItemsTableBeforeSubmit(
-                                productId: itemModel.pid!,
+                                productId: itemModel.iid!,
                                 productName: itemModel.productName!,
-                                location:                                  selectedDepartment!,
-
+                                location: selectedDepartment!,
                                 uQty: int.parse(
                                   usedItemsController.quantityController.text,
                                 ),
                               );
-                            }
+                            } */
+                            usedItemsController.addToUsedItemsTableBeforeSubmit(
+                              productId: itemModel.iid!,
+                              productName: itemModel.productName!,
+                              location: selectedDepartment!,
+                              uQty: int.parse(
+                                usedItemsController.quantityController.text,
+                              ),
+                            );
                           } else {
                             showSnackBarNoContext(
                                 isError: true, msg: "Item / dept not selected");

@@ -21,12 +21,11 @@ class DepartmentSelectionWidget extends StatelessWidget {
       if (dashboardConsumer.departmentDropdownItems.isEmpty) {
         return const Center(child: CircularProgressIndicator());
       }
-    
-      final departmentNames = dashboardConsumer
-          .departmentDropdownItems
+
+      final departmentNames = dashboardConsumer.departmentDropdownItems
           .map((dept) => dept.subName)
           .toList();
-    
+
       return CustomDropdown.search(
         decoration: CustomDropdownDecoration(
             closedBorder: Border.all(color: Colors.grey)),
@@ -35,14 +34,12 @@ class DepartmentSelectionWidget extends StatelessWidget {
         hintText: "Department name",
         searchHintText: "Search department name",
         items: departmentNames,
+        
         onChanged: (selectedDepartment) {
           if (selectedDepartment != null) {
-            dashboardController.getPieChartData(selectedDepartment);
-            // dashboardController.selectedDepartment =
-            //     selectedDepartment;
-            LocalStorageManager.setString(
-                StorageKeys.selectedDepartmentCounter,
-                selectedDepartment);
+            dashboardController.getPieChartData(
+                selectedDepartment); // should not fetch pie chart data while changing dept from pages other than dashboard
+            dashboardConsumer.updateSelectedDepartment(selectedDepartment);
             log("stored to selectedDepartmentCounter : ${LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter)}");
           } else {
             showToast(context, "Select department");

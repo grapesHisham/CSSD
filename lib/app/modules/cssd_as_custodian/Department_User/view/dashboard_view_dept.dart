@@ -36,27 +36,31 @@ class _DashboardViewCssdCussDeptUserState
   late String? selectedDepartment;
   @override
   void initState() {
-    selectedDepartment =
-        LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter);
+    log("dashbord init");
     final dashboardController =
         Provider.of<DashboardControllerCssdCussDeptUser>(context,
             listen: false);
+            //fetch currently selected department
+    selectedDepartment = dashboardController.getSelectedDepartment;
     dashboardController.departmentDropdownFunction();
     if (selectedDepartment != null) {
+      //if department is selection is available then get pie data and its details
       dashboardController.fetchRequestDetails(selectedDepartment!);
+      dashboardController.pieChartData.clear();
       dashboardController.getPieChartData(selectedDepartment!);
-    } else {
+    } else { 
+      dashboardController.pieChartData.clear(); 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showSnackBar(context: context, isError: true, msg: "Select department");
       });
     }
-    // controller.selectedDepartment = null;
+    // if user has both cssd and dept privileges
     hasPrivileges =
         LocalStorageManager.getBool(StorageKeys.privilegeFlagCssdAndDept)!;
     userName = LocalStorageManager.getString(StorageKeys.loggedinUser) ??
         "Department user";
     LocalStorageManager.setString(StorageKeys.lastOpenedIsCssd, "dept");
-    if (selectedDepartment == null) {
+    if (selectedDepartment == "") {
       log("already selected department is : $selectedDepartment so showing popup");
       // if department is not already selected the show the popup
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -239,7 +243,7 @@ class _DashboardViewCssdCussDeptUserState
                             Routes.sterilizationRequestViewCssdCussDeptUser);
                       },
                     ),
-                    DashboardButtons(
+                    const DashboardButtons(
                       icon: FluentIcons.news_16_filled,
                       iconName: "Reports",
                     ),
@@ -344,7 +348,8 @@ class _DashboardViewCssdCussDeptUserState
               buttonColor: const Color.fromARGB(255, 48, 160, 85),
               buttonLabel: "ok",
               onPressed: () {
-                selectedDepartment = LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter);
+                selectedDepartment = LocalStorageManager.getString(
+                    StorageKeys.selectedDepartmentCounter);
                 if (selectedDepartment == null) {
                   showSnackBar(
                       context: context,

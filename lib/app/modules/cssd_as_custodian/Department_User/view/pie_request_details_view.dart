@@ -24,13 +24,11 @@ class _RequestDetailsViewCssdCussDeptUserState
     final dashboardController =
         Provider.of<DashboardControllerCssdCussDeptUser>(context,
             listen: false);
-    selectedDepartment =
-        LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter);
-    WidgetsBinding.instance.addPostFrameCallback((_){
+    selectedDepartment = dashboardController.getSelectedDepartment;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (selectedDepartment != null) {
-        
-    dashboardController.fetchRequestDetails(selectedDepartment!);
-      }else{
+        dashboardController.fetchRequestDetails(selectedDepartment!);
+      } else {
         showSnackBar(context: context, isError: true, msg: "Select Department");
       }
     });

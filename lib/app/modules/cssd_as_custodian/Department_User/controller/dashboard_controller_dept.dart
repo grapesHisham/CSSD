@@ -4,21 +4,15 @@ import 'package:cssd/app/api/dio_interceptors/dio_interceptor.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/get_request_details_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/pie_dept_stock_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/department_list_model.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/items_list_model.dart';
 import 'package:cssd/util/app_util.dart';
 import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
-  late String? selectedDepartment;
-  DashboardControllerCssdCussDeptUser() {
-    selectedDepartment = LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter);
-  }
+  DashboardControllerCssdCussDeptUser();
 
   final TextEditingController searchController = TextEditingController();
 
-  
   @override
   void dispose() {
     searchController.dispose();
@@ -28,17 +22,26 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  // String _selectedDepartment =
-  //     LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter) ??
-  //         "";
-  // String get getSelectedDepartment => _selectedDepartment;
-  // set selectedDepartment(String? value) {
-  //   if (value != null) {
-  //     _selectedDepartment = value;
-  //     log("selected department is : $getSelectedDepartment");
-  //     notifyListeners();
-  //   }
-  // }
+
+  // get selected department  from dropdown
+  String _selectedDepartment =
+      LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter) ??
+          "";
+  String get getSelectedDepartment => _selectedDepartment;
+ /*  set selectedDepartment(String? value) {
+    if (value != null) {
+      _selectedDepartment = value;
+      log("selected department is : $getSelectedDepartment");
+      notifyListeners();
+    }
+  } */
+ 
+  void updateSelectedDepartment(String selectedValue) {
+    _selectedDepartment = selectedValue;
+    LocalStorageManager.setString(
+        StorageKeys.selectedDepartmentCounter, selectedValue);
+    notifyListeners();
+  }
 
 //department dropdown fetch
   List<GetDepartmentListModelData> _departmentDropdownItems = [];
@@ -137,16 +140,15 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
     requestDetailsList.clear();
     final client = await DioUtilAuthorized.createApiClient();
     try {
-      if (selectedDepartment == null) {
+      if (getSelectedDepartment == "") {
         showSnackBarNoContext(isError: true, msg: "Select Department ");
-      }else{
-      final response =
-          await client.getPendingRequestdetails(selectedDepartment!);
-      if (response.status == 200) {
-        _requestDetailsList = response.data;
-      }
-      notifyListeners();
-
+      } else {
+        final response =
+            await client.getPendingRequestdetails(getSelectedDepartment);
+        if (response.status == 200) {
+          _requestDetailsList = response.data;
+        }
+        notifyListeners();
       }
     } catch (e) {
       log("Exception caught : $e");
@@ -161,7 +163,8 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
   List<DepartmentStockData> _filteredDeptStockList = [];
   List<DepartmentStockData> get filteredDeptStockList => _filteredDeptStockList;
 
-  Future<List<DepartmentStockData>> fetchDepartmentwiseStockDetails(String selectedDepartment) async {
+  Future<List<DepartmentStockData>> fetchDepartmentwiseStockDetails(
+      String selectedDepartment) async {
     final client = await DioUtilAuthorized.createApiClient();
     try {
       final deptStockResponse =
@@ -182,7 +185,8 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
   }
 
   //filtered list for search
-  Future<List<DepartmentStockData>> filterFutureList(String? query, String selectedDepartment) async {
+  Future<List<DepartmentStockData>> filterFutureList(
+      String? query, String selectedDepartment) async {
     if (query == null || query.isEmpty) {
       await fetchDepartmentwiseStockDetails(selectedDepartment);
       _filteredDeptStockList = List.from(deptStockList);

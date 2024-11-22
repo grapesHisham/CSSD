@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 Future<void> logoutPopup(BuildContext context) async {
   final loginController = Provider.of<LoginController>(context, listen: false);
-
+  final dahboardController = Provider.of<DashboardControllerCssdCussDeptUser>(context,listen: false);
   return customDialog(
     dialogContext: context,
     dialogContent: const Text("Are you sure to logout?"),
@@ -20,6 +20,7 @@ Future<void> logoutPopup(BuildContext context) async {
       //     context,
       //     listen: false);
       loginController.logoutFunction();
+      dahboardController.pieChartData.clear();
       Navigator.pushNamedAndRemoveUntil(
           context, Routes.loginScreen, (route) => false);
       // clear the local storage on logout
