@@ -60,7 +60,7 @@ abstract class ApiClient {
       @Query("location") String location,
       @Query("IsPckg") String isPckg);
 
-  // @POST(ApiLinks.usedItemEntry)
-  // Future<PostUsedItemEntryModel> postUsedItemsEntry(@Body() List<Map<String, dynamic>> postUsedItems);
-
+   @POST(ApiLinks.usedItemEntry)
+  Future<PostUsedItemsEntryModel> postUsedItemsEntry(
+      @Body() Map<String, dynamic> body);
 }

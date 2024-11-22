@@ -177,15 +177,14 @@ class UsedItemEntryController extends ChangeNotifier {
     return _usedItemsTableBeforeSubmitList;
   }
 
-  // Future<void> submitUsedItemsEntries() async {
-  //   final client = await DioUtilAuthorized.createApiClient();
-
-  //   try {
-  //     log("list of map data for user items entry$_listMapAddedItem , last map $mapAddedItems" );
-  //     final response = await client.postUsedItemsEntry(_listMapAddedItem);
+  Future<void> submitUsedItemsEntries() async {
+    final client = await DioUtilAuthorized.createApiClient(); 
+    try {
+      log("list of map data for user items entry$_listMapAddedItem , last map $mapAddedItems" );
+      // final response = await client.postUsedItemsEntry(_listMapAddedItem);
       
-  //   } catch (e) {
-  //     log("Exception caught while posting used items $e");
-  //   }
-  // }
+    } catch (e) {
+      log("Exception caught while posting used items $e");
+    }
+  }
 }
