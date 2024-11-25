@@ -41,7 +41,7 @@ class TransparentBlurConatinerWidget extends StatelessWidget {
         ClipRRect(
           borderRadius: borderRadius,
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+            filter: ImageFilter.blur(sigmaX: 6.0, sigmaY: 6.0),
             child: Container(
               decoration: const BoxDecoration(
                 color: Colors.transparent,
