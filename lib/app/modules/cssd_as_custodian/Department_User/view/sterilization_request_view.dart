@@ -1,14 +1,11 @@
 import 'dart:developer';
 
-import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/custom_textfield.dart';
 import 'package:cssd/Widgets/dropdown_menu_widget.dart';
-import 'package:cssd/Widgets/rounded_container.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/sterilization_controller.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/department_selection_widget.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/used_items_entry_widgets/items_for_selected_department_widget.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/department_selection_all_pages_widget.dart';
 import 'package:cssd/util/app_util.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/fonts.dart';
@@ -28,8 +25,6 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
     final sterilizationController =
         Provider.of<SterilizationControllerCssdCussDeptUser>(context,
             listen: false);
-
-    
 
     return Scaffold(
       backgroundColor: StaticColors.scaffoldBackgroundcolor,
@@ -55,74 +50,19 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                 runSpacing: 10,
                 spacing: 10,
                 children: [
+                  //department selection dropdown
                   DepartmentSelectionWidget(
                     dashboardController: dashboardController,
                   ),
-                  /* Consumer<SterilizationControllerCssdCussDeptUser>(
-                      builder: (context, sterilizationConsumer, child) {
-                    /*  if (sterilizationConsumer.isLoading) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                    if (sterilizationConsumer.departmentDropdownItems.isEmpty) {
-                      return const Center(
-                          child: Text("No departments available"));
-                    } */
-                    return CustomDropDownMenuWidget(
-                      dropDownWidth: mediaQuery.width * 0.4,
-                      label: "Department",
-                      dropdownMenuEntries: sterilizationConsumer
-                          .departmentDropdownItems
-                          .map((departments) => DropdownMenuEntry(
-                              value: departments.subId,
-                              label: departments.subName!))
-                          .toList(),
-                      onSelected: (value) {
-                        if (value != null) {
-                          //implement
-                        }
-                      },
-                    );
-                  }), */
-                  SizedBox(height: 10.h),
+                  //priority dropdown
                   CustomDropDownMenuWidget(dropdownMenuEntries: const [
                     DropdownMenuEntry(value: "High", label: "High"),
                     DropdownMenuEntry(value: "Medium", label: "Medium"),
                     DropdownMenuEntry(value: "Low", label: "Low"),
                   ], onSelected: (p0) {}, label: "Priority"),
-                ],
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-              //remarks container
-              ConstrainedBox(
-                constraints:
-                    const BoxConstraints(maxWidth: 600, maxHeight: 400),
-                child: RoundedContainer(
-                  containerHeight: mediaQuery.height / 7,
-                  containerBody: CustomTextFormField(
-                    minLines: 1,
-                    maxLines: null,
-                    keyboardType: TextInputType.multiline,
-                    controller: sterilizationController.remarksController,
-                    label: const Text("Remarks"),
-                    textfieldBorder: false,
-                  ),
-                ),
-              ),
 
-              //items listing and textfield
-              Wrap(
-                alignment: WrapAlignment.start,
-                spacing: 10,
-                runSpacing: 10,
-                children: [
-                  SizedBox(
-                    width: mediaQuery.width / 1.6,
-                    child: FetchItemsForSelectedDepartment(dashboardController: dashboardController),
-                  ),
+                  // quantity dropdown
                   CustomTextFormField(
-                    // quantity dropdown
                     maxLines: 1,
                     keyboardType: TextInputType.number,
                     textFieldSize: const Size(90.0, 80.0),
@@ -149,9 +89,27 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                       }
                       showToast(context, "Item added  $item : $quantity");
                     },
-                  )
+                  ),
                 ],
               ),
+
+              //remarks container
+              /* ConstrainedBox(
+                constraints:
+                    const BoxConstraints(maxWidth: 600, maxHeight: 400),
+                child: RoundedContainer(
+                  containerHeight: mediaQuery.height / 7,
+                  containerBody: CustomTextFormField(
+                    minLines: 1,
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
+                    controller: sterilizationController.remarksController,
+                    label: const Text("Remarks"),
+                    textfieldBorder: false,
+                  ),
+                ),
+              ), */
+
               SizedBox(
                 height: 12.h,
               ),

@@ -2,10 +2,12 @@ import 'package:cssd/app/api/model/api_links.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/get_request_details_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/pie_chart_request_count_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/pie_dept_stock_model.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/department_list_model.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/items_list_model.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/send_for_sterilization_models/department_list_model.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/send_for_sterilization_models/get_used_items_for_search.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/items_list_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/get_quantity_validation_model.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/post_used_items.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/post_used_items_body_model.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/used_items_model.dart';
 import 'package:cssd/app/modules/login_module/model/login_model.dart';
 import 'package:cssd/app/modules/login_module/model/pre_login_authentication_model.dart';
 import 'package:dio/dio.dart';
@@ -60,7 +62,12 @@ abstract class ApiClient {
       @Query("location") String location,
       @Query("IsPckg") String isPckg);
 
-   @POST(ApiLinks.usedItemEntry)
-  Future<PostUsedItemsEntryModel> postUsedItemsEntry(
-      @Body() Map<String, dynamic> body);
+  @POST(ApiLinks.usedItemEntry)
+  Future<GetDepartmentwiseUsedItemListModel> postUsedItemsEntry(
+      @Body() PostUsedItemsEntryModel body);
+
+  @GET(ApiLinks.getUsedItemNames)
+  Future<GetUsedItemsForSearchModel> getUsedItemNames(
+      @Query("productname") String productname,
+      @Query("location") String location);
 }

@@ -6,8 +6,8 @@ import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class DepartmentSelectionWidget extends StatelessWidget {
-  const DepartmentSelectionWidget({
+class DepartmentSelectionDashboardWidget extends StatelessWidget {
+  const DepartmentSelectionDashboardWidget({
     super.key,
     required this.dashboardController,
   });

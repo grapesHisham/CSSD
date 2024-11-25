@@ -15,7 +15,8 @@ class ApiLinks{
   static const String getPendingRequestdetails = 'GetPendingRequestdetails';
   static const String getDepartmentwiseStockDetails = 'GetDepartmentwiseStock_Details'; // stock for each department
   static const String qtyValidation = 'QtyValidation'; // amount of valid quantity while doing used item entry
-  static const String usedItemEntry = 'UsedItemEntry'; 
+  static const String usedItemEntry = 'UsedItemEntry';  // to post used items
+  static const String getUsedItemNames = 'GetUsedItemNames';  // for search suggessions of used items list 
   
 }
 

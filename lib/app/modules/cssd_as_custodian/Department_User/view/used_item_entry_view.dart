@@ -336,7 +336,9 @@ class _UsedItemEntryViewCssdCussDeptUserState
                     ButtonWidget(
                       buttonLabel: "Save Used Items",
                       buttonTextSize: 14,
-                      onPressed: () {},
+                      onPressed: () {
+                        usedItemsController.submitUsedItemsEntries();
+                      },
                     ),
                   ],
                 ),

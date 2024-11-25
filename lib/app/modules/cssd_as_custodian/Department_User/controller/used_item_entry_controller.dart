@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cssd/app/api/dio_interceptors/dio_interceptor.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/sterilization_models/items_list_model.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/items_list_model.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/post_used_items_body_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/used_items_model.dart';
 import 'package:cssd/util/app_util.dart';
 import 'package:flutter/material.dart';
@@ -105,8 +107,8 @@ class UsedItemEntryController extends ChangeNotifier {
   }
 
   Map<String, dynamic> mapAddedItems = {};
-  List<Map<String, dynamic>> _listMapAddedItem = [];
-  
+  List<Uentry> _listMapAddedItem = [];
+
   List<UsedItemsListModelData> addToUsedItemsTableBeforeSubmit(
       {required int productId,
       required String productName,
@@ -122,13 +124,9 @@ class UsedItemEntryController extends ChangeNotifier {
           productName: productName,
           location: location,
           uQty: uQty));
-      mapAddedItems = {
-        "productId": productId,
-        "location": location,
-        "quantity": uQty
-      };
-      log("added item $mapAddedItems");
-      _listMapAddedItem.add(mapAddedItems);
+
+      _listMapAddedItem.add(
+          Uentry(location: location, productId: productId, quantity: uQty));
       log("added list $_listMapAddedItem");
     } else if (existingItemIndex != -1) {
       //when item already exists in the list
@@ -177,12 +175,19 @@ class UsedItemEntryController extends ChangeNotifier {
     return _usedItemsTableBeforeSubmitList;
   }
 
+  // for used item entry
   Future<void> submitUsedItemsEntries() async {
-    final client = await DioUtilAuthorized.createApiClient(); 
+    final client = await DioUtilAuthorized.createApiClient();
+
     try {
-      log("list of map data for user items entry$_listMapAddedItem , last map $mapAddedItems" );
-      // final response = await client.postUsedItemsEntry(_listMapAddedItem);
-      
+      log("list of map data for user items entry :  ${jsonEncode(_listMapAddedItem)} , last map : $mapAddedItems");
+      final response = await client.postUsedItemsEntry(
+          PostUsedItemsEntryModel(uentry: _listMapAddedItem));
+      if (response.status == 200) {
+        showSnackBarNoContext(isError: false, msg: response.message);
+      } else {
+        showSnackBarNoContext(isError: true, msg: response.message);
+      }
     } catch (e) {
       log("Exception caught while posting used items $e");
     }

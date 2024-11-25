@@ -40,6 +40,7 @@ class DioUtilAuthorized {
             options.headers['accept'] = "*/*";
             String? token =
                 LocalStorageManager.getString(StorageKeys.loginToken);
+                log("Token is : Bearer $token");
             if (token != null) {
               options.headers['Authorization'] = 'Bearer $token';
             } else {
@@ -67,7 +68,9 @@ class DioUtilAuthorized {
               log('No internet connection');
             } else {
               log('Server error: ${error.requestOptions.uri}');
+              showSnackBarNoContext(isError: true, msg: "Something went wrong");
             }
+
             log('Error: ${error.toString()}');
             return handler.next(error); // Continue with the error handling
           },

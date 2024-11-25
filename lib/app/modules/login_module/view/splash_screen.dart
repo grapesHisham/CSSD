@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:developer'; 
+import 'dart:developer';
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/local_storage_manager.dart';
@@ -17,7 +17,7 @@ class _SplashState extends State<Splash> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await checkIfAlreadyLoggedin(); //turn on later check
+      await checkIfAlreadyLoggedin();
     });
 
     super.initState();
@@ -39,14 +39,23 @@ class _SplashState extends State<Splash> {
             LocalStorageManager.getString(StorageKeys.lastOpenedIsCssd);
         log("last opened page is: $lastOpenedCssd");
         if (lastOpenedCssd == "cssd") {
-          Navigator.pushReplacementNamed(
-              context, Routes.bottomNavBarDashboardCssdUser);
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            Routes.bottomNavBarDashboardCssdUser,
+            (Route<dynamic> route) => false,
+          );
         } else if (lastOpenedCssd == "dept") {
-          Navigator.pushReplacementNamed(
-              context, Routes.dashboardViewCssdCussDeptUser);
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            Routes.dashboardViewCssdCussDeptUser,
+            (Route<dynamic> route) => false,
+          );
         } else {
-          Navigator.pushReplacementNamed(
-              context, Routes.loginScreen);
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            Routes.loginScreen,
+            (Route<dynamic> route) => false,
+          );
         }
         /* Navigator.pushNamedAndRemoveUntil(context,Routes.bottomNavBarDashboardCssdUser,(Route<dynamic> route) => false); */
       } else if (privilegesList.contains("312")) {
@@ -119,7 +128,8 @@ class _SplashState extends State<Splash> {
                   ],
                 ),
               ),
-              Lottie.asset("assets/lottie/loading_lottie.json",width: 80, frameRate: const FrameRate(90)),
+              Lottie.asset("assets/lottie/loading_lottie.json",
+                  width: 80, frameRate: const FrameRate(90)),
             ],
           ),
         ),

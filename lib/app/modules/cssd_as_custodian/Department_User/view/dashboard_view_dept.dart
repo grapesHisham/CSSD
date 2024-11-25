@@ -6,7 +6,8 @@ import 'package:cssd/Widgets/notification_icon.dart';
 import 'package:cssd/Widgets/rounded_container.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/model/sampleRequestList.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/department_selection_widget.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/department_selection_dashboard_widget.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/exit_dialogbox_widget.dart';
 import 'package:cssd/app/modules/login_module/view/widgets/logout_popup.dart';
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/app_util.dart';
@@ -40,7 +41,7 @@ class _DashboardViewCssdCussDeptUserState
     final dashboardController =
         Provider.of<DashboardControllerCssdCussDeptUser>(context,
             listen: false);
-            //fetch currently selected department
+    //fetch currently selected department
     selectedDepartment = dashboardController.getSelectedDepartment;
     dashboardController.departmentDropdownFunction();
     if (selectedDepartment != null) {
@@ -48,8 +49,8 @@ class _DashboardViewCssdCussDeptUserState
       dashboardController.fetchRequestDetails(selectedDepartment!);
       dashboardController.pieChartData.clear();
       dashboardController.getPieChartData(selectedDepartment!);
-    } else { 
-      dashboardController.pieChartData.clear(); 
+    } else {
+      dashboardController.pieChartData.clear();
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showSnackBar(context: context, isError: true, msg: "Select department");
       });
@@ -79,12 +80,15 @@ class _DashboardViewCssdCussDeptUserState
             listen: false);
     final mediaQuery = MediaQuery.of(context).size;
     return PopScope(
+      
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) {
           return;
         }
-        logoutPopup(context);
+        // logoutPopup(context);
+        // Navigator.pop(context);
+        exitDialogBox(context);
       },
       child: Scaffold(
         floatingActionButton: _buildFloatingActionButton(hasPrivileges),
@@ -99,7 +103,16 @@ class _DashboardViewCssdCussDeptUserState
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text("Hey, $userName", style: FontStyles.appBarTitleStyle),
-                  InkWell(onTap: () {}, child: const NotificationIcon())
+                  Row(
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            logoutPopup(context);
+                          },
+                          icon: const Icon(FluentIcons.power_20_filled)),
+                      InkWell(onTap: () {}, child: const NotificationIcon()),
+                    ],
+                  )
                 ],
               ),
               SizedBox(
@@ -109,7 +122,7 @@ class _DashboardViewCssdCussDeptUserState
               SizedBox(
                 width: mediaQuery.width,
                 height: 50,
-                child: DepartmentSelectionWidget(
+                child: DepartmentSelectionDashboardWidget(
                     dashboardController: dashboardController),
               )
             ],
