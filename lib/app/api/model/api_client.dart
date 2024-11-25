@@ -66,8 +66,8 @@ abstract class ApiClient {
   Future<GetDepartmentwiseUsedItemListModel> postUsedItemsEntry(
       @Body() PostUsedItemsEntryModel body);
 
-  @GET(ApiLinks.getUsedItemNames)
-  Future<GetUsedItemsForSearchModel> getUsedItemNames(
+  @POST(ApiLinks.getUsedItemNames)
+  Future<GetUsedItemsForSearchModel> getUsedItemNamesSearch(
       @Query("productname") String productname,
       @Query("location") String location);
 }

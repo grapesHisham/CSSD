@@ -21,8 +21,6 @@ class UsedItemEntryController extends ChangeNotifier {
   set setSelectedItemModel(GetItemNameModelData? value) {
     _selectedItemModel = value;
     notifyListeners();
-    log("selected item is null");
-    notifyListeners();
   }
 
   bool _isLoading = false;
@@ -178,7 +176,6 @@ class UsedItemEntryController extends ChangeNotifier {
   // for used item entry
   Future<void> submitUsedItemsEntries() async {
     final client = await DioUtilAuthorized.createApiClient();
-
     try {
       log("list of map data for user items entry :  ${jsonEncode(_listMapAddedItem)} , last map : $mapAddedItems");
       final response = await client.postUsedItemsEntry(

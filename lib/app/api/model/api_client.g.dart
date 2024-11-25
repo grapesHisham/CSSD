@@ -407,7 +407,7 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<GetUsedItemsForSearchModel> getUsedItemNames(
+  Future<GetUsedItemsForSearchModel> getUsedItemNamesSearch(
     String productname,
     String location,
   ) async {
@@ -419,7 +419,7 @@ class _ApiClient implements ApiClient {
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<GetUsedItemsForSearchModel>(Options(
-      method: 'GET',
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )

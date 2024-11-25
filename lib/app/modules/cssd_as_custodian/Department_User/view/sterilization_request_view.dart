@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/custom_textfield.dart';
 import 'package:cssd/Widgets/dropdown_menu_widget.dart';
@@ -61,6 +62,75 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                     DropdownMenuEntry(value: "Low", label: "Low"),
                   ], onSelected: (p0) {}, label: "Priority"),
 
+                  //get used items dropdown
+                  Consumer<SterilizationControllerCssdCussDeptUser>(
+                      // items search suggestions
+                      builder: (context, sterilizationConsumer, child) {
+                    final dashboardController =
+                        Provider.of<DashboardControllerCssdCussDeptUser>(
+                            context,
+                            listen: false);
+                    // fetching selected department from dashboard
+                    String selectedDepartment =
+                        dashboardController.getSelectedDepartment;
+                    return CustomDropdown.searchRequest(
+                      onChanged: (selectedItemModel) {
+                        if (selectedItemModel != null) {
+                          log('currently selected item : ${selectedItemModel.productName}');
+                          sterilizationConsumer.setSelectedItemModel =
+                              selectedItemModel;
+                        } else {
+                          showSnackBarNoContext(
+                              isError: true, msg: "selected item is null");
+                        }
+                      },
+                      futureRequestDelay: const Duration(milliseconds: 0),
+                      futureRequest: (stringItem) async {
+                        // api calling to get the item name
+                        if (selectedDepartment == "") {
+                          showSnackBarNoContext(
+                              isError: true,
+                              msg: "Select department to search items");
+                        } else {
+                          await sterilizationConsumer.fetchUsedItems(
+                              searchQuery: stringItem,
+                              location: selectedDepartment);
+                        }
+                        // list of items for the search query
+                        return sterilizationConsumer.getUsedItemsListForSearch;
+                      },
+                      headerBuilder: (context, selectedItem, enabled) {
+                        if (sterilizationConsumer
+                                .getSelectedUsedItemModel?.productName ==
+                            null) {
+                          log("item model is ${sterilizationConsumer.getSelectedUsedItemModel}");
+                          // clear the header when itemmodel is null - set when department in changed from dropdown
+                          return const Text("");
+                        }
+                        log("item model is ${sterilizationConsumer.getSelectedUsedItemModel?.productName}");
+                        return Text(selectedItem.productName);
+                      },
+                      listItemBuilder:
+                          (context, item, isSelected, onItemSelect) => ListTile(
+                        title: Text(item.productName),
+                        subtitle: Text(
+                          "used quantity : ${item.usedQty}",
+                        ),
+                      ),
+                      decoration: CustomDropdownDecoration(
+                        closedBorder: Border.all(color: Colors.grey),
+                      ),
+                      hintText: "Items",
+                      searchHintText: "Search items",
+                      hideSelectedFieldWhenExpanded: false,
+                      validator: (item) {
+                        if (item == null) {
+                          return "Section required";
+                        }
+                        return null;
+                      },
+                    );
+                  }),
                   // quantity dropdown
                   CustomTextFormField(
                     maxLines: 1,
@@ -75,10 +145,11 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                       final quantity =
                           sterilizationController.quantityController.text;
                       final item =
-                          sterilizationController.getSelectedItemDropdown;
-                      if (quantity.isNotEmpty && item.isNotEmpty) {
+                          sterilizationController.getSelectedUsedItemModel;
+                      if (quantity.isNotEmpty && item?.productName != null) {
                         log("add button clicked");
-                        sterilizationController.addItemsToGrid(item, quantity);
+                        sterilizationController.addItemsToGrid(
+                            item?.productName ?? "", quantity);
                         sterilizationController.clearInputs();
                       } else {
                         // showToast(context,"Empty String , selected item : $item, quantity: $quantity");
@@ -118,14 +189,15 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                 child: Consumer<SterilizationControllerCssdCussDeptUser>(
                     builder: (context, sterilizationConsumer, child) {
                   return Scrollbar(
-                    child: GridView.builder(
-                      gridDelegate:
+                    child: ListView.builder(
+
+                     /*  gridDelegate:
                           const SliverGridDelegateWithMaxCrossAxisExtent(
                         maxCrossAxisExtent: 200,
                         crossAxisSpacing: 8.0,
                         mainAxisSpacing: 8.0,
                         childAspectRatio: 1.7,
-                      ),
+                      ), */
                       itemCount:
                           sterilizationConsumer.getSelectedItemsQuantity.length,
                       itemBuilder: (context, index) {
@@ -156,10 +228,7 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                                         SizedBox(
                                           width: 4.w,
                                         ),
-                                        SizedBox(
-                                            width: 60,
-                                            // child: Text(" ${item['itemName']}"))
-                                            child: Text("${item['itemName']}"))
+                                        Text("${item['itemName']}")
                                       ],
                                     ),
                                     Row(
@@ -203,9 +272,6 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
     );
   }
 }
-
-
-
 
 /* Consumer<SterilizationControllerCssdCussDeptUser>(
                       builder: (context, controller, child) {
