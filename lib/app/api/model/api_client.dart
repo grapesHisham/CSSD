@@ -6,6 +6,7 @@ import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboar
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/send_for_sterilization_models/department_list_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/send_for_sterilization_models/get_used_items_for_search.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/send_for_sterilization_models/post_send_to_cssd_model.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/departmentwise_used_item_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/items_list_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/get_quantity_validation_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/post_used_items_body_model.dart';
@@ -76,5 +77,9 @@ abstract class ApiClient {
     @POST(ApiLinks.sendToCssd)
   Future<GeneralResponse> sendToCssd(
       @Body() SendToCssd body);
+
+@GET(ApiLinks.departmentwiseUsedItemList) // not done 26 -11 -2024
+  Future<DepartmentwiseUsedItemList> departmentwiseUsedItemList(
+      @Query("location") String location);
   
 }

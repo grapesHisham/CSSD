@@ -173,7 +173,7 @@ class UsedItemEntryController extends ChangeNotifier {
     return _usedItemsTableBeforeSubmitList;
   }
 
-  // for used item entry
+  // for used item ENTRY
   Future<void> submitUsedItemsEntries() async {
     final client = await DioUtilAuthorized.createApiClient();
     try {
@@ -190,5 +190,12 @@ class UsedItemEntryController extends ChangeNotifier {
     } catch (e) {
       log("Exception caught while posting used items $e");
     }
+  }
+
+
+  // api to fetch already saved used items and list them for a paricular department - Used items SHOW 
+  Future<void> fetchUsedItems() async{
+    final client = await DioUtilAuthorized.createApiClient();
+    // 
   }
 }

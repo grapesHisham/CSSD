@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
-  SterilizationControllerCssdCussDeptUser(){
+  SterilizationControllerCssdCussDeptUser() {
     log("send to cssd added items list init state : $_getUsedItemsListForSearch");
   }
 
@@ -16,8 +16,6 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
   // TextEditingController itemNameController = TextEditingController();
   bool _isLoading = false;
   bool get isLoading => _isLoading;
-
-
 
   // Selected used item  model
   GetUsedItemsForSearchData? _selectedUsedItemModel;
@@ -85,19 +83,29 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
     }
   }
 
-  Future<void> sendUsedItemsToCssd(String location) async {
+  Future<bool> sendUsedItemsToCssd(String location) async {
     final client = await DioUtilAuthorized.createApiClient();
     try {
-      final response = await client.sendToCssd(SendToCssd(
-          location: location, sendcssditems: _selectedItemsQuantityList));
-      if (response.status ==200) {
-        showSnackBarNoContext(isError: false, msg: response.message);
-        _selectedItemsQuantityList.clear();
-        notifyListeners();
-      }    
+      if (_selectedItemsQuantityList.isEmpty) {
+        //dont call api if there is no items
+        showSnackBarNoContext(isError: true, msg: "No Items added");
+        return false;
+      } else {
+        final response = await client.sendToCssd(SendToCssd(
+            location: location, sendcssditems: _selectedItemsQuantityList));
+        log("Send to cssd items : ${SendToCssd(location: location, sendcssditems: _selectedItemsQuantityList).toJson()}");
+        if (response.status == 200) {
+          showSnackBarNoContext(isError: false, msg: response.message);
+          _selectedItemsQuantityList.clear();
+          notifyListeners();
+          return true;
+        }
+      }
     } catch (e) {
       log("Exception while sent to cssd $e");
+      return false;
     }
+    return false;
   }
 
   void deleteCurrentItemFromList(Sendcssditem item) {

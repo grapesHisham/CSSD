@@ -150,6 +150,8 @@ class _DashboardViewCssdCussDeptUserState
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           //pie chart
                           Consumer<DashboardControllerCssdCussDeptUser>(
@@ -178,7 +180,8 @@ class _DashboardViewCssdCussDeptUserState
                               //syncfusion pie chart
                               child: SizedBox(
                                 height: 180,
-                                child: SfCircularChart(
+
+                                child: SfCircularChart(  
                                   onChartTouchInteractionDown:
                                       (ChartTouchInteractionArgs args) {
                                     log("${args.position.dy} : ${args.position.dy}");

@@ -69,7 +69,6 @@ class _FetchItemsForSelectedDepartmentState
         },
         headerBuilder: (context, selectedItem, enabled) {
           if (usedItemEntryConsumer.getSelectedItemModel?.productName == null) {
-            log("item model is ${usedItemEntryConsumer.getSelectedItemModel}");
             return const Text("");
           }
             log("item model is ${usedItemEntryConsumer.getSelectedItemModel?.productName}");

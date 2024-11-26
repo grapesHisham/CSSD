@@ -52,9 +52,9 @@ dependencies:
   shared_preferences: ^2.3.2
   pretty_dio_logger: ^1.4.0
   loading_animation_widget: ^1.2.0+4
-  #slide_to_act: ^2.0.2 #replaced with login button remove if unnecessary
+  slide_to_act: ^2.0.2 #replaced with login button remove if unnecessary
   animated_custom_dropdown: ^3.1.1
-  #flutter_expandable_fab: ^2.3.0 #replaced with inbuild fab remove if unnecessary
+  #flutter_expandable_fab: ^2.3.0 #replaced with inbuild floating action button 
   google_fonts: ^6.2.1 
   syncfusion_flutter_datagrid: ^27.2.2
   

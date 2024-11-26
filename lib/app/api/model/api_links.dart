@@ -18,6 +18,7 @@ class ApiLinks{
   static const String usedItemEntry = 'UsedItemEntry';  // to post used items
   static const String getUsedItemNames = 'GetUsedItemNames';  // for search suggessions of used items list 
   static const String sendToCssd = 'SendToCssd';  // to send items to cssd for sterilization
+  static const String departmentwiseUsedItemList = 'Departmentwise_UsedItemList';  // to get saved used items list for a particular department
   
 }
 
