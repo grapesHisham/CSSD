@@ -2,47 +2,42 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'post_send_to_cssd_model.g.dart';
 @JsonSerializable()
-class PostSendToCssd {
-    @JsonKey(name: "status")
-    int status;
-    @JsonKey(name: "message")
-    String message;
-    @JsonKey(name: "data")
-    List<PostSendToCssdData> data;
+class SendToCssd {
+    @JsonKey(name: "location")
+    String location;
+    @JsonKey(name: "sendcssditems")
+    List<Sendcssditem> sendcssditems;
 
-    PostSendToCssd({
-        required this.status,
-        required this.message,
-        required this.data,
+    SendToCssd({
+        required this.location,
+        required this.sendcssditems,
     });
 
-    factory PostSendToCssd.fromJson(Map<String, dynamic> json) => _$PostSendToCssdFromJson(json);
+    factory SendToCssd.fromJson(Map<String, dynamic> json) => _$SendToCssdFromJson(json);
 
-    Map<String, dynamic> toJson() => _$PostSendToCssdToJson(this);
+    Map<String, dynamic> toJson() => _$SendToCssdToJson(this);
 }
 
 @JsonSerializable()
-class PostSendToCssdData {
-    @JsonKey(name: "ProductName")
-    String productName;
-    @JsonKey(name: "UprodId")
-    int uprodId;
+class Sendcssditem {
+    @JsonKey(name: "Productname")
+    String productname;
     @JsonKey(name: "ProductId")
     int productId;
-    @JsonKey(name: "UsedQty")
-    int usedQty;
+    @JsonKey(name: "Qty")
+    int qty;
 
-    PostSendToCssdData({
-        required this.productName,
-        required this.uprodId,
+    Sendcssditem({
+        required this.productname,
         required this.productId,
-        required this.usedQty,
+        required this.qty,
     });
 
-    factory PostSendToCssdData.fromJson(Map<String, dynamic> json) => _$PostSendToCssdDataFromJson(json);
+    factory Sendcssditem.fromJson(Map<String, dynamic> json) => _$SendcssditemFromJson(json);
 
-    Map<String, dynamic> toJson() => _$PostSendToCssdDataToJson(this);
+    Map<String, dynamic> toJson() => _$SendcssditemToJson(this);
 }
+
 
 
 /* 

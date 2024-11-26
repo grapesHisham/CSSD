@@ -1,9 +1,11 @@
 import 'package:cssd/app/api/model/api_links.dart';
+import 'package:cssd/app/api/model/general_response_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/get_request_details_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/pie_chart_request_count_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/pie_dept_stock_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/send_for_sterilization_models/department_list_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/send_for_sterilization_models/get_used_items_for_search.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/send_for_sterilization_models/post_send_to_cssd_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/items_list_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/get_quantity_validation_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/post_used_items_body_model.dart';
@@ -71,8 +73,8 @@ abstract class ApiClient {
       @Query("productname") String productname,
       @Query("location") String location);
 
-    /* @POST(ApiLinks.sendToCssd)
-  Future<> sendToCssd(
-      @Body() PostSendToCssd body); */
+    @POST(ApiLinks.sendToCssd)
+  Future<GeneralResponse> sendToCssd(
+      @Body() SendToCssd body);
   
 }

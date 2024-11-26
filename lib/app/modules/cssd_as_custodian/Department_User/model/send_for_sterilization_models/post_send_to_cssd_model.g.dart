@@ -6,34 +6,28 @@ part of 'post_send_to_cssd_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-PostSendToCssd _$PostSendToCssdFromJson(Map<String, dynamic> json) =>
-    PostSendToCssd(
-      status: (json['status'] as num).toInt(),
-      message: json['message'] as String,
-      data: (json['data'] as List<dynamic>)
-          .map((e) => PostSendToCssdData.fromJson(e as Map<String, dynamic>))
+SendToCssd _$SendToCssdFromJson(Map<String, dynamic> json) => SendToCssd(
+      location: json['location'] as String,
+      sendcssditems: (json['sendcssditems'] as List<dynamic>)
+          .map((e) => Sendcssditem.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
-Map<String, dynamic> _$PostSendToCssdToJson(PostSendToCssd instance) =>
+Map<String, dynamic> _$SendToCssdToJson(SendToCssd instance) =>
     <String, dynamic>{
-      'status': instance.status,
-      'message': instance.message,
-      'data': instance.data,
+      'location': instance.location,
+      'sendcssditems': instance.sendcssditems,
     };
 
-PostSendToCssdData _$PostSendToCssdDataFromJson(Map<String, dynamic> json) =>
-    PostSendToCssdData(
-      productName: json['ProductName'] as String,
-      uprodId: (json['UprodId'] as num).toInt(),
+Sendcssditem _$SendcssditemFromJson(Map<String, dynamic> json) => Sendcssditem(
+      productname: json['Productname'] as String,
       productId: (json['ProductId'] as num).toInt(),
-      usedQty: (json['UsedQty'] as num).toInt(),
+      qty: (json['Qty'] as num).toInt(),
     );
 
-Map<String, dynamic> _$PostSendToCssdDataToJson(PostSendToCssdData instance) =>
+Map<String, dynamic> _$SendcssditemToJson(Sendcssditem instance) =>
     <String, dynamic>{
-      'ProductName': instance.productName,
-      'UprodId': instance.uprodId,
+      'Productname': instance.productname,
       'ProductId': instance.productId,
-      'UsedQty': instance.usedQty,
+      'Qty': instance.qty,
     };

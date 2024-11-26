@@ -1,13 +1,15 @@
 import 'dart:developer';
 import 'package:cssd/app/api/dio_interceptors/dio_interceptor.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/send_for_sterilization_models/department_list_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/send_for_sterilization_models/get_used_items_for_search.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/send_for_sterilization_models/post_send_to_cssd_model.dart';
 import 'package:cssd/util/app_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
-  SterilizationControllerCssdCussDeptUser();
+  SterilizationControllerCssdCussDeptUser(){
+    log("send to cssd added items list init state : $_getUsedItemsListForSearch");
+  }
 
   TextEditingController remarksController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
@@ -15,7 +17,7 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  //list of map for items and its quantity to display on gridview builder while adding items
+
 
   // Selected used item  model
   GetUsedItemsForSearchData? _selectedUsedItemModel;
@@ -57,28 +59,49 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
     quantityController.clear();
   }
 
-  // adding items to list of map
-  final List<Map<String, dynamic>> _selectedItemsQuantityList = [];
-  List<Map<String, dynamic>> get getSelectedItemsQuantityList =>
+  // adding items to list view builder for adding items to send to cssd
+  final List<Sendcssditem> _selectedItemsQuantityList = [];
+  List<Sendcssditem> get getSelectedItemsQuantityList =>
       _selectedItemsQuantityList;
-  void addItemsToGrid(String itemName, String quantity) {
-    final existingItem =
-        _selectedItemsQuantityList.any((item) => item['itemName'] == itemName);
+  void addItemsToGrid(GetUsedItemsForSearchData itemModel, int quantity) {
+    final existingIndex = _selectedItemsQuantityList
+        .indexWhere((item) => item.productname == itemModel.productName);
 
-    if (existingItem) {
+    if (existingIndex != -1) {
+      //if item already exists
       showSnackBarNoContext(isError: true, msg: "Item already exist");
     } else {
-      _selectedItemsQuantityList
-          .add({"itemName": itemName, "quantity": quantity});
+      //if item does not already exist
+      _selectedItemsQuantityList.add(Sendcssditem(
+          productname: itemModel.productName,
+          productId: itemModel.productId,
+          qty: quantity));
       log(_selectedItemsQuantityList.toString());
 
       showSnackBarNoContext(
-          isError: false, msg: "Item added  $itemName : $quantity");
+          isError: false,
+          msg: "Item added  ${itemModel.productName} : $quantity");
       notifyListeners();
     }
   }
 
-  void deleteCurrentItemFromList(Map<String, dynamic> item) {
+  Future<void> sendUsedItemsToCssd(String location) async {
+    final client = await DioUtilAuthorized.createApiClient();
+    try {
+      final response = await client.sendToCssd(SendToCssd(
+          location: location, sendcssditems: _selectedItemsQuantityList));
+      if (response.status ==200) {
+        showSnackBarNoContext(isError: false, msg: response.message);
+        _selectedItemsQuantityList.clear();
+        notifyListeners();
+      }    
+    } catch (e) {
+      log("Exception while sent to cssd $e");
+    }
+  }
+
+  void deleteCurrentItemFromList(Sendcssditem item) {
+    log("delete selected item , item = ${item.productname} ,id: ${item.productId} , qnty:  ${item.qty}");
     _selectedItemsQuantityList.remove(item);
     notifyListeners();
   }

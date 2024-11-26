@@ -181,6 +181,9 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                       ),
                       // quantity dropdown
                       CustomTextFormField(
+                        /* inputFormatters: [
+    FilteringTextInputFormatter.digitsOnly, // Restricts input to digits only
+  ], */
                         maxLines: 1,
                         keyboardType: TextInputType.number,
                         textFieldSize: const Size(double.infinity, 80.0),
@@ -203,7 +206,7 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                     if (quantity.isNotEmpty && item?.productName != null) {
                       log("add button clicked");
                       sterilizationController.addItemsToGrid(
-                          item?.productName ?? "", quantity);
+                          item! , int.parse(quantity));
                       sterilizationController.clearInputs();
                     } else {
                       log(" Empty String , selected item : ${item?.productName}, quantity: $quantity");
@@ -255,7 +258,7 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                                         SizedBox(
                                           width: 4.w,
                                         ),
-                                        Text("${item['itemName']}")
+                                        Text(item.productname)
                                       ],
                                     ),
                                     Row(
@@ -265,7 +268,7 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        Text(' ${item['quantity']}'),
+                                        Text(' ${item.qty}'),
                                       ],
                                     ),
                                   ],
@@ -274,7 +277,7 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                                     onPressed: () {
                                       sterilizationConsumer
                                           .deleteCurrentItemFromList(item);
-                                      log("deleted item ${sterilizationConsumer.getSelectedItemsQuantityList}");
+                                      
                                     },
                                     icon: const Icon(
                                       Icons.delete,
@@ -289,10 +292,15 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                   );
                 }),
               ),
+              //send to cssd button
               ButtonWidget(
                 buttonLabel: "Send for Sterilization",
                 onPressed: () {
-                  //add methode to sent for sterilization
+                  final dashboardController =
+                      Provider.of<DashboardControllerCssdCussDeptUser>(context,
+                          listen: false);
+                  sterilizationController.sendUsedItemsToCssd(
+                      dashboardController.getSelectedDepartment);
                 },
               )
             ]),

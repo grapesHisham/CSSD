@@ -13,6 +13,7 @@ class TransparentTitleCardLogin extends StatelessWidget {
     return Stack(
       children: [
         //backgrond container
+
         Container(
           height: 310.h,
           decoration: BoxDecoration(
@@ -23,6 +24,7 @@ class TransparentTitleCardLogin extends StatelessWidget {
             ),
           ),
         ),
+        
         //blur
         ClipRRect(
           borderRadius: const BorderRadius.only(
