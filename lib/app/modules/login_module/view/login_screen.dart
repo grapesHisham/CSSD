@@ -1,15 +1,17 @@
 import 'dart:developer';
 import 'package:cssd/Widgets/button_widget.dart';
-import 'package:cssd/Widgets/custom_textfield.dart';
 import 'package:cssd/Widgets/login_widgets/cssd_transparent_title_card.dart';
 import 'package:cssd/Widgets/transparent_blur_conatiner.dart';
 import 'package:cssd/app/modules/login_module/controller/login_controller.dart';
+import 'package:cssd/app/modules/login_module/view/widgets/bottom_sheet_widget.dart';
 import 'package:cssd/app/modules/login_module/view/widgets/clickable_button_widget.dart';
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/app_util.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/hex_to_color_with_opacity.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
@@ -62,28 +64,10 @@ class LoginScreen extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           // Phone number
-                          /* CustomTextFormField(
-                            scrollPadding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom+60*4),
-                            focusNode: loginController.focusNodePhone,
-                            onChanged: (value) {
-                              if (value.length == 10) {
-                                loginProvider.submitPhoneForHospitalIds(
-                                    value, context);
-                                FocusScope.of(context).requestFocus(
-                                    loginController.focusNodeHospitalName);
-                                /* FocusManager.instance.primaryFocus?.unfocus(); */
-                              }
-                            },
-                            maxLendgth: 10,
-                            controller:
-                                loginProvider.loginPhoneNumberController,
-                            prefixIcon: Icons.phone,
-                            label: const Text("Phone no."),
-                            keyboardType: TextInputType.number,
-                          ), */
-
-                          // Phone number
                           TextFormField(
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(10),
+                            ],
                             style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -101,15 +85,18 @@ class LoginScreen extends StatelessWidget {
                                     loginController.focusNodeHospitalName);
                               }
                             },
-                            maxLength: 10,
                             controller:
                                 loginProvider.loginPhoneNumberController,
                             decoration: InputDecoration(
+                              isDense: true,
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(15),
                                   borderSide:
                                       const BorderSide(color: Colors.white)),
-                              border: InputBorder.none,
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(15),
+                                  borderSide: BorderSide(
+                                      color: Colors.white.withAlpha(40))),
                               labelStyle: const TextStyle(color: Colors.white),
                               prefixIcon: const Icon(
                                 Icons.phone,
@@ -123,27 +110,7 @@ class LoginScreen extends StatelessWidget {
                           //drop down for hospital lists
                           Visibility(
                             visible: loginController.isAdmin ? false : true,
-                            replacement:
-
-                                /*  CustomTextFormField(
-                              onFieldSubmitted: (value) {
-                                FocusScope.of(context).requestFocus(
-                                    loginController.focusNodePassword);
-                              },
-                              focusNode: loginController.focusNodeHospitalName,
-                              controller:
-                                  loginController.loginHospitalNameController,
-                              hintText: loginController
-                                          .loginPhoneNumberController
-                                          .text
-                                          .length ==
-                                      10
-                                  ? "Please Enter hospital ID"
-                                  : "Enter 10 digits",
-                                  
-                            ), */
-
-                                TextFormField(
+                            replacement: TextFormField(
                               onFieldSubmitted: (value) {
                                 FocusScope.of(context).requestFocus(
                                     loginController.focusNodePassword);
@@ -155,48 +122,55 @@ class LoginScreen extends StatelessWidget {
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                               ),
+                              textAlign: TextAlign.left,
                               decoration: InputDecoration(
+                                focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.white, width: 1.4),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10))),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.white.withAlpha(40)),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10))),
                                 border: InputBorder.none,
-                                hintText: loginController
+                                label: loginController
                                             .loginPhoneNumberController
                                             .text
                                             .length ==
                                         10
-                                    ? "Please Enter hospital ID"
-                                    : "Enter 10 digits",
-                                hintStyle: const TextStyle(color: Colors.white),
+                                    ? const Text("Please Enter hospital ID")
+                                    : Center(
+                                        child: LoadingAnimationWidget
+                                            .staggeredDotsWave(
+                                                color: Colors.white, size: 35),
+                                      ),
+                                hintStyle: TextStyle(
+                                  color: Colors.grey.shade50,
+                                ),
                                 labelStyle:
                                     const TextStyle(color: Colors.white),
                               ),
                             ),
                             child: DropdownButtonFormField<String>(
-                              focusNode:
-                                  loginController.focusNodeHospitalName, //check
+                              icon: const SizedBox.shrink(),
+                              dropdownColor: Colors.black,
                               decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  filled: false,
-                                  fillColor: Colors.transparent,
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      color: Colors
-                                          .red, // Border when the field is not focused
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: const BorderSide(
-                                      color: Colors
-                                          .transparent, // Border when the field is not focused
-                                      width: 1.0,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: const BorderSide(
-                                          color: Colors.transparent,
-                                          width: 1.0))),
+                                suffixIcon: const Icon(Icons.arrow_drop_down),
+                                suffixIconColor: Colors.white,
+                                focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.white, width: 1.4),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10))),
+                                enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.white.withAlpha(40)),
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10))),
+                                filled: false,
+                              ),
                               menuMaxHeight: 400,
                               disabledHint: loginController
                                       .loginPhoneNumberController.text.isEmpty
@@ -206,11 +180,9 @@ class LoginScreen extends StatelessWidget {
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold),
                                     )
-                                  : Center(
-                                      child: LoadingAnimationWidget
-                                          .staggeredDotsWave(
-                                              color: Colors.white, size: 35),
-                                    ),
+                                  : LoadingAnimationWidget
+                                      .staggeredDotsWave(
+                                          color: Colors.white, size: 35),
                               iconDisabledColor: Colors.grey,
                               value: loginController.selectedHospitalDropdown,
                               hint: const Text(
@@ -259,7 +231,13 @@ class LoginScreen extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20),
                             decoration: InputDecoration(
-                              label: const Text("Password",style: TextStyle(fontWeight: FontWeight.bold),),
+                              isDense: false,
+                              contentPadding:
+                                  const EdgeInsets.symmetric(vertical: 5.0),
+                              label: const Text(
+                                "Password",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
                               prefixIcon: const Icon(
                                 Icons.password,
                                 color: Colors.white,
@@ -270,38 +248,28 @@ class LoginScreen extends StatelessWidget {
                                         !loginController.obscureText);
                                   },
                                   icon: loginController.obscureText
-                                      ? Icon(
+                                      ? const Icon(
                                           Icons.visibility_off,
-                                          color: Colors.grey.shade300,
+                                          color: Colors.white,
                                         )
-                                      : const Icon(Icons.visibility)),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                  borderSide:
-                                      const BorderSide(color: Colors.white)),
-                              border: InputBorder.none,
+                                      : const Icon(
+                                          Icons.visibility,
+                                          color: Colors.white,
+                                        )),
+                              focusedBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.white, width: 1.4),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10))),
+                              enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.white.withAlpha(40)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10))),
                               labelStyle: const TextStyle(color: Colors.white),
                             ),
                           ),
-                          /*  CustomTextFormField(
-                            maxLines: 1,
-                            focusNode: loginController.focusNodePassword,
-                            suffix: IconButton(
-                                onPressed: () {
-                                  loginController.toggleObscureText(
-                                      !loginController.obscureText);
-                                },
-                                icon: loginController.obscureText
-                                    ? Icon(
-                                        Icons.visibility_off,
-                                        color: Colors.grey.shade300,
-                                      )
-                                    : const Icon(Icons.visibility)),
-                            controller: loginController.loginPasswordController,
-                            prefixIcon: Icons.password,
-                            obscureText: loginController.obscureText,
-                            label: const Text("Password"),
-                          ), */
+
                           SizedBox(height: 30.h),
                           // login button
                           ButtonWidget(
@@ -344,95 +312,5 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Future<dynamic> showOptionsBottomSheet(
-      BuildContext context, Size mediaQuery) {
-    return showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return SizedBox(
-          height: 200,
-          width: mediaQuery.width,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Text(
-                  "Choose Your Department",
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 40.h,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    AnimatedHoverButton(
-                      ontap: () {
-                        log("button clicked");
-                        /*  Navigator.pushNamedAndRemoveUntil(context,Routes.bottomNavBarDashboardCssdUser,(Route route) => false); */
-                        Navigator.pushNamed(
-                          context,
-                          Routes.bottomNavBarDashboardCssdUser,
-                        );
-                      },
-                      backgroundColor:
-                          hexToColorWithOpacity(hexColor: "356745"),
-                      hoverColor: Colors.grey,
-                      borderRadius: BorderRadius.circular(10),
-                      buttonContent: Container(
-                        color: Colors.transparent,
-                        child: const Center(
-                          child: Text(
-                            "CSSD User",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      containerHeight: 60,
-                      containerWidth: 130,
-                    ),
-                    SizedBox(
-                      width: 20.w,
-                    ),
-                    AnimatedHoverButton(
-                      ontap: () {
-                        log("button clicked");
-
-                        Navigator.pushNamed(
-                          context,
-                          Routes.dashboardViewCssdCussDeptUser,
-                        );
-                      },
-                      backgroundColor:
-                          hexToColorWithOpacity(hexColor: "356745"),
-                      hoverColor: Colors.grey,
-                      borderRadius: BorderRadius.circular(10),
-                      buttonContent: Container(
-                        color: Colors.transparent,
-                        child: const Center(
-                          child: Text(
-                            "Department User",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      containerHeight: 60,
-                      containerWidth: 140,
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+  
 }

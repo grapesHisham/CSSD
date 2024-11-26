@@ -1,4 +1,4 @@
-import 'dart:developer';
+/* import 'dart:developer';
 import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/custom_textfield.dart';
 import 'package:cssd/Widgets/login_widgets/cssd_transparent_title_card.dart';
@@ -14,8 +14,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class LoginScreenOldDesign extends StatelessWidget {
+  const LoginScreenOldDesign({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -326,3 +326,4 @@ class LoginScreen extends StatelessWidget {
     );
   }
 }
+ */

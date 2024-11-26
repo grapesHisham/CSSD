@@ -180,6 +180,8 @@ class UsedItemEntryController extends ChangeNotifier {
       log("list of map data for user items entry :  ${jsonEncode(_listMapAddedItem)} , last map : $mapAddedItems");
       final response = await client.postUsedItemsEntry(
           PostUsedItemsEntryModel(uentry: _listMapAddedItem));
+          log("post used items , body : ${ PostUsedItemsEntryModel(uentry: _listMapAddedItem)}");
+          log("post used items , body : ${ _listMapAddedItem}");
       if (response.status == 200) {
         showSnackBarNoContext(isError: false, msg: response.message);
       } else {

@@ -233,67 +233,76 @@ class _UsedItemEntryViewCssdCussDeptUserState
                 usedItemsDataSource = UsedItemsDataSource(
                     usedItemsList:
                         usedItemConsumer.getUsedItemsTableBeforeSubmitList);
-                return SfDataGrid(
-                  columnWidthMode: ColumnWidthMode.auto,
-                  allowEditing: true,
-                  source: usedItemsDataSource,
-                  columns: <GridColumn>[
-                    GridColumn(
-                        columnName: "ProductID",
+
+                if (usedItemConsumer
+                    .getUsedItemsTableBeforeSubmitList.isEmpty) {
+                  return SfDataGrid(
+                    columns: [],
+                    source: usedItemsDataSource,
+                  );
+                } else {
+                  return SfDataGrid(
+                    columnWidthMode: ColumnWidthMode.auto,
+                    allowEditing: true,
+                    source: usedItemsDataSource,
+                    columns: <GridColumn>[
+                      GridColumn(
+                          columnName: "ProductID",
+                          label: Container(
+                            alignment: Alignment.center,
+                            color: StaticColors.scaffoldBackgroundcolor,
+                            child: const Text(
+                              "PID.",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                            ),
+                          )),
+                      GridColumn(
+                          columnWidthMode: ColumnWidthMode.auto,
+                          columnName: "ProductName",
+                          label: Container(
+                            alignment: Alignment.center,
+                            color: StaticColors.scaffoldBackgroundcolor,
+                            child: const Text(
+                              "Product Name",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                            ),
+                          )),
+                      GridColumn(
+                          columnName: "UQty",
+                          label: Container(
+                            alignment: Alignment.center,
+                            color: StaticColors.scaffoldBackgroundcolor,
+                            child: const Text(
+                              "Quantity",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),
+                            ),
+                          )),
+                      GridColumn(
+                        columnName: "Location",
                         label: Container(
                           alignment: Alignment.center,
-                          color: Colors.deepPurple,
+                          color: StaticColors.scaffoldBackgroundcolor,
                           child: const Text(
-                            "PID.",
+                            "Location",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16),
                           ),
-                        )),
-                    GridColumn(
-                        columnWidthMode: ColumnWidthMode.auto,
-                        columnName: "ProductName",
-                        label: Container(
-                          alignment: Alignment.center,
-                          color: Colors.deepPurple,
-                          child: const Text(
-                            "Product Name",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          ),
-                        )),
-                    GridColumn(
-                        columnName: "UQty",
-                        label: Container(
-                          alignment: Alignment.center,
-                          color: Colors.deepPurple,
-                          child: const Text(
-                            "Quantity",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          ),
-                        )),
-                    GridColumn(
-                      columnName: "Location",
-                      label: Container(
-                        alignment: Alignment.center,
-                        color: Colors.deepPurple,
-                        child: const Text(
-                          "Location",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16),
                         ),
-                      ),
-                    )
-                  ],
-                );
+                      )
+                    ],
+                  );
+                }
               }),
 
               Padding(
@@ -337,7 +346,10 @@ class _UsedItemEntryViewCssdCussDeptUserState
                       buttonLabel: "Save Used Items",
                       buttonTextSize: 14,
                       onPressed: () {
-                        usedItemsController.submitUsedItemsEntries();
+                        usedItemsController.submitUsedItemsEntries().then((_) {
+                          usedItemsController
+                              .clearusedItemsTableBeforeSubmitList();
+                        });
                       },
                     ),
                   ],

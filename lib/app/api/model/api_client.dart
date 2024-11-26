@@ -70,4 +70,9 @@ abstract class ApiClient {
   Future<GetUsedItemsForSearchModel> getUsedItemNamesSearch(
       @Query("productname") String productname,
       @Query("location") String location);
+
+    /* @POST(ApiLinks.sendToCssd)
+  Future<> sendToCssd(
+      @Body() PostSendToCssd body); */
+  
 }

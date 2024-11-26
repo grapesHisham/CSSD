@@ -16,13 +16,11 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
   bool get isLoading => _isLoading;
 
   //list of map for items and its quantity to display on gridview builder while adding items
-  final List<Map<String, dynamic>> _selectedItemsQuantity = [];
-  List<Map<String, dynamic>> get getSelectedItemsQuantity =>
-      _selectedItemsQuantity;
 
-  // 
- GetUsedItemsForSearchData? _selectedUsedItemModel;
-  GetUsedItemsForSearchData? get getSelectedUsedItemModel => _selectedUsedItemModel;
+  // Selected used item  model
+  GetUsedItemsForSearchData? _selectedUsedItemModel;
+  GetUsedItemsForSearchData? get getSelectedUsedItemModel =>
+      _selectedUsedItemModel;
   set setSelectedItemModel(GetUsedItemsForSearchData? value) {
     _selectedUsedItemModel = value;
     notifyListeners();
@@ -33,7 +31,8 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
   List<GetUsedItemsForSearchData> get getUsedItemsListForSearch =>
       _getUsedItemsListForSearch;
 
-  Future<void> fetchUsedItems({required String searchQuery, required String location}) async {
+  Future<void> fetchUsedItems(
+      {required String searchQuery, required String location}) async {
     _getUsedItemsListForSearch.clear();
     final client = await DioUtilAuthorized.createApiClient();
     try {
@@ -58,15 +57,29 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
     quantityController.clear();
   }
 
+  // adding items to list of map
+  final List<Map<String, dynamic>> _selectedItemsQuantityList = [];
+  List<Map<String, dynamic>> get getSelectedItemsQuantityList =>
+      _selectedItemsQuantityList;
   void addItemsToGrid(String itemName, String quantity) {
-    // adding items to list of map
-    _selectedItemsQuantity.add({"itemName": itemName, "quantity": quantity});
-    log(_selectedItemsQuantity.toString());
-    notifyListeners();
+    final existingItem =
+        _selectedItemsQuantityList.any((item) => item['itemName'] == itemName);
+
+    if (existingItem) {
+      showSnackBarNoContext(isError: true, msg: "Item already exist");
+    } else {
+      _selectedItemsQuantityList
+          .add({"itemName": itemName, "quantity": quantity});
+      log(_selectedItemsQuantityList.toString());
+
+      showSnackBarNoContext(
+          isError: false, msg: "Item added  $itemName : $quantity");
+      notifyListeners();
+    }
   }
 
   void deleteCurrentItemFromList(Map<String, dynamic> item) {
-    _selectedItemsQuantity.remove(item);
+    _selectedItemsQuantityList.remove(item);
     notifyListeners();
   }
 }
