@@ -150,6 +150,7 @@ class LoginScreen extends StatelessWidget {
                               ),
                             ),
                             child: DropdownButtonFormField<String>(
+                              focusNode: loginController.focusNodeHospitalName,
                               icon: const SizedBox.shrink(),
                               dropdownColor: Colors.black,
                               decoration: InputDecoration(
@@ -176,9 +177,8 @@ class LoginScreen extends StatelessWidget {
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold),
                                     )
-                                  : LoadingAnimationWidget
-                                      .staggeredDotsWave(
-                                          color: Colors.white, size: 35),
+                                  : LoadingAnimationWidget.staggeredDotsWave(
+                                      color: Colors.white, size: 35),
                               iconDisabledColor: Colors.grey,
                               value: loginController.selectedHospitalDropdown,
                               hint: const Text(
@@ -307,6 +307,4 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
-
-  
 }

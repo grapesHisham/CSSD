@@ -14,13 +14,13 @@ Future<void> logoutPopup(BuildContext context) async {
     dialogShowDefaultActions: true,
     defaultAcceptText: "Logout",
     defaultCancelText: "Cancel",
-    onAcceptDefaultAction: () {
+    onAcceptDefaultAction: () async{
       // create the logout function here
       // final dashboardController = Provider.of<DashboardControllerCssdCussDeptUser>(
       //     context,
       //     listen: false);
       
-      loginController.logoutFunction();
+     await  loginController.logoutFunction();
       dahboardController.pieChartData.clear();
       Navigator.pushNamedAndRemoveUntil(
           context, Routes.loginScreen, (route) => false);

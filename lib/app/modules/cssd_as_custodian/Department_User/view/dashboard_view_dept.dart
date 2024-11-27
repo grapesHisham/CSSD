@@ -47,9 +47,10 @@ class _DashboardViewCssdCussDeptUserState
     if (selectedDepartment != "") {
       log("Selected department is : $selectedDepartment");
       //if department is selection is available then get pie data and its details
-      dashboardController.fetchRequestDetails(selectedDepartment!);
       dashboardController.pieChartData.clear();
       dashboardController.getPieChartData(selectedDepartment!);
+      dashboardController.fetchRequestDetails(selectedDepartment!);
+      dashboardController.fetchMyRequests(selectedDepartment!);
     } else {
       dashboardController.pieChartData.clear();
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -294,19 +295,35 @@ class _DashboardViewCssdCussDeptUserState
                         ],
                       ),
                       Expanded(
-                        child: ListView.builder(
-                          itemCount: sampleHighPriorityRequestsList.length,
-                          itemBuilder: (context, index) {
-                            final list = sampleHighPriorityRequestsList[index];
-                            return ClickableCard(
-                                requestID: list.requestID,
-                                requestTitle: list.requestTitle,
-                                requestDate: list.requestDate,
-                                reqiestTime: list.requestTime,
-                                requestDepartment: list.requestDepartment,
-                                requestSubTitle: list.requestSubTitle);
-                          },
-                        ),
+                        child: Consumer<DashboardControllerCssdCussDeptUser>(
+                            builder: (context, dashboardConsumer, child) {
+                          return ListView.builder(
+                            itemCount:
+                                dashboardConsumer.getMyRequestList.length,
+                            itemBuilder: (context, index) {
+                              final list =
+                                  dashboardConsumer.getMyRequestList[index];
+                              return Card(
+                                child: ListTile(
+                                  leading: Container(
+                                    width: 50,
+                                    height: 30,
+                                    color: Colors.amber,
+                                    child: Text("Request ID: ${list.reqId}"),
+                                  ),
+                                ),
+                              );
+
+                              /* return ClickableCard( 
+                                    requestID: list.reqId.toString(),
+                                    requestTitle: list.requser,
+                                    requestDate: list.reqTime.toUtc().toString(),
+                                    reqiestTime: list.reqTime.toUtc().toIso8601String(),
+                                    requestDepartment: list.acceptedUser ?? "",
+                                    requestSubTitle: list.isAccepted.toString()); */
+                            },
+                          );
+                        }),
                       ),
                     ],
                   ),

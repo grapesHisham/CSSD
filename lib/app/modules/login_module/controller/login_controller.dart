@@ -220,7 +220,7 @@ class LoginController extends ChangeNotifier {
     return false;
   }
 
-  void logoutFunction() async {
+  Future<void> logoutFunction() async {
     await LocalStorageManager.clear();
     log("Clearing all values in local storage manager");
     // clears all values inside the local storage manager

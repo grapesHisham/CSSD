@@ -37,13 +37,14 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
   } */
 
   void updateSelectedDepartment(String selectedValue) {
+  
     _selectedDepartment = selectedValue;
     LocalStorageManager.setString(
         StorageKeys.selectedDepartmentCounter, selectedValue);
     notifyListeners();
   }
 
-//department dropdown fetch
+// department dropdown (fetch departments)
   List<GetDepartmentListModelData> _departmentDropdownItems = [];
   List<GetDepartmentListModelData> get departmentDropdownItems =>
       _departmentDropdownItems;
@@ -204,9 +205,9 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
 
   //to fetch my request list - get cssd send items
   List<GetCssdSentItemsData> _departmentRequestList = [];
-  List<GetCssdSentItemsData> get getDepartmentRequestList =>
+  List<GetCssdSentItemsData> get getMyRequestList =>
       _departmentRequestList;
-  Future<void> fetchDepartmentRequests(String location) async {
+  Future<void> fetchMyRequests(String location) async {
     _departmentRequestList.clear();
     final client = await DioUtilAuthorized.createApiClient();
     try {
