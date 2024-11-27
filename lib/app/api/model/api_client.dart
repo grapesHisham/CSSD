@@ -1,5 +1,6 @@
 import 'package:cssd/app/api/model/api_links.dart';
 import 'package:cssd/app/api/model/general_response_model.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/get_cssd_send_requests.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/get_request_details_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/pie_chart_request_count_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/pie_dept_stock_model.dart';
@@ -74,12 +75,13 @@ abstract class ApiClient {
       @Query("productname") String productname,
       @Query("location") String location);
 
-    @POST(ApiLinks.sendToCssd)
-  Future<GeneralResponse> sendToCssd(
-      @Body() SendToCssd body);
+  @POST(ApiLinks.sendToCssd)
+  Future<GeneralResponse> sendToCssd(@Body() PostSendToCssd body);
 
-@GET(ApiLinks.departmentwiseUsedItemList) // not done 26 -11 -2024
+  @GET(ApiLinks.departmentwiseUsedItemList)
   Future<DepartmentwiseUsedItemList> departmentwiseUsedItemList(
       @Query("location") String location);
-  
+
+  @GET(ApiLinks.getCssdSentItems)
+  Future<GetCssdSentItems> getCssdSentItems(@Query("location") String location);
 }

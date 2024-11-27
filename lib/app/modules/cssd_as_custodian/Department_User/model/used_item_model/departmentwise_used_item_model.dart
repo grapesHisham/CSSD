@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
 part 'departmentwise_used_item_model.g.dart';
+/*   'http://192.168.0.251:65113/api/Department/Departmentwise_UsedItemList?location=dermatology' */
 
 @JsonSerializable()
 class DepartmentwiseUsedItemList {

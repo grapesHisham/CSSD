@@ -11,6 +11,20 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
     log("send to cssd added items list init state : $_getUsedItemsListForSearch");
   }
 
+  @override
+  void dispose() {
+    quantityController.dispose();
+    remarksController.dispose();
+    super.dispose();
+  }
+
+  String _priority = "Medium";
+  String get getPriority => _priority;
+  void setPriority(String priority) {
+    _priority = priority;
+    notifyListeners();
+  }
+
   TextEditingController remarksController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
   // TextEditingController itemNameController = TextEditingController();
@@ -55,6 +69,8 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
   void clearInputs() {
     //to clear the values inside the text fields - items and quantity , after adding it to gridview builder
     quantityController.clear();
+    setSelectedItemModel = null;
+    setPriority("");
   }
 
   // adding items to list view builder for adding items to send to cssd
@@ -91,14 +107,20 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
         showSnackBarNoContext(isError: true, msg: "No Items added");
         return false;
       } else {
-        final response = await client.sendToCssd(SendToCssd(
-            location: location, sendcssditems: _selectedItemsQuantityList));
-        log("Send to cssd items : ${SendToCssd(location: location, sendcssditems: _selectedItemsQuantityList).toJson()}");
+        final response = await client.sendToCssd(PostSendToCssd(
+            location: location,
+            priority: getPriority,
+            remarks: remarksController.text,
+            sendcssditems: _selectedItemsQuantityList));
+        log("Send to cssd items : ${PostSendToCssd(location: location, priority: getPriority, remarks: remarksController.text, sendcssditems: _selectedItemsQuantityList).toJson()}");
         if (response.status == 200) {
           showSnackBarNoContext(isError: false, msg: response.message);
           _selectedItemsQuantityList.clear();
           notifyListeners();
           return true;
+        } else {
+          // other than 200
+          showSnackBarNoContext(isError: true, msg: response.message);
         }
       }
     } catch (e) {

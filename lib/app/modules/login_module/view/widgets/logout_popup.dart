@@ -19,6 +19,7 @@ Future<void> logoutPopup(BuildContext context) async {
       // final dashboardController = Provider.of<DashboardControllerCssdCussDeptUser>(
       //     context,
       //     listen: false);
+      
       loginController.logoutFunction();
       dahboardController.pieChartData.clear();
       Navigator.pushNamedAndRemoveUntil(

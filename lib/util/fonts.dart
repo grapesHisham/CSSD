@@ -36,4 +36,11 @@ class FontStyles {
   static TextStyle timelineBody = const TextStyle(color: Colors.white);
   static TextStyle timelineSubHead =
       const TextStyle(fontSize: 11.0, color: Colors.white);
+
+  // saved used items card text
+  static TextStyle savedUsedItems = TextStyle(
+      backgroundColor: Colors.black.withAlpha(5),
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+      fontSize: 16);
 }

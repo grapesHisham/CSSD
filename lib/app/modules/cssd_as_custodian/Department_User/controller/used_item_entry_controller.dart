@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cssd/app/api/dio_interceptors/dio_interceptor.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/departmentwise_used_item_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/items_list_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/post_used_items_body_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/used_items_model.dart';
@@ -180,8 +181,8 @@ class UsedItemEntryController extends ChangeNotifier {
       log("list of map data for user items entry :  ${jsonEncode(_listMapAddedItem)} , last map : $mapAddedItems");
       final response = await client.postUsedItemsEntry(
           PostUsedItemsEntryModel(uentry: _listMapAddedItem));
-          log("post used items , body : ${ PostUsedItemsEntryModel(uentry: _listMapAddedItem)}");
-          log("post used items , body : ${ _listMapAddedItem}");
+      log("post used items , body : ${PostUsedItemsEntryModel(uentry: _listMapAddedItem)}");
+      log("post used items , body : ${_listMapAddedItem}");
       if (response.status == 200) {
         showSnackBarNoContext(isError: false, msg: response.message);
       } else {
@@ -192,10 +193,22 @@ class UsedItemEntryController extends ChangeNotifier {
     }
   }
 
+  // api to fetch already saved used items and list them for a paricular department - Used items SHOW
+  List<DepartmentwiseUsedItemListData> _departmentWiseUsedItemsList = [];
+  List<DepartmentwiseUsedItemListData> get getDepartmentWiseUsedItemsList =>
+      _departmentWiseUsedItemsList;
 
-  // api to fetch already saved used items and list them for a paricular department - Used items SHOW 
-  Future<void> fetchUsedItems() async{
+  Future<void> fetchDepartmentWiseUsedItems(String location) async {
+    _departmentWiseUsedItemsList.clear();
     final client = await DioUtilAuthorized.createApiClient();
-    // 
+    try {
+      final response = await client.departmentwiseUsedItemList(location);
+      if (response.status == 200) {
+        _departmentWiseUsedItemsList.addAll(response.data);
+        notifyListeners();
+      }
+    } catch (e) {
+      log("exception while fetchind department wise useditems list $e");
+    }
   }
 }

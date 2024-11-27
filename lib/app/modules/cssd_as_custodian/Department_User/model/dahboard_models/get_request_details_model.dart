@@ -1,5 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
 //request details or pending request details
+/*     'http://192.168.0.251:65113/api/Department/GetPendingRequestdetails' \
+
+ */
 part 'get_request_details_model.g.dart';
 @JsonSerializable()
 class GetRequestDetailsModel {

@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'dart:developer'; 
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/custom_dialog.dart';
@@ -9,6 +8,7 @@ import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/us
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/used_items_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/datagrid_used_item_entry_table_widget.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/used_items_entry_widgets/items_for_selected_department_widget.dart';
+import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/app_util.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/fonts.dart';
@@ -16,18 +16,15 @@ import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-
+import 'package:syncfusion_flutter_datagrid/datagrid.dart'; 
 class UsedItemEntryViewCssdCussDeptUser extends StatefulWidget {
   const UsedItemEntryViewCssdCussDeptUser({super.key});
 
   @override
   State<UsedItemEntryViewCssdCussDeptUser> createState() =>
       _UsedItemEntryViewCssdCussDeptUserState();
-}
-
-String? selectedDepartment;
-
+} 
+String? selectedDepartment; 
 class _UsedItemEntryViewCssdCussDeptUserState
     extends State<UsedItemEntryViewCssdCussDeptUser> {
   List<UsedItemsListModelData> usedItems = [];
@@ -224,7 +221,9 @@ class _UsedItemEntryViewCssdCussDeptUserState
                   },
                 ),
                 ButtonWidget(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, Routes.savedUsedItemsList);
+                  },
                   buttonSize: const Size(0.0, 55.0),
                   buttonTextSize: 14,
                   buttonLabel: "Used items list",

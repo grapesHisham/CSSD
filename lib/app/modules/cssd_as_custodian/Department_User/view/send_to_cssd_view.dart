@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:cssd/Widgets/button_widget.dart';
-import 'package:cssd/Widgets/custom_dialog.dart';
 import 'package:cssd/Widgets/custom_textfield.dart';
 import 'package:cssd/Widgets/rounded_container.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
@@ -60,7 +59,7 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                         DepartmentSelectionWidget(
                           dashboardController: dashboardController,
                         ),
-          
+
                         SizedBox(
                           height: 10.h,
                         ),
@@ -68,11 +67,11 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                         Consumer<SterilizationControllerCssdCussDeptUser>(
                             // items search suggestions
                             builder: (context, sterilizationConsumer, child) {
-                          final dashboardController = Provider.of<
-                                  DashboardControllerCssdCussDeptUser>(
-                              context,
-                              listen: false);
-          
+                          final dashboardController =
+                              Provider.of<DashboardControllerCssdCussDeptUser>(
+                                  context,
+                                  listen: false);
+
                           // fetching selected department from dashboard
                           String selectedDepartment =
                               dashboardController.getSelectedDepartment;
@@ -88,8 +87,7 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                                     msg: "selected item is null");
                               }
                             },
-                            futureRequestDelay:
-                                const Duration(milliseconds: 0),
+                            futureRequestDelay: const Duration(milliseconds: 0),
                             futureRequest: (stringItem) async {
                               // api calling to get the item name
                               if (selectedDepartment == "") {
@@ -107,8 +105,7 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                             },
                             headerBuilder: (context, selectedItem, enabled) {
                               if (sterilizationConsumer
-                                      .getSelectedUsedItemModel
-                                      ?.productName ==
+                                      .getSelectedUsedItemModel?.productName ==
                                   null) {
                                 // clear the header when itemmodel is null - set when department in changed from dropdown
                                 return const Text("");
@@ -175,8 +172,14 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                           padding: EdgeInsets.only(right: 0),
                           child: Icon(Icons.arrow_drop_down),
                         ),
-                        onSelected: (p0) {}),
-          
+                        onSelected: (priority) {
+                          if (priority != null) {
+                            sterilizationController.setPriority(priority);
+                          } else {
+                            log("priority null so default priority Medium is passed ");
+                          }
+                        }),
+
                     SizedBox(
                       height: 10.h,
                     ),
@@ -202,8 +205,7 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                 onPressed: () {
                   final quantity =
                       sterilizationController.quantityController.text;
-                  final item =
-                      sterilizationController.getSelectedUsedItemModel;
+                  final item = sterilizationController.getSelectedUsedItemModel;
                   if (quantity.isNotEmpty && item?.productName != null) {
                     log("add button clicked");
                     sterilizationController.addItemsToGrid(
@@ -211,7 +213,7 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
                     sterilizationController.clearInputs();
                   } else {
                     log(" Empty String , selected item : ${item?.productName}, quantity: $quantity");
-          
+
                     showSnackBarNoContext(
                         isError: true, msg: "Item name or Quantity is empty");
                   }
@@ -336,8 +338,7 @@ class SterilizationRequestViewCssdCussDeptUser extends StatelessWidget {
             ), */
             //remarks container
             ConstrainedBox(
-              constraints:
-                  const BoxConstraints(maxWidth: 600, maxHeight: 400),
+              constraints: const BoxConstraints(maxWidth: 600, maxHeight: 400),
               child: RoundedContainer(
                 containerHeight: 100,
                 containerBody: CustomTextFormField(

@@ -1,21 +1,27 @@
 import 'package:json_annotation/json_annotation.dart';
-
+/* 'http://192.168.0.251:65113/api/Department/SendToCssd' - send body model */
 part 'post_send_to_cssd_model.g.dart';
 @JsonSerializable()
-class SendToCssd {
+class PostSendToCssd {
     @JsonKey(name: "location")
     String location;
+    @JsonKey(name: "priority")
+    String priority;
+    @JsonKey(name: "Remarks")
+    String remarks;
     @JsonKey(name: "sendcssditems")
     List<Sendcssditem> sendcssditems;
 
-    SendToCssd({
+    PostSendToCssd({
         required this.location,
+        required this.priority,
+        required this.remarks,
         required this.sendcssditems,
     });
 
-    factory SendToCssd.fromJson(Map<String, dynamic> json) => _$SendToCssdFromJson(json);
+    factory PostSendToCssd.fromJson(Map<String, dynamic> json) => _$PostSendToCssdFromJson(json);
 
-    Map<String, dynamic> toJson() => _$SendToCssdToJson(this);
+    Map<String, dynamic> toJson() => _$PostSendToCssdToJson(this);
 }
 
 @JsonSerializable()

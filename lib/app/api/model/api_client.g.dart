@@ -446,7 +446,7 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<GeneralResponse> sendToCssd(SendToCssd body) async {
+  Future<GeneralResponse> sendToCssd(PostSendToCssd body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -506,6 +506,39 @@ class _ApiClient implements ApiClient {
     late DepartmentwiseUsedItemList _value;
     try {
       _value = DepartmentwiseUsedItemList.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<GetCssdSentItems> getCssdSentItems(String location) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'location': location};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<GetCssdSentItems>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'GetCssdSentItems',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late GetCssdSentItems _value;
+    try {
+      _value = GetCssdSentItems.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

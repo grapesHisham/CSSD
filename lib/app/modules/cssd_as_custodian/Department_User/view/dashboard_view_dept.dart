@@ -44,7 +44,8 @@ class _DashboardViewCssdCussDeptUserState
     //fetch currently selected department
     selectedDepartment = dashboardController.getSelectedDepartment;
     dashboardController.departmentDropdownFunction();
-    if (selectedDepartment != null) {
+    if (selectedDepartment != "") {
+      log("Selected department is : $selectedDepartment");
       //if department is selection is available then get pie data and its details
       dashboardController.fetchRequestDetails(selectedDepartment!);
       dashboardController.pieChartData.clear();
@@ -80,7 +81,6 @@ class _DashboardViewCssdCussDeptUserState
             listen: false);
     final mediaQuery = MediaQuery.of(context).size;
     return PopScope(
-      
       canPop: false,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) {
@@ -94,9 +94,10 @@ class _DashboardViewCssdCussDeptUserState
         floatingActionButton: _buildFloatingActionButton(hasPrivileges),
         backgroundColor: StaticColors.scaffoldBackgroundcolor,
         appBar: AppBar(
-          toolbarHeight: 123,
+          toolbarHeight: 143,
           centerTitle: false,
           title: Column(
+            mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
@@ -138,169 +139,161 @@ class _DashboardViewCssdCussDeptUserState
                 topRight: Radius.circular(25),
               ),
               color: Colors.white),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          //pie chart
-                          Consumer<DashboardControllerCssdCussDeptUser>(
-                              builder: (context, dashboardConsumer, child) {
-                            final isDataAvailable =
-                                dashboardConsumer.hasValidData;
-                            return Visibility(
-                              visible: isDataAvailable ? true : false,
-                              replacement: SizedBox(
-                                width: mediaQuery.width - 10.0.h * 2,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    const Text("Send Requests to load Stats"),
-                                    SizedBox(
-                                      width: 140,
-                                      child: Lottie.asset(
-                                          'assets/lottie/PieAnimation - 1731912508343.json'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              //syncfusion pie chart
-                              child: SizedBox(
-                                height: 180,
-
-                                child: SfCircularChart(  
-                                  onChartTouchInteractionDown:
-                                      (ChartTouchInteractionArgs args) {
-                                    log("${args.position.dy} : ${args.position.dy}");
-                                    Navigator.pushNamed(
-                                        context,
-                                        Routes
-                                            .requestDetailsViewCssdCussDeptUser);
-                                  },
-                                  palette: [
-                                    //colors of the pie chart in order
-                                    hexToColorWithOpacity(hexColor: "#ff6361"),
-                                    hexToColorWithOpacity(hexColor: "#58508d"),
-                                    hexToColorWithOpacity(hexColor: "#bc5090"),
-                                    hexToColorWithOpacity(hexColor: "#003f5c"),
-                                    hexToColorWithOpacity(hexColor: "#ffa600"),
-                                  ],
-                                  title: const ChartTitle(
-                                      alignment: ChartAlignment.near,
-                                      text: 'Request Details',
-                                      textStyle:
-                                          TextStyle(color: Colors.black)),
-                                  legend: const Legend(
-                                      //its the indications of the chart
-                                      isVisible: true,
-                                      textStyle: TextStyle(color: Colors.black),
-                                      position: LegendPosition.left),
-                                  onTooltipRender: (TooltipArgs args) {},
-                                  series: <PieSeries<Map<String, dynamic>,
-                                      String>>[
-                                    PieSeries<Map<String, dynamic>, String>(
-                                      dataSource:
-                                          dashboardConsumer.pieChartData,
-                                      explode: true,
-                                      explodeIndex: 0,
-                                      xValueMapper:
-                                          (Map<String, dynamic> data, _) =>
-                                              data.keys.first,
-                                      yValueMapper:
-                                          (Map<String, dynamic> data, _) =>
-                                              data.values.first,
-                                      dataLabelSettings:
-                                          const DataLabelSettings(
-                                        isVisible: true,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }),
-                        ],
-                      )
-                    ],
-                  ),
+          child: Column(
+            // mainAxisSize: MainAxisSize.max,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
                 ),
-
-                //navigation buttons
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    DashboardButtons(
-                      icon: FluentIcons.tray_item_add_20_filled,
-                      iconName: "Used Item Entry",
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, Routes.usedItemEntryViewCssdCussDeptUser);
-                      },
-                    ),
-                    DashboardButtons(
-                      icon: FluentIcons.send_16_filled,
-                      iconName: "Send To Cssd",
-                      onTap: () {
-                        Navigator.pushNamed(context,
-                            Routes.sterilizationRequestViewCssdCussDeptUser);
-                      },
-                    ),
-                    const DashboardButtons(
-                      icon: FluentIcons.news_16_filled,
-                      iconName: "Reports",
-                    ),
-                    // DashboardButtons(
-                    //   icon: FluentIcons.timeline_20_filled,
-                    //   iconName: "Timeline",
-                    // ),
-                    DashboardButtons(
-                      icon: FluentIcons.stack_16_filled,
-                      iconName: "Stock in Dept",
-                      onTap: () {
-                        Navigator.pushNamed(
-                            context, Routes.departmentStockDetailsView);
-                      },
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        //pie chart
+                        Consumer<DashboardControllerCssdCussDeptUser>(
+                            builder: (context, dashboardConsumer, child) {
+                          final isDataAvailable =
+                              dashboardConsumer.hasValidData;
+                          return Visibility(
+                            visible: isDataAvailable ? true : false,
+                            replacement: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                const Text("Send Requests to load Stats"),
+                                SizedBox(
+                                  width: 10.w,
+                                ),
+                                SizedBox(
+                                  width: 140,
+                                  child: Lottie.asset(
+                                      'assets/lottie/PieAnimation - 1731912508343.json'),
+                                ),
+                              ],
+                            ),
+                            //syncfusion pie chart
+                            child: SizedBox(
+                              height: 180,
+                              child: SfCircularChart(
+                                onChartTouchInteractionDown:
+                                    (ChartTouchInteractionArgs args) {
+                                  log("${args.position.dy} : ${args.position.dy}");
+                                  Navigator.pushNamed(
+                                      context,
+                                      Routes
+                                          .requestDetailsViewCssdCussDeptUser);
+                                },
+                                palette: [
+                                  //colors of the pie chart in order
+                                  hexToColorWithOpacity(hexColor: "#ff6361"),
+                                  hexToColorWithOpacity(hexColor: "#58508d"),
+                                  hexToColorWithOpacity(hexColor: "#bc5090"),
+                                  hexToColorWithOpacity(hexColor: "#003f5c"),
+                                  hexToColorWithOpacity(hexColor: "#ffa600"),
+                                ],
+                                title: const ChartTitle(
+                                    alignment: ChartAlignment.near,
+                                    text: 'Request Details',
+                                    textStyle: TextStyle(color: Colors.black)),
+                                legend: const Legend(
+                                    //its the indications of the chart
+                                    isVisible: true,
+                                    textStyle: TextStyle(color: Colors.black),
+                                    position: LegendPosition.left),
+                                onTooltipRender: (TooltipArgs args) {},
+                                series: <PieSeries<Map<String, dynamic>,
+                                    String>>[
+                                  PieSeries<Map<String, dynamic>, String>(
+                                    dataSource: dashboardConsumer.pieChartData,
+                                    explode: true,
+                                    explodeIndex: 0,
+                                    xValueMapper:
+                                        (Map<String, dynamic> data, _) =>
+                                            data.keys.first,
+                                    yValueMapper:
+                                        (Map<String, dynamic> data, _) =>
+                                            data.values.first,
+                                    dataLabelSettings: const DataLabelSettings(
+                                      isVisible: true,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }),
+                      ],
                     )
                   ],
                 ),
+              ),
 
-                //request listing
-                RoundedContainer(
-                    containerBody: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text(
-                          "My Requests",
-                          style: TextStyle(fontSize: 32.0),
-                        ),
-                        ButtonWidget(
-                          buttonLabel: "All",
-                          buttonTextSize: 14,
-                          buttonSize: const Size(49, 30),
-                          onPressed: () {},
-                        )
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
-                      child: SizedBox(
-                        height: mediaQuery.height / 2.5,
+              //navigation buttons
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  DashboardButtons(
+                    icon: FluentIcons.tray_item_add_20_filled,
+                    iconName: "Used Item Entry",
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, Routes.usedItemEntryViewCssdCussDeptUser);
+                    },
+                  ),
+                  DashboardButtons(
+                    icon: FluentIcons.send_16_filled,
+                    iconName: "Send To Cssd",
+                    onTap: () {
+                      Navigator.pushNamed(context,
+                          Routes.sterilizationRequestViewCssdCussDeptUser);
+                    },
+                  ),
+                  const DashboardButtons(
+                    icon: FluentIcons.news_16_filled,
+                    iconName: "Reports",
+                  ),
+                  // DashboardButtons(
+                  //   icon: FluentIcons.timeline_20_filled,
+                  //   iconName: "Timeline",
+                  // ),
+                  DashboardButtons(
+                    icon: FluentIcons.stack_16_filled,
+                    iconName: "Stock in Dept",
+                    onTap: () {
+                      Navigator.pushNamed(
+                          context, Routes.departmentStockDetailsView);
+                    },
+                  )
+                ],
+              ),
+
+              //request listing
+              Expanded(
+                child: RoundedContainer(
+                  containerBody: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "My Requests",
+                            style: TextStyle(fontSize: 32.0),
+                          ),
+                          ButtonWidget(
+                            buttonLabel: "All",
+                            buttonTextSize: 14,
+                            buttonSize: const Size(49, 30),
+                            onPressed: () {},
+                          )
+                        ],
+                      ),
+                      Expanded(
                         child: ListView.builder(
                           itemCount: sampleHighPriorityRequestsList.length,
                           itemBuilder: (context, index) {
@@ -315,12 +308,12 @@ class _DashboardViewCssdCussDeptUserState
                           },
                         ),
                       ),
-                    ),
-                  ],
-                )),
-                const SizedBox(height: 20.0),
-              ],
-            ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20.0),
+            ],
           ),
         ),
       ),

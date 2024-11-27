@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cssd/app/api/dio_interceptors/dio_interceptor.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/get_cssd_send_requests.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/get_request_details_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/pie_dept_stock_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/send_for_sterilization_models/department_list_model.dart';
@@ -22,20 +23,19 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-
   // get selected department  from dropdown
   String _selectedDepartment =
       LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter) ??
           "";
   String get getSelectedDepartment => _selectedDepartment;
- /*  set selectedDepartment(String? value) {
+  /*  set selectedDepartment(String? value) {
     if (value != null) {
       _selectedDepartment = value;
       log("selected department is : $getSelectedDepartment");
       notifyListeners();
     }
   } */
- 
+
   void updateSelectedDepartment(String selectedValue) {
     _selectedDepartment = selectedValue;
     LocalStorageManager.setString(
@@ -202,5 +202,24 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
     return _filteredDeptStockList;
   }
 
-  /* Common apis for department user */
+  //to fetch my request list - get cssd send items
+  List<GetCssdSentItemsData> _departmentRequestList = [];
+  List<GetCssdSentItemsData> get getDepartmentRequestList =>
+      _departmentRequestList;
+  Future<void> fetchDepartmentRequests(String location) async {
+    _departmentRequestList.clear();
+    final client = await DioUtilAuthorized.createApiClient();
+    try {
+      final response = await client.getCssdSentItems(location);
+      if (response.status == 200) {
+        _departmentRequestList.addAll(response.data);
+        notifyListeners();
+      }
+      else{
+        showSnackBarNoContext(isError: true, msg: response.message);
+      }
+    } catch (e) {
+      log("Exception while fetching myrequests $e");
+    }
+  }
 }

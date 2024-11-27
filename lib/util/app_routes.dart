@@ -7,6 +7,7 @@ import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/requests_view.
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/sterilization_view.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/bottom_navigation_bar_cssd_user.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/view/timeline_view.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/saved_used_items_list_view.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/dashboard_view_dept.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/department_stock_details_view.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/send_to_cssd_view.dart';
@@ -53,6 +54,8 @@ class Routes {
       "/DepartmentStockDetailsView";
   static const String usedItemEntryViewCssdCussDeptUser =
       "/UsedItemEntryViewCssdCussDeptUser";
+
+  static const String savedUsedItemsList = "/SavedUsedItemsList";
   /* ################################################################################################################# */
 
   static final Map<String, WidgetBuilder> routes = {
@@ -88,7 +91,8 @@ class Routes {
 
     departmentStockDetailsView: (context) => const DepartmentStockDetailsView(),
     usedItemEntryViewCssdCussDeptUser: (context) =>
-        const UsedItemEntryViewCssdCussDeptUser()
+        const UsedItemEntryViewCssdCussDeptUser(),
+    savedUsedItemsList: (context) => const SavedUsedItemsList(),
   };
 }
 

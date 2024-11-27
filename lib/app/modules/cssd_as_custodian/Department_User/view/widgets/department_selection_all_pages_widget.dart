@@ -34,10 +34,8 @@ class DepartmentSelectionWidget extends StatelessWidget {
         hintText: "Department name",
         searchHintText: "Search department name",
         items: departmentNames,
-        
         onChanged: (selectedDepartment) {
           if (selectedDepartment != null) {
-          
             dashboardConsumer.updateSelectedDepartment(selectedDepartment);
             log("stored to selectedDepartmentCounter : ${LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter)}");
           } else {

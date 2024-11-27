@@ -28,7 +28,8 @@ class LoginController extends ChangeNotifier {
   //text controllers
   TextEditingController loginPasswordController = TextEditingController();
   TextEditingController loginPhoneNumberController = TextEditingController();
-  TextEditingController loginHospitalNameController = TextEditingController(); //stores the hospital name , stores entered id only if admin phone number
+  TextEditingController loginHospitalNameController =
+      TextEditingController(); //stores the hospital name , stores entered id only if admin phone number
 
   //focus node
   final FocusNode focusNodePhone = FocusNode();
@@ -70,7 +71,6 @@ class LoginController extends ChangeNotifier {
     _obscureText = value;
     notifyListeners();
   }
-
 
   //function to call for receiving hospitals lists
   List<Data> preLoginResponse = [];
@@ -225,7 +225,7 @@ class LoginController extends ChangeNotifier {
     log("Clearing all values in local storage manager");
     // clears all values inside the local storage manager
     LocalStorageManager.printAllValues();
-    
+
     // controller.selectedDepartment = null;
     // log(controller.selectedDepartment.toString());
     loginPasswordController.clear();

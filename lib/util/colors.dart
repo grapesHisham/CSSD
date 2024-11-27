@@ -13,6 +13,16 @@ class GradientColors {
     Color(0xFFe3f2fd), // Light Blue
     Colors.white,
   ];
+
+  static List<Color> blueGraient = const [
+    Color(0xff091e3a),
+    Color(0xff2f80ed),
+    Color(0xff2d9ee0),
+  ];
+  static List<Color> greyGraient = const [
+    Color(0xff536976),
+    Color(0xff292e49), 
+  ];
 }
 
 class StaticColors {
