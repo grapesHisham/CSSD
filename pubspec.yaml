@@ -58,7 +58,7 @@ dependencies:
   google_fonts: ^6.2.1 
   syncfusion_flutter_datagrid: ^27.2.2
   easy_loading_button: ^0.3.2 #loding animation buttons
-  
+
   
 
 
@@ -91,7 +91,6 @@ flutter:
   assets:
     - assets/images/
     - assets/lottie/
-    - assets/patterns/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

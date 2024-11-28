@@ -24,6 +24,7 @@ class CustomTextFormField extends StatelessWidget {
   final FocusNode? focusNode;
   final Function(String)? onChanged;
   final void Function(String)? onFieldSubmitted;
+  final TextStyle? hintStyle;
 
   const CustomTextFormField(
       {super.key,
@@ -47,7 +48,8 @@ class CustomTextFormField extends StatelessWidget {
       this.onFieldSubmitted,
       this.minLines,
       this.maxLines,
-      this.scrollPadding});
+      this.scrollPadding,
+       this.hintStyle});
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +75,7 @@ class CustomTextFormField extends StatelessWidget {
         decoration: InputDecoration(
           counterText: '', //shows the count of maxlength , disbling it 4 now
           suffixIcon: suffix,
-
+          hintStyle: hintStyle,
           label: label,
           labelText: labelText,
           hintText: hintText,

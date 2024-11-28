@@ -41,7 +41,7 @@ class _SavedUsedItemsListState extends State<SavedUsedItemsList> {
         title: Column(
           children: [
             const Text(
-              "Saved Items List",
+              "Used Items List",
               style: TextStyle(color: Colors.white),
             ),
             SizedBox(

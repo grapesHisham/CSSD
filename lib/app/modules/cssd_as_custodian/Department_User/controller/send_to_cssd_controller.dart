@@ -24,7 +24,6 @@ class SendToCssdControllerCssdCussDeptUser extends ChangeNotifier {
     _priority = priority;
     notifyListeners();
   }
-
   TextEditingController remarksController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
   // TextEditingController itemNameController = TextEditingController();
