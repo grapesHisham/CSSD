@@ -30,6 +30,7 @@ class StaticColors {
   //app background color
   static const scaffoldBackgroundcolor = Color(0xFF044B7F);
 
+
   static const blueLight = Color(0xFFDCDBFE);
   static const textwhiteLight = Color(0xFFFFFFFF);
   static const timelineBackkground = Color(0xFF351A5C);

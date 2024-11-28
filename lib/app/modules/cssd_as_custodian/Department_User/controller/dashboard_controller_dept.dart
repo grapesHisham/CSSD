@@ -204,7 +204,7 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
   }
 
   //to fetch my request list - get cssd send items
-  List<GetCssdSentItemsData> _departmentRequestList = [];
+  final List<GetCssdSentItemsData> _departmentRequestList = [];
   List<GetCssdSentItemsData> get getMyRequestList =>
       _departmentRequestList;
   Future<void> fetchMyRequests(String location) async {

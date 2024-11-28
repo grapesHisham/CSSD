@@ -1,6 +1,6 @@
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/dashboard_controller.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/sterilization_controller.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/send_to_cssd_controller.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/used_item_entry_controller.dart';
 import 'package:cssd/app/modules/login_module/controller/login_controller.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Cssd_User/controller/pickup_provider.dart';
@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => TimelineController()),
         // department user providers
         ChangeNotifierProvider(
-            create: (context) => SterilizationControllerCssdCussDeptUser()),
+            create: (context) => SendToCssdControllerCssdCussDeptUser()),
         ChangeNotifierProvider(
             create: (context) => DashboardControllerCssdCussDeptUser()),
         ChangeNotifierProvider(create: (context) => UsedItemEntryController()),

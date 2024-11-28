@@ -6,8 +6,8 @@ import 'package:cssd/util/app_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
-  SterilizationControllerCssdCussDeptUser() {
+class SendToCssdControllerCssdCussDeptUser extends ChangeNotifier {
+  SendToCssdControllerCssdCussDeptUser() {
     log("send to cssd added items list init state : $_getUsedItemsListForSearch");
   }
 
@@ -28,7 +28,7 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
   TextEditingController remarksController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
   // TextEditingController itemNameController = TextEditingController();
-  bool _isLoading = false;
+  final bool _isLoading = false;
   bool get isLoading => _isLoading;
 
   // Selected used item  model
@@ -41,7 +41,7 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
   }
 
   // get list of items to search which are used - used items search
-  List<GetUsedItemsForSearchData> _getUsedItemsListForSearch = [];
+  final List<GetUsedItemsForSearchData> _getUsedItemsListForSearch = [];
   List<GetUsedItemsForSearchData> get getUsedItemsListForSearch =>
       _getUsedItemsListForSearch;
 
@@ -66,11 +66,18 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
     }
   }
 
-  void clearInputs() {
+  void clearInputsForAdd() {
     //to clear the values inside the text fields - items and quantity , after adding it to gridview builder
     quantityController.clear();
     setSelectedItemModel = null;
+    
+  }
+  void clearAllInputs(){
+    //clear all inputs after sending to cssd
     setPriority("");
+    quantityController.clear();
+    setSelectedItemModel = null;
+    remarksController.clear();
   }
 
   // adding items to list view builder for adding items to send to cssd
@@ -88,7 +95,7 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
       //if item does not already exist
       _selectedItemsQuantityList.add(Sendcssditem(
           productname: itemModel.productName,
-          productId: itemModel.productId,
+          productId: itemModel.uprodId, // send used product id
           qty: quantity));
       log(_selectedItemsQuantityList.toString());
 
@@ -99,6 +106,7 @@ class SterilizationControllerCssdCussDeptUser extends ChangeNotifier {
     }
   }
 
+  // send items to cssd function 
   Future<bool> sendUsedItemsToCssd(String location) async {
     final client = await DioUtilAuthorized.createApiClient();
     try {

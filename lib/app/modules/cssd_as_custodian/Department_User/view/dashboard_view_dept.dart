@@ -18,6 +18,7 @@ import 'package:cssd/util/local_storage_manager.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -287,7 +288,10 @@ class _DashboardViewCssdCussDeptUserState
                             style: TextStyle(fontSize: 32.0),
                           ),
                           ButtonWidget(
-                            buttonLabel: "All",
+                            childWidget: Icon(
+                              Icons.refresh,
+                              color: Colors.white,
+                            ),
                             buttonTextSize: 14,
                             buttonSize: const Size(49, 30),
                             onPressed: () {},
@@ -301,15 +305,136 @@ class _DashboardViewCssdCussDeptUserState
                             itemCount:
                                 dashboardConsumer.getMyRequestList.length,
                             itemBuilder: (context, index) {
-                              final list =
+                              final request =
                                   dashboardConsumer.getMyRequestList[index];
-                              return Card(
-                                child: ListTile(
-                                  leading: Container(
-                                    width: 50,
-                                    height: 30,
-                                    color: Colors.amber,
-                                    child: Text("Request ID: ${list.reqId}"),
+                              String apiRequestTime =
+                                  request.reqTime.toString();
+                              DateTime parsedDateTime =
+                                  DateTime.parse(apiRequestTime);
+                              String formatedDate = DateFormat('yyyy-MM-dd')
+                                  .format(parsedDateTime);
+                              String formatedTime =
+                                  DateFormat('hh:mm a').format(parsedDateTime);
+                              log("time :${request.reqTime} ");
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: Card(
+                                  elevation: 2,
+                                  color: hexToColorWithOpacity(
+                                    hexColor: "#FFFCE8",
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        // id
+                                        Flexible(
+                                            flex: 1,
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 2.0),
+                                              height: 40,
+                                              decoration: BoxDecoration(
+                                                color: hexToColorWithOpacity(
+                                                    hexColor: "DD403A"),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: Center(
+                                                child: FittedBox(
+                                                  child: Text(
+                                                    "Req ID:  ${request.reqId} ",
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                            )),
+                                        SizedBox(
+                                          width: 8.0.w,
+                                        ),
+                                        //requested by and time
+                                        Flexible(
+                                            flex: 3,
+                                            child: Wrap(
+                                              direction: Axis.vertical,
+                                              children: [
+                                                Text(
+                                                    "Requested by : ${request.requser}"),
+                                                Text("Date : $formatedDate"),
+                                                Text("Time : $formatedTime"),
+                                              ],
+                                            )),
+                                        SizedBox(
+                                          width: 2.0.w,
+                                        ),
+                                        // accecpted ? by who
+                                        Flexible(
+                                            flex: 2,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Text("Status : "),
+                                                    Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              3.0),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4),
+                                                       /*  border: Border.all(
+                                                            color: Colors.grey.shade100), */
+                                                      ),
+                                                      child: CircleAvatar(
+                                                        backgroundColor:
+                                                            request.isAccepted ==
+                                                                    true
+                                                                ? Colors.green
+                                                                : Colors.red,
+                                                        maxRadius: 4.0,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                /*   request.isAccepted ==
+                                                                  true ? const Text(
+                                                  "Accepted ",
+                                                  style: TextStyle(
+                                                      color:
+                                                         Colors.green
+                                                              ),
+                                                ) : const Text(
+                                                  "Not Accepted",
+                                                  style: TextStyle(
+                                                      color:
+                                                         Colors.redAccent
+                                                              ),
+                                                ) , */
+                                                request.isAccepted == true
+                                                    ? Text(
+                                                        "Accepted By: ${request.acceptedUser}",
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      )
+                                                    : const SizedBox.shrink(),
+                                              ],
+                                            )),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );

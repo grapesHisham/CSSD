@@ -94,7 +94,7 @@ class UsedItemEntryController extends ChangeNotifier {
   }
 
   //adding items to the used items table before sending
-  List<UsedItemsListModelData> _usedItemsTableBeforeSubmitList = [];
+  final List<UsedItemsListModelData> _usedItemsTableBeforeSubmitList = [];
   List<UsedItemsListModelData> get getUsedItemsTableBeforeSubmitList =>
       _usedItemsTableBeforeSubmitList;
 
@@ -106,7 +106,7 @@ class UsedItemEntryController extends ChangeNotifier {
   }
 
   Map<String, dynamic> mapAddedItems = {};
-  List<Uentry> _listMapAddedItem = [];
+  final List<Uentry> _listMapAddedItem = [];
 
   List<UsedItemsListModelData> addToUsedItemsTableBeforeSubmit(
       {required int productId,
@@ -182,7 +182,7 @@ class UsedItemEntryController extends ChangeNotifier {
       final response = await client.postUsedItemsEntry(
           PostUsedItemsEntryModel(uentry: _listMapAddedItem));
       log("post used items , body : ${PostUsedItemsEntryModel(uentry: _listMapAddedItem)}");
-      log("post used items , body : ${_listMapAddedItem}");
+      log("post used items , body : $_listMapAddedItem");
       if (response.status == 200) {
         showSnackBarNoContext(isError: false, msg: response.message);
       } else {
@@ -194,7 +194,7 @@ class UsedItemEntryController extends ChangeNotifier {
   }
 
   // api to fetch already saved used items and list them for a paricular department - Used items SHOW
-  List<DepartmentwiseUsedItemListData> _departmentWiseUsedItemsList = [];
+  final List<DepartmentwiseUsedItemListData> _departmentWiseUsedItemsList = [];
   List<DepartmentwiseUsedItemListData> get getDepartmentWiseUsedItemsList =>
       _departmentWiseUsedItemsList;
 
