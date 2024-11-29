@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-
+/* http://192.168.0.251:65113/api/Department/GetItemName?department=&itemname= */
 part 'items_list_model.g.dart';
 @JsonSerializable()
 class GetItemNameModel {
@@ -43,3 +43,16 @@ class GetItemNameModelData {
 
     Map<String, dynamic> toJson() => _$GetItemNameModelDataToJson(this);
 }
+
+/* {
+  "status": 200,
+  "message": "Successfully fetched",
+  "data": [
+    {
+      "IID": 2,
+      "PID": 2,
+      "ProductName": "aa",
+      "Pckg": 1
+    }
+  ]
+} */

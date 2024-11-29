@@ -47,9 +47,9 @@ class Routes {
       '/DashboardViewCssdCussDeptUser';
   static const String sterilizationRequestViewCssdCussDeptUser =
       '/SterilizationRequestViewCssdCussDeptUser';
-  static const String requestDetailsViewCssdCussDeptUser =
+ /*  static const String requestDetailsViewCssdCussDeptUser =
       '/RequestDetailsViewCssdCussDeptUser';
-
+ */
   static const String departmentStockDetailsView =
       "/DepartmentStockDetailsView";
   static const String usedItemEntryViewCssdCussDeptUser =
@@ -86,8 +86,8 @@ class Routes {
         const DashboardViewCssdCussDeptUser(), //home
     sterilizationRequestViewCssdCussDeptUser: (context) =>
         const SterilizationRequestViewCssdCussDeptUser(),
-    requestDetailsViewCssdCussDeptUser: (context) =>
-        RequestDetailsViewCssdCussDeptUser(),
+    /* requestDetailsViewCssdCussDeptUser: (context) =>
+        RequestDetailsViewCssdCussDeptUser(), */
 
     departmentStockDetailsView: (context) => const DepartmentStockDetailsView(),
     usedItemEntryViewCssdCussDeptUser: (context) =>

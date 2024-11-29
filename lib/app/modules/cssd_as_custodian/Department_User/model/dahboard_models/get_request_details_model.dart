@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 //request details or pending request details
 /*     'http://192.168.0.251:65113/api/Department/GetPendingRequestdetails' \
 
+  while click on pie , not using now 
  */
 part 'get_request_details_model.g.dart';
 @JsonSerializable()
@@ -61,3 +62,21 @@ class RequestDetailsData {
 
     Map<String, dynamic> toJson() => _$RequestDetailsDataToJson(this);
 }
+
+/* {
+  "status": 200,
+  "message": "Pending request details",
+  "data": [
+    {
+      "ReqID": 21,
+      "Sub": "Dermatology",
+      "Priority": "Normal",
+      "Remarks": "",
+      "RTime": "2024-11-19T16:12:33.757",
+      "RUser": "admin",
+      "TransferredUser": null,
+      "ISAccept": 0,
+      "AcceptedUser": null
+    }
+  ]
+} */

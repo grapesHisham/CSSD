@@ -21,6 +21,7 @@ class ApiLinks{
   static const String departmentwiseUsedItemList = 'Departmentwise_UsedItemList';  // to get saved used items list for a particular department
   static const String getCssdSentItems = 'GetCssdSentItems';  // to display my requests on department dashboard
   static const String getCssdSentItemDetails = 'GetCssdSentItem_Details';  // to display my requests details containing items within a request on department dashboard
+  static const String getPackagedetails = 'GetPackagedetails';  // to get items within a package to add to used items list 
   
 }
 

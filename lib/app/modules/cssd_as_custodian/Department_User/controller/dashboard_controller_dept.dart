@@ -207,40 +207,52 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
   final List<GetCssdSentItemsData> _departmentRequestList = [];
   List<GetCssdSentItemsData> get getMyRequestList => _departmentRequestList;
   Future<void> fetchMyRequests(String location) async {
+    _isLoading = true;
+    notifyListeners();
     _departmentRequestList.clear();
     final client = await DioUtilAuthorized.createApiClient();
     try {
       final response = await client.getCssdSentItems(location);
       if (response.status == 200) {
         _departmentRequestList.addAll(response.data);
+        _isLoading = false;
         notifyListeners();
       } else {
+        _isLoading = false;
         showSnackBarNoContext(isError: true, msg: response.message);
       }
     } catch (e) {
+      _isLoading = false;
       log("Exception while fetching myrequests $e");
     }
   }
 
   // to fetch the details (items within a request ) of request list - get cssd send items details
-  List<GetCssdSentItemDetailsData> _itemsWithinRequestList = [];
+  final List<GetCssdSentItemDetailsData> _itemsWithinRequestList = [];
   List<GetCssdSentItemDetailsData> get itemsWithinRequestList =>
       _itemsWithinRequestList;
+  bool _isLoadingRequestDetails = false; //initially false
+  bool get isLoadingMyRequestDetails => _isLoadingRequestDetails;
   Future<void> fetchMyRequestDetails(int sid) async {
+    _isLoadingRequestDetails = true;
     _itemsWithinRequestList.clear();
     final client = await DioUtilAuthorized.createApiClient();
 
     try {
       final response = await client.getCssdSentItemDetails(sid);
       if (response.status == 200) {
-      _itemsWithinRequestList.addAll(response.data);
-      notifyListeners();
-        
-      }else{
+        _itemsWithinRequestList.addAll(response.data);
+        _isLoadingRequestDetails = false;
+      } else {
+        _isLoadingRequestDetails = false;
         showSnackBarNoContext(isError: true, msg: response.message);
       }
     } catch (e) {
+      _isLoadingRequestDetails = false;
       log("Exception occured while fetching details of my requests $e");
+    } finally {
+      _isLoadingRequestDetails = false;
+      notifyListeners();
     }
   }
 }

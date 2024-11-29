@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:cssd/app/api/dio_interceptors/dio_interceptor.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/departmentwise_used_item_model.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/get_package_details_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/items_list_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/post_used_items_body_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/used_items_model.dart';
@@ -209,6 +210,31 @@ class UsedItemEntryController extends ChangeNotifier {
       }
     } catch (e) {
       log("exception while fetchind department wise useditems list $e");
+    }
+  }
+
+  //to fetch items within a package to add to list
+  bool _isLoadingPackageItems = false;
+  bool get islodingPackageItems => _isLoadingPackageItems;
+  List<GetPackagedetailsData> _packageItemsList = [];
+  List<GetPackagedetailsData> get packageItemsList => _packageItemsList;
+
+  Future<void> fetchItemsWithPackage(
+      {required String department, required int pckid}) async {
+    _packageItemsList.clear();
+    _isLoadingPackageItems = true;
+    notifyListeners();
+    final client = await DioUtilAuthorized.createApiClient();
+    try {
+      final response = await client.getPackagedetails(department, pckid);
+      if (response.status == 200) {
+        _packageItemsList.addAll(response.data);
+      }
+    } catch (e) {
+      log("exception at fetching items within a package $e");
+    } finally {
+      _isLoadingPackageItems = false;
+      notifyListeners();
     }
   }
 }

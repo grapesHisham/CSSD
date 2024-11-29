@@ -1,8 +1,9 @@
-import 'dart:developer'; 
+import 'dart:developer';
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/custom_dialog.dart';
 import 'package:cssd/Widgets/custom_textfield.dart';
+import 'package:cssd/Widgets/dropdown_menu_widget.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/used_item_entry_controller.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/used_items_model.dart';
@@ -16,15 +17,18 @@ import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart'; 
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+
 class UsedItemEntryViewCssdCussDeptUser extends StatefulWidget {
   const UsedItemEntryViewCssdCussDeptUser({super.key});
 
   @override
   State<UsedItemEntryViewCssdCussDeptUser> createState() =>
       _UsedItemEntryViewCssdCussDeptUserState();
-} 
-String? selectedDepartment; 
+}
+
+String? selectedDepartment;
+
 class _UsedItemEntryViewCssdCussDeptUserState
     extends State<UsedItemEntryViewCssdCussDeptUser> {
   List<UsedItemsListModelData> usedItems = [];
@@ -182,8 +186,73 @@ class _UsedItemEntryViewCssdCussDeptUserState
                         selectedDepartment != null &&
                         usedItemsController
                             .quantityController.text.isNotEmpty) {
-                      /* Quantity validation  do it later */
-                      /*  bool isQntValid =
+                      if (itemModel.pckg == 1) {
+                        final department = context
+                            .read<DashboardControllerCssdCussDeptUser>()
+                            .getSelectedDepartment;
+                        context
+                            .read<UsedItemEntryController>()
+                            .fetchItemsWithPackage(
+                                department: department,
+                                pckid: itemModel
+                                    .pid!); // pid is product id or package id
+                        // IF THE SELECTED ITEM IS A PACKAGE FETCH PACKAGE ITEMS AND THEN ADD THEM TO TABLE
+                        customDialog(
+                            dialogShowDefaultActions: false,
+                            dialogActions: [
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text(
+                                  "Cancel",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                              ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        StaticColors.scaffoldBackgroundcolor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  child: const Text("Add item",
+                                      style: TextStyle(color: Colors.white)),
+                                  onPressed: () {
+                                    {
+                                      usedItemsController
+                                          .addToUsedItemsTableBeforeSubmit(
+                                        context: context,
+                                        productId: itemModel.iid!,
+                                        productName: itemModel.productName!,
+                                        location: selectedDepartment!,
+                                        uQty: int.parse(
+                                          usedItemsController
+                                              .quantityController.text,
+                                        ),
+                                      );
+                                    }
+                                    ;
+                                  }),
+                            ],
+                            // package items table
+
+                            dialogContent: PackageItemsTableWidget(
+                              pkgid: itemModel.pid ?? 0,
+                            ), //check
+                            dialogContext: context);
+                      } else {
+                        //if not package add it directly to the table
+
+                        /* Quantity validation  do it later */
+                        /*  bool isQntValid =
                               await usedItemsController.qtyValidation(
                             isPckg: itemModel.pckg == 1 ? true : false,
                             location: selectedDepartment!,
@@ -205,15 +274,16 @@ class _UsedItemEntryViewCssdCussDeptUserState
                               ),
                             );
                           } */
-                      usedItemsController.addToUsedItemsTableBeforeSubmit(
-                        context: context,
-                        productId: itemModel.iid!,
-                        productName: itemModel.productName!,
-                        location: selectedDepartment!,
-                        uQty: int.parse(
-                          usedItemsController.quantityController.text,
-                        ),
-                      );
+                        usedItemsController.addToUsedItemsTableBeforeSubmit(
+                          context: context,
+                          productId: itemModel.iid!,
+                          productName: itemModel.productName!,
+                          location: selectedDepartment!,
+                          uQty: int.parse(
+                            usedItemsController.quantityController.text,
+                          ),
+                        );
+                      }
                     } else {
                       showSnackBarNoContext(
                           isError: true, msg: "Some fields are missing");
@@ -360,6 +430,57 @@ class _UsedItemEntryViewCssdCussDeptUserState
           ]),
         ),
       ),
+    );
+  }
+}
+
+class PackageItemsTableWidget extends StatelessWidget {
+  final int pkgid;
+  const PackageItemsTableWidget({required this.pkgid});
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Consumer<UsedItemEntryController>(
+          builder: (context, usedItemsConnsumer, child) {
+        if (usedItemsConnsumer.islodingPackageItems == true) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return FittedBox(
+          child: DataTable(
+            dataRowMinHeight: 30,
+            dataRowMaxHeight: 48.0,
+            columnSpacing: 10.0,
+            headingTextStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+
+            // border: TableBorder.all(),
+            columns: const <DataColumn>[
+              DataColumn(label: Text("Sl no.")),
+              DataColumn(label: Text("ID")),
+              DataColumn(label: Text("Product_Name")),
+              DataColumn(label: Text("Qty")),
+            ],
+            rows: List<DataRow>.generate(
+              usedItemsConnsumer.packageItemsList.length,
+              (index) {
+                final item = usedItemsConnsumer.packageItemsList[index];
+
+                return DataRow(
+                  cells: [
+                    DataCell(Text('${index + 1}')), // Sl
+                    DataCell(Text('${item.id}')),
+                    DataCell(Text(item.productName)),
+                    DataCell(Text('${item.pckQty}'), showEditIcon: true),
+                  ],
+                );
+              },
+            ),
+          ),
+        );
+      }),
     );
   }
 }

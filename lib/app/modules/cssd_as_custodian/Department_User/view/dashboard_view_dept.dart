@@ -4,8 +4,12 @@ import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/notification_icon.dart';
 import 'package:cssd/Widgets/rounded_container.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/build_floating_actions_widget.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/dahboard_buttons_widget.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/department_selection_dashboard_widget.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/exit_dialogbox_widget.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/request_details_table_widget.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/show_department_selection_popup_widget.dart';
 import 'package:cssd/app/modules/login_module/view/widgets/logout_popup.dart';
 import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/app_util.dart';
@@ -67,7 +71,7 @@ class _DashboardViewCssdCussDeptUserState
       log("already selected department is : $selectedDepartment so showing popup");
       // if department is not already selected the show the popup
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        showAlertDialog();
+        showAlertDialog(context);
       });
     }
 
@@ -87,12 +91,10 @@ class _DashboardViewCssdCussDeptUserState
         if (didPop) {
           return;
         }
-        // logoutPopup(context);
-        // Navigator.pop(context);
         exitDialogBox(context);
       },
       child: Scaffold(
-        floatingActionButton: _buildFloatingActionButton(hasPrivileges),
+        floatingActionButton: buildFloatingActionButton(hasPrivileges, context),
         backgroundColor: StaticColors.scaffoldBackgroundcolor,
         appBar: AppBar(
           toolbarHeight: 143,
@@ -140,8 +142,7 @@ class _DashboardViewCssdCussDeptUserState
                 topRight: Radius.circular(25),
               ),
               color: Colors.white),
-          child: Column(
-            // mainAxisSize: MainAxisSize.max,
+          child: ListView(
             children: [
               Container(
                 decoration: BoxDecoration(
@@ -167,7 +168,7 @@ class _DashboardViewCssdCussDeptUserState
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 const Text("Send Requests to load Stats"),
-                                SizedBox(
+                                SizedBox( 
                                   width: 10.w,
                                 ),
                                 SizedBox(
@@ -181,14 +182,14 @@ class _DashboardViewCssdCussDeptUserState
                             child: SizedBox(
                               height: 180,
                               child: SfCircularChart(
-                                onChartTouchInteractionDown:
+                                /* onChartTouchInteractionDown:
                                     (ChartTouchInteractionArgs args) {
                                   log("${args.position.dy} : ${args.position.dy}");
                                   Navigator.pushNamed(
                                       context,
                                       Routes
                                           .requestDetailsViewCssdCussDeptUser);
-                                },
+                                }, */
                                 palette: [
                                   //colors of the pie chart in order
                                   hexToColorWithOpacity(hexColor: "#ff6361"),
@@ -200,12 +201,12 @@ class _DashboardViewCssdCussDeptUserState
                                 title: const ChartTitle(
                                     alignment: ChartAlignment.near,
                                     text: 'Request Details',
-                                    textStyle: TextStyle(color: Colors.black)),
+                                    textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                                 legend: const Legend(
                                     //its the indications of the chart
                                     isVisible: true,
                                     textStyle: TextStyle(color: Colors.black),
-                                    position: LegendPosition.left),
+                                    position: LegendPosition.right),
                                 onTooltipRender: (TooltipArgs args) {},
                                 series: <PieSeries<Map<String, dynamic>,
                                     String>>[
@@ -275,376 +276,274 @@ class _DashboardViewCssdCussDeptUserState
               ),
 
               //request listing
-              Expanded(
-                child: RoundedContainer(
+              Consumer<DashboardControllerCssdCussDeptUser>(
+                  builder: (context, dashboardConsumer, child) {
+                return RoundedContainer(
                   containerBody: Column(
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            "My Requests",
-                            style: TextStyle(fontSize: 32.0),
-                          ),
-                          Flexible(
-                            child: EasyButton(
-                              idleStateWidget: const Icon(
-                                Icons.refresh,
-                                color: Colors.white,
-                              ),
-                              loadingStateWidget:
-                                  const CircularProgressIndicator(
-                                strokeWidth: 3.0,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  Colors.white,
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  text: 'My Requests ',
+                                  style: const TextStyle(
+                                      fontSize: 25.0,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600),
+                                  children: [
+                                    TextSpan(
+                                      text:
+                                          '(${dashboardConsumer.getMyRequestList.length})',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: hexToColorWithOpacity(
+                                            hexColor: "#003f5c"),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              useEqualLoadingStateWidgetDimension: true,
-                              useWidthAnimation: false,
-                              width: 120,
-                              height: 30,
-                              borderRadius: 4.0,
-                              elevation: 2.0,
-                              contentGap: 6.0,
-                              buttonColor: StaticColors.scaffoldBackgroundcolor,
-                              type: EasyButtonType.elevated,
-                              onPressed: () async {
-                                await dashboardController.fetchMyRequests(
-                                    dashboardController.getSelectedDepartment);
-                              },
+                              Text(
+                                "requested to cssd",
+                                style: TextStyle(
+                                    color: Colors.grey.shade300, fontSize: 14),
+                              ),
+                            ],
+                          ),
+                          EasyButton(
+                            idleStateWidget: const Icon(
+                              Icons.refresh,
+                              color: Colors.white,
                             ),
+                            loadingStateWidget: const CircularProgressIndicator(
+                              strokeWidth: 3.0,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.white,
+                              ),
+                            ),
+                            useEqualLoadingStateWidgetDimension: true,
+                            useWidthAnimation: false,
+                            width: 100,
+                            height: 30,
+                            borderRadius: 4.0,
+                            elevation: 2.0,
+                            contentGap: 6.0,
+                            buttonColor: StaticColors.scaffoldBackgroundcolor,
+                            type: EasyButtonType.elevated,
+                            onPressed: () async {
+                              await dashboardController.fetchMyRequests(
+                                  dashboardController.getSelectedDepartment);
+                            },
                           ),
                           /*  ButtonWidget(
-                              childWidget: Icon(
-                                Icons.refresh,
-                                color: Colors.white,
-                              ),
-                              buttonTextSize: 14,
-                              buttonSize: const Size(49, 30),
-                              onPressed: () {},
-                            ), */
+                                childWidget: Icon(
+                                  Icons.refresh,
+                                  color: Colors.white,
+                                ),
+                                buttonTextSize: 14,
+                                buttonSize: const Size(49, 30),
+                                onPressed: () {},
+                              ), */
                         ],
                       ),
-                      Expanded(
-                        child: Consumer<DashboardControllerCssdCussDeptUser>(
-                            builder: (context, dashboardConsumer, child) {
-                          /*  if (dashboardConsumer.getMyRequestList.isEmpty) {
-                            return SizedBox(
-                              width: 600,
-                              child: Lottie.asset(
-                                "assets/lottie/empty_list.json",
-                                
-                              ),
-                            );
-                          } */
-                          return ListView.builder(
-                            itemCount:
-                                dashboardConsumer.getMyRequestList.length,
-                            itemBuilder: (context, index) {
-                              final request =
-                                  dashboardConsumer.getMyRequestList[index];
-                              String apiRequestTime =
-                                  request.reqTime.toString();
-                              DateTime parsedDateTime =
-                                  DateTime.parse(apiRequestTime);
-                              String formatedDate = DateFormat('yyyy-MM-dd')
-                                  .format(parsedDateTime);
-                              String formatedTime =
-                                  DateFormat('hh:mm a').format(parsedDateTime);
+                      // request list
+                      Consumer<DashboardControllerCssdCussDeptUser>(
+                          builder: (context, dashboardConsumer, child) {
+                        if (dashboardConsumer.isLoading == true) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
 
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: InkWell(
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      builder: (context) {
-                                       return SizedBox.expand(
-                                         child:  Column(
-                                          
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: dashboardConsumer.getMyRequestList.length,
+                          itemBuilder: (context, index) {
+                            final request =
+                                dashboardConsumer.getMyRequestList[index];
+                            String apiRequestTime = request.reqTime.toString();
+                            DateTime parsedDateTime =
+                                DateTime.parse(apiRequestTime);
+                            String formatedDate =
+                                DateFormat('yyyy-MM-dd').format(parsedDateTime);
+                            String formatedTime =
+                                DateFormat('hh:mm a').format(parsedDateTime);
+
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: InkWell(
+                                onTap: () {
+                                  //request details
+                                  context
+                                      .read<
+                                          DashboardControllerCssdCussDeptUser>()
+                                      .fetchMyRequestDetails(request.reqId);
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return SizedBox.expand(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
                                           children: [
-                                              SizedBox(height: 10.h,),
-                                              const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child: Text("Items under the request", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                            SizedBox(
+                                              height: 10.h,
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                "Items under the Request : ${request.reqId}",
+                                                style: const TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
-                                               DataTable(
-                                                
-                                                // border: TableBorder.all(),
-                                                columns: [
-                                                    DataColumn(label: Text("Product_ID")),
-                                                    DataColumn(label: Text("Product_Name")),
-                                                    DataColumn(label: Text("Qty")),
-                                                ],
-                                                rows: [],
-                                               )
+                                            ),
+
+                                            //request details list
+                                            const RequestDetailsTable()
                                           ],
-                                         ),
-                                       );
-                                      },
-                                    );
-                                  },
-                                  child: Card(
-                                    elevation: 2,
-                                    color: hexToColorWithOpacity(
-                                      hexColor: "#FAF7F0",
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          // id
-                                          Flexible(
-                                              flex: 1,
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 2.0),
-                                                height: 40,
-                                                decoration: BoxDecoration(
-                                                  color: hexToColorWithOpacity(
-                                                      hexColor: "DD403A"),
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                child: Center(
-                                                  child: FittedBox(
-                                                    child: Text(
-                                                      " ${request.reqId} ",
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.white),
-                                                    ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Card(
+                                  elevation: 2,
+                                  color: hexToColorWithOpacity(
+                                    hexColor: "#FAF7F0",
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        // id
+                                        Flexible(
+                                            flex: 1,
+                                            child: Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 2.0),
+                                              height: 40,
+                                              decoration: BoxDecoration(
+                                                color: hexToColorWithOpacity(
+                                                    hexColor: "DD403A"),
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: Center(
+                                                child: FittedBox(
+                                                  child: Text(
+                                                    " ${request.reqId} ",
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white),
                                                   ),
                                                 ),
-                                              )),
-                                          SizedBox(
-                                            width: 8.0.w,
-                                          ),
-                                          //requested by and time
-                                          Flexible(
-                                              flex: 3,
-                                              child: Wrap(
-                                                direction: Axis.vertical,
-                                                children: [
-                                                  Text(
-                                                      "Requested by : ${request.requser}"),
-                                                  Text("Date : $formatedDate"),
-                                                  Text("Time : $formatedTime"),
-                                                ],
-                                              )),
-                                          SizedBox(
-                                            width: 2.0.w,
-                                          ),
-                                          // accecpted ? by who
-                                          Flexible(
-                                              flex: 2,
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: [
-                                                      const Text("Status : "),
-                                                      Container(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(3.0),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(4),
-                                                          /*  border: Border.all(
+                                              ),
+                                            )),
+                                        SizedBox(
+                                          width: 8.0.w,
+                                        ),
+                                        //requested by and time
+                                        Flexible(
+                                            flex: 3,
+                                            child: Wrap(
+                                              direction: Axis.vertical,
+                                              children: [
+                                                Text(
+                                                    "Requested by : ${request.requser}"),
+                                                Text("Date : $formatedDate"),
+                                                Text("Time : $formatedTime"),
+                                              ],
+                                            )),
+                                        SizedBox(
+                                          width: 2.0.w,
+                                        ),
+                                        // accecpted ? by who
+                                        Flexible(
+                                            flex: 2,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.end,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    const Text("Status : "),
+                                                    Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              3.0),
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4),
+                                                        /*  border: Border.all(
                                                               color: Colors.grey.shade100), */
-                                                        ),
-                                                        child: CircleAvatar(
-                                                          backgroundColor:
-                                                              request.isAccepted ==
-                                                                      true
-                                                                  ? Colors.green
-                                                                  : Colors.red,
-                                                          maxRadius: 4.0,
-                                                        ),
                                                       ),
-                                                    ],
-                                                  ),
-                                                  request.isAccepted == true
-                                                      ? const Text(
-                                                          "Accepted ",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.green),
-                                                        )
-                                                      : const Text(
-                                                          "Not Accepted",
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .redAccent),
-                                                        ),
-                                                  request.isAccepted == true
-                                                      ? Text(
-                                                          "Accepted By: ${request.acceptedUser}",
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                        )
-                                                      : const SizedBox.shrink(),
-                                                ],
-                                              )),
-                                        ],
-                                      ),
+                                                      child: CircleAvatar(
+                                                        backgroundColor:
+                                                            request.isAccepted ==
+                                                                    true
+                                                                ? Colors.green
+                                                                : Colors.red,
+                                                        maxRadius: 4.0,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                request.isAccepted == true
+                                                    ? const Text(
+                                                        "Accepted ",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.green),
+                                                      )
+                                                    : const Text(
+                                                        "Not Accepted",
+                                                        style: TextStyle(
+                                                            color: Colors
+                                                                .redAccent),
+                                                      ),
+                                                request.isAccepted == true
+                                                    ? Text(
+                                                        "Accepted By: ${request.acceptedUser}",
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      )
+                                                    : const SizedBox.shrink(),
+                                              ],
+                                            )),
+                                      ],
                                     ),
                                   ),
                                 ),
-                              );
-                            },
-                          );
-                        }),
-                      ),
+                              ),
+                            );
+                          },
+                        );
+                      }),
                     ],
                   ),
-                ),
-              ),
+                );
+              }),
               const SizedBox(height: 20.0),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFloatingActionButton(bool hasPrivileges) {
-    log("Privilege Status: $hasPrivileges");
-
-    // Check if the user does not have the required privilege
-    if (!hasPrivileges) {
-      return const SizedBox.shrink(); // Return an empty widget if no privileges
-    }
-
-    // Return the floating action button if the privilege flag is true
-    return FloatingActionButton.extended(
-      backgroundColor: StaticColors.scaffoldBackgroundcolor,
-      label: const Text(
-        "Switch to Cssd",
-        style: TextStyle(color: Colors.white),
-      ),
-      onPressed: () {
-        Navigator.pushNamedAndRemoveUntil(context,
-            Routes.bottomNavBarDashboardCssdUser, (Route route) => false);
-      },
-    );
-  }
-
-  Future showAlertDialog() async {
-    final dashboardController =
-        context.read<DashboardControllerCssdCussDeptUser>();
-    dashboardController.departmentDropdownFunction();
-    return showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.white,
-          actions: [
-            ButtonWidget(
-              buttonColor: const Color.fromARGB(255, 48, 160, 85),
-              buttonLabel: "ok",
-              onPressed: () {
-                selectedDepartment = LocalStorageManager.getString(
-                    StorageKeys.selectedDepartmentCounter);
-                if (selectedDepartment == null) {
-                  showSnackBar(
-                      context: context,
-                      isError: true,
-                      msg: "Select Department");
-                } else {
-                  Navigator.pop(context);
-                }
-              },
-            ),
-          ],
-          title: const Text("Select department"),
-          content: Consumer<DashboardControllerCssdCussDeptUser>(
-              builder: (context, dashboardConsumer, child) {
-            return CustomDropdown.search(
-              decoration: CustomDropdownDecoration(
-                  closedBorder: Border.all(color: Colors.grey.shade100)),
-              hintText: "Department name",
-              items: dashboardConsumer.departmentDropdownItems
-                  .map((item) => item.subName.toString())
-                  .toList(),
-              onChanged: (selectedDepartment) {
-                if (selectedDepartment != null) {
-                  LocalStorageManager.setString(
-                      StorageKeys.selectedDepartmentCounter,
-                      selectedDepartment);
-                } else {
-                  showToast(context, "Select department");
-                }
-              },
-            );
-          }),
-        );
-      },
-    );
-  }
-}
-
-class DashboardButtons extends StatelessWidget {
-  const DashboardButtons({
-    super.key,
-    required this.icon,
-    required this.iconName,
-    this.onTap,
-  });
-
-  final IconData icon;
-  final String iconName;
-  final void Function()? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          //single item
-          children: [
-            SizedBox(
-              width: 60,
-              child: AspectRatio(
-                aspectRatio: 1 / 1,
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: StaticColors.scaffoldBackgroundcolor),
-                  child: Icon(
-                    icon,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-                width: 60,
-                child: Text(
-                  iconName,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      fontSize: 12, fontWeight: FontWeight.bold),
-                )),
-          ],
         ),
       ),
     );

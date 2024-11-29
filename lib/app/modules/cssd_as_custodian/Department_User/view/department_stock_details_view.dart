@@ -94,11 +94,12 @@ class _DepartmentStockDetailsViewState
                       builder: (context, dashboardConsumer, child) {
                     return GridView.builder(
                       itemCount: dashboardConsumer.filteredDeptStockList.length,
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 200,
-                          crossAxisSpacing: 10.0,
-                          mainAxisSpacing: 10.0,
-                          mainAxisExtent: 70),
+                      gridDelegate:
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 200,
+                              crossAxisSpacing: 10.0,
+                              mainAxisSpacing: 10.0,
+                              mainAxisExtent: 70),
                       itemBuilder: (context, index) {
                         final product =
                             dashboardConsumer.filteredDeptStockList[index];
@@ -111,14 +112,14 @@ class _DepartmentStockDetailsViewState
                                   flex: 3,
                                   child: Text(product.productName),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 Expanded(
                                     flex: 1,
                                     child: Text(
                                       "${product.stock}",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 20,
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold),
