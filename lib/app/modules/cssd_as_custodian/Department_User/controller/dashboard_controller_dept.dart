@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cssd/app/api/dio_interceptors/dio_interceptor.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/get_cssd_send_requests.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/get_cssd_sent_item_details_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/get_request_details_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/pie_dept_stock_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/send_for_sterilization_models/department_list_model.dart';
@@ -37,7 +38,6 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
   } */
 
   void updateSelectedDepartment(String selectedValue) {
-  
     _selectedDepartment = selectedValue;
     LocalStorageManager.setString(
         StorageKeys.selectedDepartmentCounter, selectedValue);
@@ -205,8 +205,7 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
 
   //to fetch my request list - get cssd send items
   final List<GetCssdSentItemsData> _departmentRequestList = [];
-  List<GetCssdSentItemsData> get getMyRequestList =>
-      _departmentRequestList;
+  List<GetCssdSentItemsData> get getMyRequestList => _departmentRequestList;
   Future<void> fetchMyRequests(String location) async {
     _departmentRequestList.clear();
     final client = await DioUtilAuthorized.createApiClient();
@@ -215,12 +214,33 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
       if (response.status == 200) {
         _departmentRequestList.addAll(response.data);
         notifyListeners();
-      }
-      else{
+      } else {
         showSnackBarNoContext(isError: true, msg: response.message);
       }
     } catch (e) {
       log("Exception while fetching myrequests $e");
+    }
+  }
+
+  // to fetch the details (items within a request ) of request list - get cssd send items details
+  List<GetCssdSentItemDetailsData> _itemsWithinRequestList = [];
+  List<GetCssdSentItemDetailsData> get itemsWithinRequestList =>
+      _itemsWithinRequestList;
+  Future<void> fetchMyRequestDetails(int sid) async {
+    _itemsWithinRequestList.clear();
+    final client = await DioUtilAuthorized.createApiClient();
+
+    try {
+      final response = await client.getCssdSentItemDetails(sid);
+      if (response.status == 200) {
+      _itemsWithinRequestList.addAll(response.data);
+      notifyListeners();
+        
+      }else{
+        showSnackBarNoContext(isError: true, msg: response.message);
+      }
+    } catch (e) {
+      log("Exception occured while fetching details of my requests $e");
     }
   }
 }

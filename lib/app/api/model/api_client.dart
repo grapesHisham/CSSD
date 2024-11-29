@@ -1,6 +1,7 @@
 import 'package:cssd/app/api/model/api_links.dart';
 import 'package:cssd/app/api/model/general_response_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/get_cssd_send_requests.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/get_cssd_sent_item_details_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/get_request_details_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/pie_chart_request_count_model.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/pie_dept_stock_model.dart';
@@ -84,4 +85,7 @@ abstract class ApiClient {
 
   @GET(ApiLinks.getCssdSentItems)
   Future<GetCssdSentItems> getCssdSentItems(@Query("location") String location);
+
+  @GET(ApiLinks.getCssdSentItemDetails)
+  Future<GetCssdSentItemDetails> getCssdSentItemDetails(@Query("Sid") int sid); //send id
 }

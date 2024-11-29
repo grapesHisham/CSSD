@@ -328,7 +328,7 @@ class _DashboardViewCssdCussDeptUserState
                       Expanded(
                         child: Consumer<DashboardControllerCssdCussDeptUser>(
                             builder: (context, dashboardConsumer, child) {
-                          if (dashboardConsumer.getMyRequestList.isEmpty) {
+                          /*  if (dashboardConsumer.getMyRequestList.isEmpty) {
                             return SizedBox(
                               width: 600,
                               child: Lottie.asset(
@@ -336,7 +336,7 @@ class _DashboardViewCssdCussDeptUserState
                                 
                               ),
                             );
-                          }
+                          } */
                           return ListView.builder(
                             itemCount:
                                 dashboardConsumer.getMyRequestList.length,
@@ -356,11 +356,39 @@ class _DashboardViewCssdCussDeptUserState
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 8.0),
                                 child: InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) {
+                                       return SizedBox.expand(
+                                         child:  Column(
+                                          
+                                          children: [
+                                              SizedBox(height: 10.h,),
+                                              const Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Text("Items under the request", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                                              ),
+                                               DataTable(
+                                                
+                                                // border: TableBorder.all(),
+                                                columns: [
+                                                    DataColumn(label: Text("Product_ID")),
+                                                    DataColumn(label: Text("Product_Name")),
+                                                    DataColumn(label: Text("Qty")),
+                                                ],
+                                                rows: [],
+                                               )
+                                          ],
+                                         ),
+                                       );
+                                      },
+                                    );
+                                  },
                                   child: Card(
                                     elevation: 2,
                                     color: hexToColorWithOpacity(
-                                      hexColor: "#FFFCE8",
+                                      hexColor: "#FAF7F0",
                                     ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
@@ -425,7 +453,7 @@ class _DashboardViewCssdCussDeptUserState
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.end,
                                                     children: [
-                                                      Text("Status : "),
+                                                      const Text("Status : "),
                                                       Container(
                                                         padding:
                                                             const EdgeInsets

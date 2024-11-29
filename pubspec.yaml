@@ -58,6 +58,7 @@ dependencies:
   google_fonts: ^6.2.1 
   syncfusion_flutter_datagrid: ^27.2.2
   easy_loading_button: ^0.3.2 #loding animation buttons
+  animations: ^2.0.11
 
   
 

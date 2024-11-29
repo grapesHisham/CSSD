@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:cssd/app/api/model/api_client.dart';
 import 'package:cssd/app/api/model/api_links.dart';
@@ -58,12 +59,12 @@ class DioUtilAuthorized {
                   isError: true, msg: "Partial Data error, status 206");
             }
             if (error.type == DioExceptionType.connectionError ||
-                error.type == DioExceptionType.connectionTimeout) {
+                error.type == DioExceptionType.connectionTimeout || error.error is SocketException) {
               log('Connection error or timeout');
               // Show Snackbar with connection error message
               showSnackBarNoContext(
                   isError: true,
-                  msg: "No internet connection or connection timeout");
+                  msg: "No internet connection. Please check your network.");
             } else if (error.error == 'No internet connection') {
               log('No internet connection');
             } else {

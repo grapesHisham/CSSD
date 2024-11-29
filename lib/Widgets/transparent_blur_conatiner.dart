@@ -20,6 +20,7 @@ class TransparentBlurConatinerWidget extends StatelessWidget {
     required this.borderRadius,
     this.heightOfContainer = 310,
     this.colorOfTransparentContainer = const Color(0x265fadba),
+    // this.colorOfTransparentContainer = const Color.fromARGB(35, 12, 12, 12),
     this.containerPadding,
     this.containerMargin,
   });

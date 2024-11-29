@@ -6,6 +6,7 @@ import 'package:cssd/app/modules/login_module/controller/login_controller.dart';
 import 'package:cssd/app/modules/login_module/view/widgets/bottom_sheet_widget.dart';
 import 'package:cssd/util/app_util.dart';
 import 'package:cssd/util/colors.dart';
+import 'package:easy_loading_button/easy_loading_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -166,7 +167,6 @@ class LoginScreen extends StatelessWidget {
                                         color: Colors.white.withAlpha(40)),
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(10))),
-                                filled: false,
                               ),
                               menuMaxHeight: 400,
                               disabledHint: loginController
@@ -268,7 +268,50 @@ class LoginScreen extends StatelessWidget {
 
                           SizedBox(height: 30.h),
                           // login button
-                          ButtonWidget(
+
+                          EasyButton(
+                            useEqualLoadingStateWidgetDimension: false,
+                            useWidthAnimation: false,
+                            width: double.infinity,
+                            height: 50.0,
+                            borderRadius: 10.0,
+                            buttonColor: StaticColors.defaultButton,
+                            idleStateWidget: const Text(
+                              "Login",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            loadingStateWidget: const CircularProgressIndicator(
+                              
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                            onPressed: () async {
+                              // Input validation
+                              if (loginController.loginPhoneNumberController
+                                      .text.isEmpty ||
+                                  loginController.loginHospitalNameController
+                                      .text.isEmpty ||
+                                  loginController
+                                      .loginPasswordController.text.isEmpty) {
+                                showSnackBarNoContext(
+                                    isError: true,
+                                    msg: "Enter details to login");
+                                return; // Stop execution if inputs are invalid
+                              }
+
+                              // Perform login
+                              bool hasBothPrivileges =
+                                  await loginProvider.login(context);
+                              log("showing bottom sheet : $hasBothPrivileges");
+
+                              // Show bottom sheet if login grants both privileges
+                              if (hasBothPrivileges) {
+                                showOptionsBottomSheet(context, mediaQuery);
+                              }
+                            },
+                          )
+
+                          /* ButtonWidget(
                             borderRadius: 10,
                             buttonColor: StaticColors.defaultButton,
                             buttonLabel: "Login",
@@ -291,7 +334,7 @@ class LoginScreen extends StatelessWidget {
                                 showOptionsBottomSheet(context, mediaQuery);
                               }
                             },
-                          ),
+                          ), */
                         ],
                       );
                     }),

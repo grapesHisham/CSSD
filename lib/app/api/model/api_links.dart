@@ -20,6 +20,7 @@ class ApiLinks{
   static const String sendToCssd = 'SendToCssd';  // to send items to cssd for sterilization
   static const String departmentwiseUsedItemList = 'Departmentwise_UsedItemList';  // to get saved used items list for a particular department
   static const String getCssdSentItems = 'GetCssdSentItems';  // to display my requests on department dashboard
+  static const String getCssdSentItemDetails = 'GetCssdSentItem_Details';  // to display my requests details containing items within a request on department dashboard
   
 }
 
