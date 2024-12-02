@@ -1,4 +1,5 @@
 class PostUsedItemsEntryModel {
+/* http://192.168.0.251:65113/api/Department/UsedItemEntry */
   List<Uentry>? uentry;
 
   PostUsedItemsEntryModel({this.uentry});
@@ -42,3 +43,12 @@ class Uentry {
     return data;
   }
 }
+/* {
+  "uentry": [
+    {
+      "productId": 0,
+      "location": "string",
+      "quantity": 0
+    }
+  ]
+} */

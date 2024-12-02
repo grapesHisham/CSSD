@@ -22,9 +22,8 @@ Future showAlertDialog(BuildContext context) async {
             buttonColor: const Color.fromARGB(255, 48, 160, 85),
             buttonLabel: "ok",
             onPressed: () {
-              selectedDepartment = LocalStorageManager.getString(
-                  StorageKeys.selectedDepartmentCounter);
-              if (selectedDepartment == null) {
+              selectedDepartment = dashboardController.getSelectedDepartment;
+              if (selectedDepartment == null || selectedDepartment == "") {
                 showSnackBar(
                     context: context, isError: true, msg: "Select Department");
               } else {

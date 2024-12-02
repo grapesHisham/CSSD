@@ -60,8 +60,9 @@ class _SavedUsedItemsListState extends State<SavedUsedItemsList> {
               return CustomDropdown.search(
                 decoration: CustomDropdownDecoration(
                     closedBorder: Border.all(color: Colors.grey)),
-                initialItem: LocalStorageManager.getString(
-                    StorageKeys.selectedDepartmentCounter),
+                initialItem: dashboardConsumer.getSelectedDepartment == ""
+                    ? null
+                    : dashboardConsumer.getSelectedDepartment,
                 hintText: "Department name",
                 searchHintText: "Search department name",
                 items: departmentNames,
@@ -71,7 +72,6 @@ class _SavedUsedItemsListState extends State<SavedUsedItemsList> {
                         .updateSelectedDepartment(selectedDepartment);
                     usedItemsControler.fetchDepartmentWiseUsedItems(
                         dashboardConsumer.getSelectedDepartment);
-                    log("stored to selectedDepartmentCounter : ${LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter)}");
                   } else {
                     showToast(context, "Select department");
                   }

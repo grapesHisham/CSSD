@@ -20,7 +20,7 @@ Future<void> logoutPopup(BuildContext context) async {
       //     context,
       //     listen: false);
       
-     await  loginController.logoutFunction();
+     await  loginController.logoutFunction(context);
       dahboardController.pieChartData.clear();
       Navigator.pushNamedAndRemoveUntil(
           context, Routes.loginScreen, (route) => false);

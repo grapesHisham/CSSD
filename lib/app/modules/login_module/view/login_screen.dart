@@ -108,6 +108,7 @@ class LoginScreen extends StatelessWidget {
                           Visibility(
                             visible: loginController.isAdmin ? false : true,
                             replacement: TextFormField(
+                              keyboardType: TextInputType.number,
                               onFieldSubmitted: (value) {
                                 FocusScope.of(context).requestFocus(
                                     loginController.focusNodePassword);
@@ -281,7 +282,6 @@ class LoginScreen extends StatelessWidget {
                               style: TextStyle(color: Colors.white),
                             ),
                             loadingStateWidget: const CircularProgressIndicator(
-                              
                               valueColor:
                                   AlwaysStoppedAnimation<Color>(Colors.white),
                             ),

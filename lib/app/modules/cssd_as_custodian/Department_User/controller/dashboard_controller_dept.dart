@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:cssd/app/api/dio_interceptors/dio_interceptor.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/get_cssd_send_requests.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/dahboard_models/get_cssd_sent_item_details_model.dart';
@@ -29,13 +28,6 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
       LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter) ??
           "";
   String get getSelectedDepartment => _selectedDepartment;
-  /* set selectedDepartment(String? value) {
-    if (value != null) {
-      _selectedDepartment = value;
-      log("selected department is : $getSelectedDepartment");
-      notifyListeners();
-    }
-  } */
 
   void updateSelectedDepartment(String selectedValue) {
     _selectedDepartment = selectedValue;
@@ -256,5 +248,18 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
       _isLoadingRequestDetails = false;
       notifyListeners();
     }
+  }
+
+  // clearing all data while logout
+  Future<void> clearAllData() async {
+    await LocalStorageManager.clear();
+    _selectedDepartment = "";
+    _departmentRequestList.clear();
+    _departmentDropdownItems.clear();
+    _pieChartData.clear();
+    _requestDetailsList.clear();  
+    _deptStockList.clear();
+    _filteredDeptStockList.clear();
+    notifyListeners();
   }
 }

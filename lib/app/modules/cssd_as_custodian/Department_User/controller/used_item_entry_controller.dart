@@ -94,7 +94,7 @@ class UsedItemEntryController extends ChangeNotifier {
     }
   }
 
-  //adding items to the used items table before sending
+  //adding single items to the used items table before sending
   final List<UsedItemsListModelData> _usedItemsTableBeforeSubmitList = [];
   List<UsedItemsListModelData> get getUsedItemsTableBeforeSubmitList =>
       _usedItemsTableBeforeSubmitList;
@@ -106,7 +106,7 @@ class UsedItemEntryController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Map<String, dynamic> mapAddedItems = {};
+  //for used items entry format
   final List<Uentry> _listMapAddedItem = [];
 
   List<UsedItemsListModelData> addToUsedItemsTableBeforeSubmit(
@@ -175,11 +175,49 @@ class UsedItemEntryController extends ChangeNotifier {
     return _usedItemsTableBeforeSubmitList;
   }
 
+  // adding package items to used items list / table
+  List<UsedItemsListModelData> _selectedItemsFromPackage = [];
+  List<UsedItemsListModelData> get slectedItemsFormPackage =>
+      _selectedItemsFromPackage;
+
+  void addPackageItemsToUSedItemsTable(
+      {required String department, required BuildContext context}) {
+    log("added list $_listMapAddedItem");
+
+    // adding each item to the list of items for used items table and then addign it to itemsMap list to send later on
+    for (var index = 0; index < packageItemsList.length; index++) {
+      final item = packageItemsList[index];
+      // checking if item already exist
+      final existingItemIndex = _usedItemsTableBeforeSubmitList
+          .indexWhere((item) => item.productId == item.productId);
+
+      if (existingItemIndex == -1) {
+        // item does not exist when index returns -1
+        // ading items to table
+        _usedItemsTableBeforeSubmitList.add(UsedItemsListModelData(
+            productId: item.id,
+            productName: item.productName,
+            location: department,
+            uQty: item.pckQty));
+        // adding items to a list in a format for used items entry
+        _listMapAddedItem.add(Uentry(
+            location: department, productId: item.id, quantity: item.pckQty));
+      } else if (existingItemIndex != -1) {
+        // item already exist
+        showSnackBar(
+            context: context,
+            isError: true,
+            msg: "This item already exists item: ${item.productName} ");
+      }
+    }
+    notifyListeners();
+  }
+
   // for used item ENTRY
   Future<void> submitUsedItemsEntries() async {
     final client = await DioUtilAuthorized.createApiClient();
     try {
-      log("list of map data for user items entry :  ${jsonEncode(_listMapAddedItem)} , last map : $mapAddedItems");
+      log("list of map data for user items entry :  ${jsonEncode(_listMapAddedItem)}");
       final response = await client.postUsedItemsEntry(
           PostUsedItemsEntryModel(uentry: _listMapAddedItem));
       log("post used items , body : ${PostUsedItemsEntryModel(uentry: _listMapAddedItem)}");

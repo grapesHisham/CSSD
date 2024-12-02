@@ -220,18 +220,18 @@ class LoginController extends ChangeNotifier {
     return false;
   }
 
-  Future<void> logoutFunction() async {
+  Future<void> logoutFunction(BuildContext context) async {
     log("before clearing storage values are :");
-    log("departent before clearing storage : ${LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter)}");
     LocalStorageManager.printAllValues();
-
+    await LocalStorageManager.remove(StorageKeys.selectedDepartmentCounter);
     await LocalStorageManager.clear();
     log("Clearing all values in local storage manager");
     // clears all values inside the local storage manager
     LocalStorageManager.printAllValues();
+    context
+        .read<DashboardControllerCssdCussDeptUser>()
+        .clearAllData(); // clearing all data in dashboard -- add other lists to clear inside the funcion
 
-    // controller.selectedDepartment = null;
-    // log(controller.selectedDepartment.toString());
     loginPasswordController.clear();
     loginPhoneNumberController.clear();
     loginHospitalNameController.clear();

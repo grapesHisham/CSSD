@@ -72,6 +72,7 @@ class LocalStorageManager {
   // Clear all values
   static Future<void> clear() async {
     await _preferences.clear();
+    log("Cleared local storage");
   }
 
   //to log all save values

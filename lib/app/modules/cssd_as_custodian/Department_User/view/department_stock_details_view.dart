@@ -4,7 +4,6 @@ import 'package:cssd/Widgets/custom_textfield.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
 import 'package:cssd/util/app_util.dart';
 import 'package:cssd/util/colors.dart';
-import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,13 +21,12 @@ class _DepartmentStockDetailsViewState
     extends State<DepartmentStockDetailsView> {
   @override
   void initState() {
-    selectedDepartment =
-        LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter);
     final dashboardController =
         Provider.of<DashboardControllerCssdCussDeptUser>(context,
             listen: false);
+    selectedDepartment = dashboardController.getSelectedDepartment;
     WidgetsBinding.instance.addPostFrameCallback((callback) async {
-      if (selectedDepartment != null) {
+      if (selectedDepartment != null || selectedDepartment != "") {
         await dashboardController.filterFutureList("", selectedDepartment!);
       } else {
         showSnackBar(context: context, isError: true, msg: "Select Department");
@@ -41,9 +39,7 @@ class _DepartmentStockDetailsViewState
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
-    final dashboardController =
-        Provider.of<DashboardControllerCssdCussDeptUser>(context,
-            listen: false);
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
