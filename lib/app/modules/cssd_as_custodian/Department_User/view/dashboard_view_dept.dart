@@ -1,12 +1,10 @@
 import 'dart:developer';
-import 'package:animated_custom_dropdown/custom_dropdown.dart';
-import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/notification_icon.dart';
 import 'package:cssd/Widgets/rounded_container.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/build_floating_actions_widget.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/dahboard_buttons_widget.dart';
-import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/department_selection_dashboard_widget.dart';
+import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/department_dropdown_dashboard_widget.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/exit_dialogbox_widget.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/request_details_table_widget.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/view/widgets/dashboard_widgets/show_department_selection_popup_widget.dart';
@@ -39,43 +37,39 @@ class _DashboardViewCssdCussDeptUserState
   late bool hasPrivileges;
   late String userName;
   late String? selectedDepartment;
+
   @override
   void initState() {
+    super.initState();
     log("dashbord init");
-    final dashboardController =
-        Provider.of<DashboardControllerCssdCussDeptUser>(context,
-            listen: false);
-    //fetch currently selected department
-    selectedDepartment = dashboardController.getSelectedDepartment;
-    dashboardController.departmentDropdownFunction();
-    if (selectedDepartment != "") {
-      log("Selected department is : $selectedDepartment");
-      //if department is selection is available then get pie data and its details
-      dashboardController.pieChartData.clear();
-      dashboardController.getPieChartData(selectedDepartment!);
-      dashboardController.fetchRequestDetails(selectedDepartment!);
-      dashboardController.fetchMyRequests(selectedDepartment!);
-    } else {
-      dashboardController.pieChartData.clear();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        showSnackBar(context: context, isError: true, msg: "Select department");
-      });
-    }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final dashboardController =
+          Provider.of<DashboardControllerCssdCussDeptUser>(context,
+              listen: false);
+      //fetch currently selected department and department lists
+      selectedDepartment = dashboardController.getSelectedDepartment;
+      dashboardController.departmentDropdownFunction();
+      if (selectedDepartment != "") {
+        //if department is selection is available then get pie data and its details
+        log("Selected department is : $selectedDepartment");
+        dashboardController.pieChartData.clear();
+        dashboardController.getPieChartData(selectedDepartment!);
+        dashboardController.fetchRequestDetails(selectedDepartment!);
+        dashboardController.fetchMyRequests(selectedDepartment!);
+      } else if (selectedDepartment == "") {
+        // if department is not selected the show the popup
+        log("no selected department : $selectedDepartment so showing popup");
+        showAlertDialog(context);
+        dashboardController.pieChartData.clear();
+        /*  showSnackBar(context: context, isError: true, msg: "Select department"); */
+      }
+    });
     // if user has both cssd and dept privileges
     hasPrivileges =
         LocalStorageManager.getBool(StorageKeys.privilegeFlagCssdAndDept)!;
     userName = LocalStorageManager.getString(StorageKeys.loggedinUser) ??
         "Department user";
     LocalStorageManager.setString(StorageKeys.lastOpenedIsCssd, "dept");
-    if (selectedDepartment == "") {
-      log("already selected department is : $selectedDepartment so showing popup");
-      // if department is not already selected the show the popup
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        showAlertDialog(context);
-      });
-    }
-
-    super.initState();
   }
 
   @override
@@ -126,8 +120,7 @@ class _DashboardViewCssdCussDeptUserState
               SizedBox(
                 width: mediaQuery.width,
                 height: 50,
-                child: DepartmentSelectionDashboardWidget(
-                    dashboardController: dashboardController),
+                child: const DepartmentSelectionDashboardWidget(),
               )
             ],
           ),
@@ -168,7 +161,7 @@ class _DashboardViewCssdCussDeptUserState
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 const Text("Send Requests to load Stats"),
-                                SizedBox( 
+                                SizedBox(
                                   width: 10.w,
                                 ),
                                 SizedBox(
@@ -201,7 +194,9 @@ class _DashboardViewCssdCussDeptUserState
                                 title: const ChartTitle(
                                     alignment: ChartAlignment.near,
                                     text: 'Request Details',
-                                    textStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                                    textStyle: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold)),
                                 legend: const Legend(
                                     //its the indications of the chart
                                     isVisible: true,

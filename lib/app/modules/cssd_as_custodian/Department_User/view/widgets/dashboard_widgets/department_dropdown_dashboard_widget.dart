@@ -9,19 +9,18 @@ import 'package:provider/provider.dart';
 class DepartmentSelectionDashboardWidget extends StatelessWidget {
   const DepartmentSelectionDashboardWidget({
     super.key,
-    required this.dashboardController,
   });
-
-  final DashboardControllerCssdCussDeptUser dashboardController;
 
   @override
   Widget build(BuildContext context) {
+    final dashboardController =
+        context.read<DashboardControllerCssdCussDeptUser>();
     return Consumer<DashboardControllerCssdCussDeptUser>(
         builder: (context, dashboardConsumer, child) {
       if (dashboardConsumer.departmentDropdownItems.isEmpty) {
         return const Center(child: CircularProgressIndicator());
       }
-      
+
       final departmentNames = dashboardConsumer.departmentDropdownItems
           .map((dept) => dept.subName)
           .toList();
@@ -29,18 +28,18 @@ class DepartmentSelectionDashboardWidget extends StatelessWidget {
       return CustomDropdown.search(
         decoration: CustomDropdownDecoration(
             closedBorder: Border.all(color: Colors.grey)),
-        initialItem: LocalStorageManager.getString(
-                StorageKeys.selectedDepartmentCounter) , // dont use string as intial value can be null when not set
+        initialItem: dashboardConsumer.getSelectedDepartment == ''
+            ? null
+            : dashboardConsumer.getSelectedDepartment,
         hintText: "Department name",
         searchHintText: "Search department name",
         items: departmentNames,
         onChanged: (selectedDepartment) {
           if (selectedDepartment != null) {
+            dashboardController.updateSelectedDepartment(selectedDepartment);
             dashboardController.fetchMyRequests(selectedDepartment);
             dashboardController.getPieChartData(
                 selectedDepartment); // should not fetch pie chart data while changing dept from pages other than dashboard
-            dashboardController.updateSelectedDepartment(selectedDepartment);
-            log("stored to selectedDepartmentCounter : ${LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter)}");
           } else {
             showToast(context, "Select department");
           }

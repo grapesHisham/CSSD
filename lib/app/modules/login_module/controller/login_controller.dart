@@ -221,6 +221,10 @@ class LoginController extends ChangeNotifier {
   }
 
   Future<void> logoutFunction() async {
+    log("before clearing storage values are :");
+    log("departent before clearing storage : ${LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter)}");
+    LocalStorageManager.printAllValues();
+
     await LocalStorageManager.clear();
     log("Clearing all values in local storage manager");
     // clears all values inside the local storage manager

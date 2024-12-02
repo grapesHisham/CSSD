@@ -3,7 +3,6 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/custom_dialog.dart';
 import 'package:cssd/Widgets/custom_textfield.dart';
-import 'package:cssd/Widgets/dropdown_menu_widget.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/dashboard_controller_dept.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/controller/used_item_entry_controller.dart';
 import 'package:cssd/app/modules/cssd_as_custodian/Department_User/model/used_item_model/used_items_model.dart';
@@ -13,6 +12,7 @@ import 'package:cssd/util/app_routes.dart';
 import 'package:cssd/util/app_util.dart';
 import 'package:cssd/util/colors.dart';
 import 'package:cssd/util/fonts.dart';
+import 'package:cssd/util/hex_to_color_with_opacity.dart';
 import 'package:cssd/util/local_storage_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -104,8 +104,10 @@ class _UsedItemEntryViewCssdCussDeptUserState
                       return CustomDropdown.search(
                         decoration: CustomDropdownDecoration(
                             closedBorder: Border.all(color: Colors.grey)),
-                        initialItem: LocalStorageManager.getString(
-                            StorageKeys.selectedDepartmentCounter),
+                        initialItem:
+                            dashboardConsumer.getSelectedDepartment == ''
+                                ? null
+                                : dashboardConsumer.getSelectedDepartment,
                         hintText: "Department name",
                         searchHintText: "Search department name",
                         items: departmentNames,
@@ -118,7 +120,6 @@ class _UsedItemEntryViewCssdCussDeptUserState
                           if (selectedDepartment != null) {
                             dashboardConsumer
                                 .updateSelectedDepartment(selectedDepartment);
-                            log("stored to selectedDepartmentCounter : ${LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter)}");
                           } else {
                             showToast(context, "Select department");
                           }
@@ -182,11 +183,9 @@ class _UsedItemEntryViewCssdCussDeptUserState
                   onPressed: () async {
                     final itemModel = usedItemsController.getSelectedItemModel;
 
-                    if (itemModel != null &&
-                        selectedDepartment != null &&
-                        usedItemsController
-                            .quantityController.text.isNotEmpty) {
+                    if (itemModel != null && selectedDepartment != null) {
                       if (itemModel.pckg == 1) {
+                        //if slected item is a package then show bottom model sheet
                         final department = context
                             .read<DashboardControllerCssdCussDeptUser>()
                             .getSelectedDepartment;
@@ -197,57 +196,97 @@ class _UsedItemEntryViewCssdCussDeptUserState
                                 pckid: itemModel
                                     .pid!); // pid is product id or package id
                         // IF THE SELECTED ITEM IS A PACKAGE FETCH PACKAGE ITEMS AND THEN ADD THEM TO TABLE
-                        customDialog(
-                            dialogShowDefaultActions: false,
-                            dialogActions: [
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.blue,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text(
-                                  "Cancel",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                              ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        StaticColors.scaffoldBackgroundcolor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                  child: const Text("Add item",
-                                      style: TextStyle(color: Colors.white)),
-                                  onPressed: () {
-                                    {
-                                      usedItemsController
-                                          .addToUsedItemsTableBeforeSubmit(
-                                        context: context,
-                                        productId: itemModel.iid!,
-                                        productName: itemModel.productName!,
-                                        location: selectedDepartment!,
-                                        uQty: int.parse(
-                                          usedItemsController
-                                              .quantityController.text,
-                                        ),
-                                      );
-                                    }
-                                    ;
-                                  }),
-                            ],
-                            // package items table
 
-                            dialogContent: PackageItemsTableWidget(
-                              pkgid: itemModel.pid ?? 0,
-                            ), //check
-                            dialogContext: context);
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return SizedBox(
+                              width: mediaQuery.width,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 10.0.h,
+                                      ),
+                                      const Text(
+                                        "Select the items to add",
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                          "Package : ${itemModel.productName} contains the following items"),
+                                      SizedBox(
+                                        height: 10.h,
+                                      ),
+                                      // table of package items
+                                      PackageItemsTableWidget(
+                                        pkgid: itemModel.pid ?? 0,
+                                      ),
+                                    ],
+                                  ), //check
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              hexToColorWithOpacity(
+                                                  hexColor: "#7F3804"),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text(
+                                          "Cancel",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                      ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: StaticColors
+                                                .scaffoldBackgroundcolor,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                          child: const Text("Add item",
+                                              style: TextStyle(
+                                                  color: Colors.white)),
+                                          onPressed: () {
+                                            {
+                                              usedItemsController
+                                                  .addToUsedItemsTableBeforeSubmit(
+                                                context: context,
+                                                productId: itemModel.iid!,
+                                                productName:
+                                                    itemModel.productName!,
+                                                location: selectedDepartment!,
+                                                uQty: int.parse(
+                                                  usedItemsController
+                                                      .quantityController.text,
+                                                ),
+                                              );
+                                            }
+                                          }),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
                       } else {
                         //if not package add it directly to the table
 
@@ -312,7 +351,7 @@ class _UsedItemEntryViewCssdCussDeptUserState
                 if (usedItemConsumer
                     .getUsedItemsTableBeforeSubmitList.isEmpty) {
                   return SfDataGrid(
-                    columns: [],
+                    columns: const [],
                     source: usedItemsDataSource,
                   );
                 } else {
@@ -436,7 +475,7 @@ class _UsedItemEntryViewCssdCussDeptUserState
 
 class PackageItemsTableWidget extends StatelessWidget {
   final int pkgid;
-  const PackageItemsTableWidget({required this.pkgid});
+  const PackageItemsTableWidget({super.key, required this.pkgid});
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -454,7 +493,11 @@ class PackageItemsTableWidget extends StatelessWidget {
             columnSpacing: 10.0,
             headingTextStyle: const TextStyle(
               fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
+            showCheckboxColumn: true,
+            headingRowColor: const WidgetStatePropertyAll(
+                StaticColors.scaffoldBackgroundcolor),
 
             // border: TableBorder.all(),
             columns: const <DataColumn>[
@@ -463,6 +506,7 @@ class PackageItemsTableWidget extends StatelessWidget {
               DataColumn(label: Text("Product_Name")),
               DataColumn(label: Text("Qty")),
             ],
+
             rows: List<DataRow>.generate(
               usedItemsConnsumer.packageItemsList.length,
               (index) {
@@ -470,11 +514,16 @@ class PackageItemsTableWidget extends StatelessWidget {
 
                 return DataRow(
                   cells: [
-                    DataCell(Text('${index + 1}')), // Sl
+                    DataCell(
+                      Text('${index + 1}'),
+                    ), // Sl
                     DataCell(Text('${item.id}')),
                     DataCell(Text(item.productName)),
-                    DataCell(Text('${item.pckQty}'), showEditIcon: true),
+                    DataCell(
+                      Text('${item.pckQty}'),
+                    ),
                   ],
+                  onSelectChanged: (value) {},
                 );
               },
             ),

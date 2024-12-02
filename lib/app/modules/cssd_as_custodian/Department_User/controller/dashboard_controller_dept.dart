@@ -29,7 +29,7 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
       LocalStorageManager.getString(StorageKeys.selectedDepartmentCounter) ??
           "";
   String get getSelectedDepartment => _selectedDepartment;
-  /*  set selectedDepartment(String? value) {
+  /* set selectedDepartment(String? value) {
     if (value != null) {
       _selectedDepartment = value;
       log("selected department is : $getSelectedDepartment");
@@ -216,7 +216,6 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
       if (response.status == 200) {
         _departmentRequestList.addAll(response.data);
         _isLoading = false;
-        notifyListeners();
       } else {
         _isLoading = false;
         showSnackBarNoContext(isError: true, msg: response.message);
@@ -224,6 +223,9 @@ class DashboardControllerCssdCussDeptUser extends ChangeNotifier {
     } catch (e) {
       _isLoading = false;
       log("Exception while fetching myrequests $e");
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 
