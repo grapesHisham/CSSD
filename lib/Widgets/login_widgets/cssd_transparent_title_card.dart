@@ -10,12 +10,14 @@ class TransparentTitleCardLogin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final mediaQuery = MediaQuery.of(context).size;
     return Stack(
       children: [
         //backgrond container
 
         Container(
-          height: 310.h,
+          height: mediaQuery.height /5,
+          // height: 310.h,
           decoration: BoxDecoration(
             color: hexToColorWithOpacity(hexColor: "5FADBA", opacity: 0.15),
             borderRadius: const BorderRadius.only(
@@ -24,7 +26,7 @@ class TransparentTitleCardLogin extends StatelessWidget {
             ),
           ),
         ),
-        
+
         //blur
         ClipRRect(
           borderRadius: const BorderRadius.only(

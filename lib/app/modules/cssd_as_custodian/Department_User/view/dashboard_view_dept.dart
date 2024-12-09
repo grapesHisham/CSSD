@@ -412,9 +412,10 @@ class _DashboardViewCssdCussDeptUserState
                                 },
                                 child: Card(
                                   elevation: 2,
-                                  color: hexToColorWithOpacity(
+                                  /* color: hexToColorWithOpacity(
                                     hexColor: "#FAF7F0",
-                                  ),
+                                  ), */
+                                  color: const Color(0XFFf8f9fa),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Row(
@@ -451,13 +452,19 @@ class _DashboardViewCssdCussDeptUserState
                                           width: 8.0.w,
                                         ),
                                         //requested by and time
-                                        Flexible(
+                                        Expanded(
                                             flex: 3,
-                                            child: Wrap(
-                                              direction: Axis.vertical,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              // direction: Axis.vertical,
                                               children: [
                                                 Text(
-                                                    "Requested by : ${request.requser}"),
+                                                  "Requested by : ${request.requser}",
+                                                  overflow: TextOverflow.fade,
+                                                ),
                                                 Text("Date : $formatedDate"),
                                                 Text("Time : $formatedTime"),
                                               ],
@@ -466,17 +473,19 @@ class _DashboardViewCssdCussDeptUserState
                                           width: 2.0.w,
                                         ),
                                         // accecpted ? by who
-                                        Flexible(
+                                        Expanded(
                                             flex: 2,
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.end,
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                                  MainAxisAlignment.end,
                                               children: [
                                                 Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
                                                   children: [
                                                     const Text("Status : "),
                                                     Container(
@@ -503,22 +512,22 @@ class _DashboardViewCssdCussDeptUserState
                                                 ),
                                                 request.isAccepted == true
                                                     ? const Text(
-                                                        "Accepted ",
+                                                        "Accepted",
                                                         style: TextStyle(
+                                                            fontSize: 10,
                                                             color:
                                                                 Colors.green),
                                                       )
                                                     : const Text(
                                                         "Not Accepted",
                                                         style: TextStyle(
+                                                            fontSize: 10,
                                                             color: Colors
                                                                 .redAccent),
                                                       ),
                                                 request.isAccepted == true
                                                     ? Text(
                                                         "Accepted By: ${request.acceptedUser}",
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
                                                       )
                                                     : const SizedBox.shrink(),
                                               ],

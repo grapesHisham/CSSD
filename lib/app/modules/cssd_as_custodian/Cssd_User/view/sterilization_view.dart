@@ -259,7 +259,7 @@ class SterilizationViewCssdCussCssdLogin extends StatelessWidget {
                                   child: ListView.builder(
                                     itemCount: 2,
                                     itemBuilder: (context, index) {
-                                      return Column(
+                                      return const Column(
                                         children: [
                                           SterilizationItemsCardWidget(),
                                           SterilizationItemsCardWidget(),

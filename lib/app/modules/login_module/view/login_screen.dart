@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:cssd/Widgets/button_widget.dart';
 import 'package:cssd/Widgets/login_widgets/cssd_transparent_title_card.dart';
 import 'package:cssd/Widgets/transparent_blur_conatiner.dart';
 import 'package:cssd/app/modules/login_module/controller/login_controller.dart';
@@ -34,6 +33,7 @@ class LoginScreen extends StatelessWidget {
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
@@ -46,7 +46,6 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(
                 height: 10,
               ),
-              const Spacer(),
               Padding(
                 padding:
                     EdgeInsets.symmetric(horizontal: mediaQuery.width * 0.10),
@@ -78,8 +77,13 @@ class LoginScreen extends StatelessWidget {
                               if (value.length == 10) {
                                 loginProvider.submitPhoneForHospitalIds(
                                     value, context);
-                                FocusScope.of(context).requestFocus(
-                                    loginController.focusNodeHospitalName);
+
+                                if (loginController.isAdmin) {
+                                  FocusScope.of(context).requestFocus(
+                                      loginController.focusNodeHospitalName);
+                                } else {
+                                  FocusScope.of(context).unfocus();
+                                }
                               }
                             },
                             controller:
@@ -310,8 +314,27 @@ class LoginScreen extends StatelessWidget {
                               }
                             },
                           )
+                        ],
+                      );
+                    }),
+                  ),
+                ),
+              ),
+              /*  SizedBox(
+                height: 10.h,
+              ), */
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
-                          /* ButtonWidget(
+
+
+
+/* ButtonWidget(
                             borderRadius: 10,
                             buttonColor: StaticColors.defaultButton,
                             buttonLabel: "Login",
@@ -335,19 +358,3 @@ class LoginScreen extends StatelessWidget {
                               }
                             },
                           ), */
-                        ],
-                      );
-                    }),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 10.h,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}

@@ -52,6 +52,8 @@ class _FetchItemsForSelectedDepartmentState
           if (selectedItemModel != null) {
             // if package show bottom sheet
             if (selectedItemModel.pckg == 1) {
+              log('currently selected package : ${selectedItemModel.productName}');
+              usedItemEntryConsumer.setSelectedItemModel = selectedItemModel;
               final department = context
                   .read<DashboardControllerCssdCussDeptUser>()
                   .getSelectedDepartment;
